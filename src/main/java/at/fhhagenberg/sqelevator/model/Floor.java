@@ -1,41 +1,33 @@
 package at.fhhagenberg.sqelevator.model;
 
 public class Floor {
-  private int floorNumber;
-  private boolean upButtonPressed;
-  private boolean downButtonPressed;
+  private final int floorNumber;
+  private final Button upButton;
+  private final Button downButton;
 
   public Floor(int floorNumber) {
-    this(floorNumber, false, false);
-  }
-
-  public Floor(int floorNumber, boolean upButtonPressed, boolean downButtonPressed) {
     this.floorNumber = floorNumber;
-    this.upButtonPressed = upButtonPressed;
-    this.downButtonPressed = downButtonPressed;
+    upButton = new Button();
+    downButton = new Button();
   }
 
   public int getFloorNumber() {
     return floorNumber;
   }
 
-  public void setFloorNumber(int floorNumber) {
-    this.floorNumber = floorNumber;
+  public Button getUpButton() {
+    return upButton;
   }
 
-  public boolean isUpButtonPressed() {
-    return upButtonPressed;
+  public void setUpButton(boolean pressed) {
+    this.upButton.setPressed(pressed);
   }
 
-  public void setUpButtonPressed(boolean upButtonPressed) {
-    this.upButtonPressed = upButtonPressed;
+  public Button getDownButton() {
+    return downButton;
   }
 
-  public boolean isDownButtonPressed() {
-    return downButtonPressed;
-  }
-
-  public void setDownButtonPressed(boolean downButtonPressed) {
-    this.downButtonPressed = downButtonPressed;
+  public void setDownButton(boolean pressed) {
+    this.downButton.setPressed(pressed);
   }
 }
