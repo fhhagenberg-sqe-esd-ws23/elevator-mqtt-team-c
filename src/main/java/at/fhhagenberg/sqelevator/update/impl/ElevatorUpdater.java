@@ -13,12 +13,12 @@ import at.fhhagenberg.sqelevator.update.IUpdater;
 public class ElevatorUpdater implements IUpdater {
   private final IElevator controller;
   private final Elevator elevator;
-  private final Building building;
+  // private final Building building;
 
-  public ElevatorUpdater(IElevator controller, Elevator elevator, Building building) {
+  public ElevatorUpdater(IElevator controller, Elevator elevator) {
     this.controller = controller;
     this.elevator = elevator;
-    this.building = building;
+    // this.building = building;
   }
 
   @Override
@@ -52,7 +52,7 @@ public class ElevatorUpdater implements IUpdater {
     elevator.setDoorStatus(DoorStatus.values()[elevatorDoorStatus]);
 
     int elevatorFloor = controller.getElevatorFloor(elevatorId);
-    elevator.setCurrentFloor(building.getFloor(elevatorFloor));
+    elevator.setCurrentFloor(elevator.getAllElevatorButtons().get(elevatorFloor).getFloor());
 
     int elevatorPosition = controller.getElevatorPosition(elevatorId);
     elevator.setCurrentPosition(elevatorPosition);
@@ -64,7 +64,7 @@ public class ElevatorUpdater implements IUpdater {
     elevator.setCurrentWeight(elevatorWeight);
 
     int elevatorTarget = controller.getTarget(elevatorId);
-    elevator.setTargetFloor(building.getFloor(elevatorTarget));
+    elevator.setTargetFloor(elevator.getAllElevatorButtons().get(elevatorTarget).getFloor());
 
     return isUpdated;
   }
