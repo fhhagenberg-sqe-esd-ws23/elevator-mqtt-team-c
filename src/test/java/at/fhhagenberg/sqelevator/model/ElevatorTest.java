@@ -1,7 +1,6 @@
 package at.fhhagenberg.sqelevator.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -14,9 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class ElevatorTest {
+class ElevatorTest {
   @Test
-  public void testInitialization() {
+  void testInitialization() {
     List<Floor> floors = new ArrayList<>();
     floors.add(mock(Floor.class));
     floors.add(mock(Floor.class));
@@ -32,7 +31,7 @@ public class ElevatorTest {
   }
 
   @Test
-  public void testUpdateFloors() {
+  void testUpdateFloors() {
     List<Floor> floors = new ArrayList<>();
     floors.add(mock(Floor.class));
     floors.add(mock(Floor.class));
@@ -51,7 +50,7 @@ public class ElevatorTest {
   }
 
   @Test
-  public void testSetAndGetCommittedDirection() {
+  void testSetAndGetCommittedDirection() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
 
     elevator.setCommittedDirection(Direction.UP);
@@ -61,7 +60,7 @@ public class ElevatorTest {
   // Add more test methods for other functionalities
 
   @Test
-  public void testAddAndRemoveServedFloor() {
+  void testAddAndRemoveServedFloor() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
 
     Floor floor = mock(Floor.class);
@@ -75,7 +74,7 @@ public class ElevatorTest {
   }
 
   @Test
-  public void testAddAndRemoveServedFloorButton() {
+  void testAddAndRemoveServedFloorButton() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
 
     ElevatorButton button = new ElevatorButton(mock(Floor.class));
@@ -89,7 +88,7 @@ public class ElevatorTest {
   }
 
   @Test
-  public void testSetAndGetDoorStatus() {
+  void testSetAndGetDoorStatus() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
 
     elevator.setDoorStatus(DoorStatus.OPEN);
@@ -97,22 +96,21 @@ public class ElevatorTest {
   }
 
   @Test
-  public void setandGetAcceleration() {
+  void testSetandGetAcceleration() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
     elevator.setAcceleration(12);
     assertEquals(12, elevator.getAcceleration());
   }
 
   @Test
-  public void setandGetWheight() {
+  void testSetandGetWheight() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    assertNotNull(elevator.getCurrentWeight());
     elevator.setCurrentWeight(12);
     assertEquals(12, elevator.getCurrentWeight());
   }
 
   @Test
-  public void setandGetTargetfloor() {
+  void testSetandGetTargetfloor() {
 
     Floor f1 = mock(Floor.class);
     Floor f2 = mock(Floor.class);
@@ -124,13 +122,13 @@ public class ElevatorTest {
   }
 
   @Test
-  public void setandGetTargetfloorEmpty() {
+  void testSetandGetTargetfloorEmpty() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
     assertNull(elevator.getTargetFloor());
   }
 
   @Test
-  public void setandGetTargetfloorForeign() {
+  void testSetandGetTargetfloorForeign() {
     Floor f1 = mock(Floor.class);
     Floor f2 = mock(Floor.class);
     Elevator elevator = new Elevator(1, List.of(f1));
@@ -141,7 +139,7 @@ public class ElevatorTest {
   }
 
   @Test
-  public void setandGetCurrentFloor() {
+  void testSetandGetCurrentFloor() {
 
     Floor f1 = mock(Floor.class);
     Floor f2 = mock(Floor.class);
@@ -154,13 +152,13 @@ public class ElevatorTest {
   }
 
   @Test
-  public void setandGetCurrentFloorEmpty() {
+  void testSetandGetCurrentFloorEmpty() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
     assertNull(elevator.getCurrentFloor());
   }
 
   @Test
-  public void setandGetCurrentFloorForeign() {
+  void testSetandGetCurrentFloorForeign() {
     Floor f1 = mock(Floor.class);
     Floor f2 = mock(Floor.class);
     Elevator elevator = new Elevator(1, List.of(f1));
