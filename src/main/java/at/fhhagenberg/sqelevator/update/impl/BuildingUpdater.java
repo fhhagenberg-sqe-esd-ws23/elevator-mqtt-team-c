@@ -8,13 +8,11 @@ import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
-import at.fhhagenberg.sqelevator.update.IUpdate;
+import at.fhhagenberg.sqelevator.update.IUpdater;
 
-public class BuildingUpdater implements IUpdate {
+public class BuildingUpdater implements IUpdater {
   private final IElevator controller;
   private final Building building;
-  private int floorNum = 0;
-  private int elevatorNum = 0;
 
   public BuildingUpdater(IElevator controller, Building building) {
     this.controller = controller;
@@ -30,24 +28,21 @@ public class BuildingUpdater implements IUpdate {
 
     int floorNum = controller.getFloorNum();
     int elevatorNum = controller.getElevatorNum();
-    if (floorNum != this.floorNum || elevatorNum != this.elevatorNum) {
-      if (building.getFloorNum() != floorNum || building.getElevatorNum() != elevatorNum) {
-        for (int i = 0; i < floorNum; i++) {
-          floors.add(new Floor(i));
-        }
-
-        for (int i = 0; i < elevatorNum; i++) {
-          Elevator elevator = new Elevator(i, floors);
-
-          elevators.add(elevator);
-        }
-
-        isUpdated = true;
-
-        // this.building = new Building(elevators, floors);
-        this.building.setFloors(floors);
-        this.building.setElevators(elevators);
+    if (building.getFloorNum() != floorNum || building.getElevatorNum() != elevatorNum) {
+      for (int i = 0; i < floorNum; i++) {
+        floors.add(new Floor(i));
       }
+
+      for (int i = 0; i < elevatorNum; i++) {
+        Elevator elevator = new Elevator(i, floors);
+
+        elevators.add(elevator);
+      }
+
+      isUpdated = true;
+
+      this.building.setFloors(floors);
+      this.building.setElevators(elevators);
     }
 
     return isUpdated;

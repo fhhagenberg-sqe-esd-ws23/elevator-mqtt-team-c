@@ -4,11 +4,11 @@ import java.rmi.RemoteException;
 
 import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Floor;
-import at.fhhagenberg.sqelevator.update.IUpdate;
+import at.fhhagenberg.sqelevator.update.IUpdater;
 
-public class FloorUpdater implements IUpdate {
+public class FloorUpdater implements IUpdater {
   private final IElevator controller;
-  private Floor floor;
+  private final Floor floor;
 
   public FloorUpdater(IElevator controller, Floor floor) {
     this.controller = controller;
@@ -22,6 +22,7 @@ public class FloorUpdater implements IUpdate {
     int floorId = floor.getFloorNumber();
 
     boolean buttonDown = controller.getFloorButtonDown(floorId);
+    // todo: isUpdated |= floor.setDownButton(buttonDown);
     floor.setDownButton(buttonDown);
 
     boolean buttonUp = controller.getFloorButtonUp(floorId);

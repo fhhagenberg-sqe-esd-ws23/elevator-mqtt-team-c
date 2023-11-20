@@ -1,14 +1,13 @@
 package at.fhhagenberg.sqelevator.service;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
-import at.fhhagenberg.sqelevator.update.IUpdate;
+import at.fhhagenberg.sqelevator.update.IUpdater;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
 import at.fhhagenberg.sqelevator.update.impl.ElevatorUpdater;
 import at.fhhagenberg.sqelevator.update.impl.FloorUpdater;
@@ -16,30 +15,30 @@ import at.fhhagenberg.sqelevator.update.impl.FloorUpdater;
 public class ElevatorService {
   private final IElevator controller;
   private final BuildingUpdater buildingUpdater;
-  private final List<IUpdate> updates = new ArrayList<>();
+  private final List<IUpdater> updaters;
   
-  public ElevatorService(IElevator controller, BuildingUpdater buildingUpdater) throws RemoteException {
+  public ElevatorService(IElevator controller, BuildingUpdater buildingUpdater, List<IUpdater> updaters) {
     this.controller = controller;
     this.buildingUpdater = buildingUpdater;
+    this.updaters = updaters;
   }
 
-  private void initUpdaters(Building building) throws RemoteException {
-//    buildingUpdater.update();
+  private void initUpdaters(Building building) {
 
     for (Floor floor : building.getFloors()) {
-      this.updates.add(new FloorUpdater(controller, floor));
+      this.updaters.add(new FloorUpdater(controller, floor));
     }
     for (Elevator elevator : building.getElevators()) {
-      this.updates.add(new ElevatorUpdater(controller, elevator, building));
+      this.updaters.add(new ElevatorUpdater(controller, elevator, building));
     }
   }
 
   public void update(Building building) throws RemoteException {
-    buildingUpdater.update();
+    if (buildingUpdater.update()) {
+      initUpdaters(building);
+    }
 
-    initUpdaters(building);
-
-    for (var updater : this.updates) {
+    for (var updater : this.updaters) {
       updater.update();
     }
   }

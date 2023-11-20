@@ -2,6 +2,6 @@ package at.fhhagenberg.sqelevator.update;
 
 import java.rmi.RemoteException;
 
-public interface IUpdate<T> {
+public interface IUpdater {
   boolean update() throws RemoteException;
 }

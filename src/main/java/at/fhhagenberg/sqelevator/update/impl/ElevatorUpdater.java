@@ -8,12 +8,12 @@ import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.ElevatorButton;
-import at.fhhagenberg.sqelevator.update.IUpdate;
+import at.fhhagenberg.sqelevator.update.IUpdater;
 
-public class ElevatorUpdater implements IUpdate {
+public class ElevatorUpdater implements IUpdater {
   private final IElevator controller;
-  private Elevator elevator;
-  private Building building;
+  private final Elevator elevator;
+  private final Building building;
 
   public ElevatorUpdater(IElevator controller, Elevator elevator, Building building) {
     this.controller = controller;
@@ -30,7 +30,6 @@ public class ElevatorUpdater implements IUpdate {
     for (ElevatorButton btn : elevator.getAllElevatorButtons()) {
       if (controller.getServicesFloors(elevatorId, btn.getFloor().getFloorNumber())) {
         elevator.addServedFloor(btn.getFloor());
-        // todo: check if just served buttons are used
         elevator.addServedFloorButton(btn);
       } else {
         elevator.removeServedFloor(btn.getFloor());
