@@ -2,6 +2,7 @@ package at.fhhagenberg.sqelevator.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -24,6 +25,9 @@ public class ElevatorTest {
 
         assertEquals(1, elevator.getElevatorNumber());
         assertEquals(floors.size(), elevator.getAllElevatorButtons().size());
+        assertEquals(floors.get(0),elevator.getTargetFloor());
+        assertEquals(floors.get(0),elevator.getCurrentFloor());
+        assertEquals(floors, elevator.getServicesFloors());
         // Add more assertions based on your class structure
     }
 
@@ -98,44 +102,65 @@ public class ElevatorTest {
         elevator.setAcceleration(12);
         assertEquals(12, elevator.getAcceleration());
     }
-    //TODO: 
+    @Test
+    public void setandGetWheight(){
+        Elevator elevator = new Elevator(1, new ArrayList<>());
+        assertNotNull(elevator.getCurrentWeight());
+        elevator.setCurrentWeight(12);
+        assertEquals(12, elevator.getCurrentWeight());
+    }
     @Test
     public void setandGetTargetfloor(){
-        Elevator elevator = new Elevator(1, new ArrayList<>());
-        assertNotNull(elevator.getAcceleration());
-        elevator.setAcceleration(12);
-        assertEquals(12, elevator.getAcceleration());
+
+        Floor f1=mock(Floor.class);
+        Floor f2=mock(Floor.class);
+        List<Floor> floors = List.of(f1,f2);
+        Elevator elevator = new Elevator(1, floors);
+        assertEquals(f1,elevator.getTargetFloor());
+        elevator.setTargetFloor(f2);
+        assertEquals(f2, elevator.getTargetFloor());
     }
 
+    @Test
+    public void setandGetTargetfloorEmpty(){
+        Elevator elevator = new Elevator(1, new ArrayList<>());
+        assertNull(elevator.getAcceleration());
+    }
     @Test
     public void setandGetTargetfloorFremd(){
-        Elevator elevator = new Elevator(1, new ArrayList<>());
-        assertNotNull(elevator.getAcceleration());
-        elevator.setAcceleration(12);
-        assertEquals(12, elevator.getAcceleration());
-    }
-    @Test
-    public void setandGetCurrentfloor(){
-        Elevator elevator = new Elevator(1, new ArrayList<>());
-        assertNotNull(elevator.getAcceleration());
-        elevator.setAcceleration(12);
-        assertEquals(12, elevator.getAcceleration());
+        Floor f1=mock(Floor.class);
+        Floor f2=mock(Floor.class);
+        Elevator elevator = new Elevator(1,List.of(f1));
+        elevator.setTargetFloor(f2);
+        assertEquals(f1,elevator.getTargetFloor());
     }
 
     @Test
-    public void setandGetCurrentfloorEmpty(){
+    public void setandGetCurrentFloor(){
+
+        Floor f1=mock(Floor.class);
+        Floor f2=mock(Floor.class);
+        List<Floor> floors = List.of(f1,f2);
+        Elevator elevator = new Elevator(1, floors);
+        assertEquals(f1,elevator.getCurrentFloor());
+        elevator.setCurrentFloor(f2);
+        assertEquals(f2, elevator.getCurrentFloor());
+    }
+
+    @Test
+    public void setandGetCurrentFloorEmpty(){
         Elevator elevator = new Elevator(1, new ArrayList<>());
-        assertNotNull(elevator.getAcceleration());
-        elevator.setAcceleration(12);
-        assertEquals(12, elevator.getAcceleration());
+        assertNull(elevator.getAcceleration());
     }
     @Test
-    public void setandGetCurrentfloorFremd(){
-        Elevator elevator = new Elevator(1, new ArrayList<>());
-        assertNotNull(elevator.getAcceleration());
-        elevator.setAcceleration(12);
-        assertEquals(12, elevator.getAcceleration());
+    public void setandGetCurrentFloorFremd(){
+        Floor f1=mock(Floor.class);
+        Floor f2=mock(Floor.class);
+        Elevator elevator = new Elevator(1,List.of(f1));
+        elevator.setCurrentFloor(f2);
+        assertEquals(f1,elevator.getCurrentFloor());
     }
+    
     // Add more test methods for other functionalities
 
 }
