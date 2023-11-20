@@ -83,38 +83,4 @@ class ElevatorServiceTest {
     Mockito.verify(floorUpdater, times(1)).update();
     Mockito.verify(elevatorUpdater, Mockito.never()).update();
   }
-
-//  @Test
-//  void testGeneral() throws RemoteException{
-//    Mockito.when(controller.getFloorNum()).thenReturn(3);
-//    Mockito.when(controller.getElevatorNum()).thenReturn(2);
-//    Mockito.when(controller.getCommittedDirection(0)).thenReturn(0);
-//    Mockito.when(controller.getCommittedDirection(1)).thenReturn(1);
-//    Mockito.when(controller.getElevatorAccel(0)).thenReturn(12);
-//    Mockito.when(controller.getElevatorButton(0, 0)).thenReturn(false);
-//    Mockito.when(controller.getElevatorButton(0, 1)).thenReturn(true);
-//    Mockito.when(controller.getElevatorButton(0, 2)).thenReturn(false);
-//    Mockito.when(controller.getServicesFloors(anyInt(), anyInt())).thenReturn(true);
-//    elevatorService.update(building);
-//    assertEquals(3, building.getFloors().size());
-//    assertEquals(2, building.getElevators().size());
-//    assertEquals(3, building.getElevator(0).getServedButtons().size());
-//    assertEquals(Direction.UP, building.getElevator(0).getCommittedDirection());
-//    assertEquals(Direction.DOWN, building.getElevator(1).getCommittedDirection());
-//    assertEquals(12,building.getElevator(0).getAcceleration());
-//    assertEquals(0,building.getElevator(0).getAllElevatorButtons().get(0).getFloor().getFloorNumber());
-//    assertFalse(building.getElevator(0).getAllElevatorButtons().get(0).isPressed());
-//    assertTrue(building.getElevator(0).getAllElevatorButtons().get(1).isPressed());
-//    assertFalse(building.getElevator(0).getAllElevatorButtons().get(2).isPressed());
-//
-//    Mockito.when(controller.getCommittedDirection(0)).thenReturn(2);
-//    Mockito.when(controller.getCommittedDirection(1)).thenReturn(0);
-//
-//    elevatorService.update(building);
-//    assertEquals(3, building.getFloors().size());
-//    assertEquals(2, building.getElevators().size());
-//    assertEquals(Direction.UNCOMMITTED, building.getElevator(0).getCommittedDirection());
-//    assertEquals(Direction.UP, building.getElevator(1).getCommittedDirection());
-//
-//  }
 }
