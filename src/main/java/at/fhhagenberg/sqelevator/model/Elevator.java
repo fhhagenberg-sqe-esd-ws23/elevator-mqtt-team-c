@@ -12,41 +12,57 @@ public class Elevator {
   private List<ElevatorButton> servedButtons;
   private DoorStatus doorStatus;
   private Floor currentFloor;
-  /** position in feet */
+  /**
+   * position in feet
+   */
   private int currentPosition;
-  /** speed in feet per sec */
+  /**
+   * speed in feet per sec
+   */
   private int currentSpeed;
-  /** current passenger weight */
+  /**
+   * current passenger weight
+   */
   private int currentWeight;
   private List<Floor> servicesFloors;
   private Floor targetFloor;
   private List<Integer> floorRequests;
 
-  public Elevator(int elevatorNumber,List<Floor>floors) {
+  public Elevator(int elevatorNumber, List<Floor> floors) {
     this.elevatorNumber = elevatorNumber;
-    this.allButtons= new ArrayList<>();
+    this.allButtons = new ArrayList<>();
     this.servedButtons = new ArrayList<>();
     this.servicesFloors = new ArrayList<>();
     this.floorRequests = new ArrayList<>();
     updateFloors(floors);
   }
 
-  public void updateFloors(List<Floor> floors)
-  {
+  public void updateFloors(List<Floor> floors) {
     servedButtons.clear();
     servicesFloors.clear();
     allButtons.clear();
+
+    this.servicesFloors.addAll(floors);
+
     for (Floor floor : floors) {
       allButtons.add(new ElevatorButton(floor));
     }
-
   }
+
   public void setServicesFloors(List<Floor> servicesFloors) {
     this.servicesFloors = servicesFloors;
   }
 
   public void addServedFloor(Floor floor) {
     this.servicesFloors.add(floor);
+  }
+
+  public void clearServesFloors() {
+    this.servicesFloors.clear();
+  }
+
+  public void clearServedButtons() {
+    this.servedButtons.clear();
   }
 
   public boolean removeServedFloor(Floor floor) {
@@ -102,7 +118,9 @@ public class Elevator {
   }
 
   public void setCurrentFloor(Floor currentFloor) {
-    this.currentFloor = currentFloor;
+    if (this.getServicesFloors().contains(currentFloor)) {
+      this.currentFloor = currentFloor;
+    }
   }
 
   public int getCurrentPosition() {
@@ -138,7 +156,9 @@ public class Elevator {
   }
 
   public void setTargetFloor(Floor targetFloor) {
-    this.targetFloor = targetFloor;
+    if (this.getServicesFloors().contains(targetFloor)) {
+      this.targetFloor = targetFloor;
+    }
   }
 
   public List<Integer> getFloorRequests() {
@@ -149,7 +169,7 @@ public class Elevator {
     this.floorRequests = floorRequests;
   }
 
-public List<ElevatorButton> getAllElevatorButtons() {
+  public List<ElevatorButton> getAllElevatorButtons() {
     return allButtons;
-}
+  }
 }

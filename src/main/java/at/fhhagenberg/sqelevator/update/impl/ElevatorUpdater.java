@@ -27,6 +27,9 @@ public class ElevatorUpdater implements IUpdater {
     // todo: isUpdate logic missing
     int elevatorId = elevator.getElevatorNumber();
 
+    elevator.clearServesFloors();
+    elevator.clearServedButtons();
+
     for (ElevatorButton btn : elevator.getAllElevatorButtons()) {
       if (controller.getServicesFloors(elevatorId, btn.getFloor().getFloorNumber())) {
         elevator.addServedFloor(btn.getFloor());
