@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqelevator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Elevator {
@@ -7,7 +8,8 @@ public class Elevator {
   private final int elevatorNumber;
   private Direction committedDirection;
   private int acceleration;
-  private List<ElevatorButton> buttons;
+  private List<ElevatorButton> allButtons;
+  private List<ElevatorButton> servedButtons;
   private DoorStatus doorStatus;
   private Floor currentFloor;
   /** position in feet */
@@ -22,6 +24,9 @@ public class Elevator {
 
   public Elevator(int elevatorNumber) {
     this.elevatorNumber = elevatorNumber;
+    this.servedButtons = new ArrayList<>();
+    this.servicesFloors = new ArrayList<>();
+    this.floorRequests = new ArrayList<>();
   }
 
   public void setServicesFloors(List<Floor> servicesFloors) {
@@ -32,8 +37,16 @@ public class Elevator {
     this.servicesFloors.add(floor);
   }
 
+  public boolean removeServedFloor(Floor floor) {
+    return this.servicesFloors.remove(floor);
+  }
+
   public void addServedFloorButton(ElevatorButton button) {
-    this.buttons.add(button);
+    this.servedButtons.add(button);
+  }
+
+  public boolean removeServedFloorButton(ElevatorButton button) {
+    return this.servedButtons.remove(button);
   }
 
   public int getElevatorNumber() {
@@ -56,12 +69,12 @@ public class Elevator {
     this.acceleration = acceleration;
   }
 
-  public List<ElevatorButton> getButtons() {
-    return buttons;
+  public List<ElevatorButton> getServedButtons() {
+    return servedButtons;
   }
 
-  public void setButtons(List<ElevatorButton> buttons) {
-    this.buttons = buttons;
+  public void setServedButtons(List<ElevatorButton> servedButtons) {
+    this.servedButtons = servedButtons;
   }
 
   public DoorStatus getDoorStatus() {

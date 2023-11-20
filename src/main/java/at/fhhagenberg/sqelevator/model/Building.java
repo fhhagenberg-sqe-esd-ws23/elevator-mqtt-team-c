@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class Building {
-  private final List<Elevator> elevators;
-  private final List<Floor> floors;
+  private List<Elevator> elevators;
+  private List<Floor> floors;
+
+  public Building() {
+    elevators = new ArrayList<>();
+    floors = new ArrayList<>();
+  }
 
   public Building(List<Elevator> elevators, List<Floor> floors) {
     this.elevators = elevators;
@@ -43,6 +48,14 @@ public class Building {
     return floors.get(floorNumber);
   }
 
+  public void setElevators(List<Elevator> elevators) {
+    this.elevators = elevators;
+  }
+
+  public void setFloors(List<Floor> floors) {
+    this.floors = floors;
+  }
+
   public List<Elevator> getElevators() {
     return elevators;
   }
@@ -54,4 +67,8 @@ public class Building {
   public int getFloorNum() {
     return floors.size();
   }
+  public int getElevatorNum() {
+    return elevators.size();
+  }
+
 }
