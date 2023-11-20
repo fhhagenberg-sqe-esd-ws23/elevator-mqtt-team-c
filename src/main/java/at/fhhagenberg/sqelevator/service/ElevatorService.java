@@ -30,7 +30,7 @@ public class ElevatorService {
       this.updaters.add(new FloorUpdater(controller, floor));
     }
     for (Elevator elevator : building.getElevators()) {
-      this.updaters.add(new ElevatorUpdater(controller, elevator, building));
+      this.updaters.add(new ElevatorUpdater(controller, elevator));
     }
   }
 
