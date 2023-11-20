@@ -32,6 +32,8 @@ class ElevatorServiceGeneralTest {
 
   private Building building;
 
+  BuildingUpdater buildingUpdater;
+
   @BeforeEach
   public void setUp() {
     List<IUpdater> updaters = new ArrayList<>();
@@ -39,9 +41,29 @@ class ElevatorServiceGeneralTest {
     updaters.add(elevatorUpdater);
     building = new Building();
 
-    BuildingUpdater buildingUpdater = new BuildingUpdater(controller, building);
+    buildingUpdater = new BuildingUpdater(controller, building);
 
     elevatorService = Mockito.spy(new ElevatorService(controller, buildingUpdater, updaters));
+  }
+
+  @Test
+  void testChangeBuildingSize() throws RemoteException {
+    Mockito.when(controller.getFloorNum())
+        .thenReturn(3)
+        .thenReturn(2);
+    Mockito.when(controller.getElevatorNum())
+        .thenReturn(2)
+        .thenReturn(1);
+
+    elevatorService.update(building);
+
+    Assertions.assertEquals(3, building.getFloorNum());
+    Assertions.assertEquals(2, building.getElevatorNum());
+
+    elevatorService.update(building);
+
+    Assertions.assertEquals(2, building.getFloorNum());
+    Assertions.assertEquals(1, building.getElevatorNum());
   }
 
   @Test
