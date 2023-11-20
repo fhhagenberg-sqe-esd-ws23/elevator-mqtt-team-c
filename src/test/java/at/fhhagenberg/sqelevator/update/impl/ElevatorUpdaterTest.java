@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqelevator.update.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -69,6 +70,20 @@ public class ElevatorUpdaterTest {
 
 
     }
-
+    @Test
+    void testUpdate2() throws RemoteException
+    {
+        List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0)),new ElevatorButton(new Floor(1)),new ElevatorButton(new Floor(2)));
+        var uut=new ElevatorUpdater(controller, elevator);
+        
+        Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
+        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(2);
+        Mockito.when(controller.getElevatorFloor(1)).thenReturn(4);
+        Mockito.when(controller.getTarget(1)).thenReturn(4);
+        uut.update();
+        verify(elevator,times(0)).setDoorStatus(any());
+        verify(elevator,times(0)).setCurrentFloor(any());
+        verify(elevator,times(0)).setTargetFloor(any());
+    }
 
 }

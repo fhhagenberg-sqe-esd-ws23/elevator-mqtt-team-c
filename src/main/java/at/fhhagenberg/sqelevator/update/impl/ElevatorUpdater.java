@@ -41,6 +41,7 @@ public class ElevatorUpdater implements IUpdater {
     }
 
     int committedDirection = controller.getCommittedDirection(elevatorId);
+    if(committedDirection< Direction.values().length && committedDirection>=0)
     elevator.setCommittedDirection(Direction.values()[committedDirection]);
 
     int acceleration = controller.getElevatorAccel(elevatorId);
@@ -52,11 +53,13 @@ public class ElevatorUpdater implements IUpdater {
     }
 
     int elevatorDoorStatus = controller.getElevatorDoorStatus(elevatorId);
-    elevator.setDoorStatus(DoorStatus.values()[elevatorDoorStatus]);
-
+    if(elevatorDoorStatus< DoorStatus.values().length && elevatorDoorStatus>=0)
+{    elevator.setDoorStatus(DoorStatus.values()[elevatorDoorStatus]);
+}
     int elevatorFloor = controller.getElevatorFloor(elevatorId);
-    elevator.setCurrentFloor(elevator.getAllElevatorButtons().get(elevatorFloor).getFloor());
-
+if(elevatorFloor>=0&&elevatorFloor<elevator.getAllElevatorButtons().size())
+{    elevator.setCurrentFloor(elevator.getAllElevatorButtons().get(elevatorFloor).getFloor());
+}
     int elevatorPosition = controller.getElevatorPosition(elevatorId);
     elevator.setCurrentPosition(elevatorPosition);
 
@@ -67,6 +70,7 @@ public class ElevatorUpdater implements IUpdater {
     elevator.setCurrentWeight(elevatorWeight);
 
     int elevatorTarget = controller.getTarget(elevatorId);
+    if(elevatorTarget>=0&&elevatorTarget<elevator.getAllElevatorButtons().size())
     elevator.setTargetFloor(elevator.getAllElevatorButtons().get(elevatorTarget).getFloor());
 
     return isUpdated;
