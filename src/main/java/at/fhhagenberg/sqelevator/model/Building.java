@@ -52,6 +52,7 @@ public class Building {
   public int getFloorNum() {
     return floors.size();
   }
+
   public int getElevatorNum() {
     return elevators.size();
   }
