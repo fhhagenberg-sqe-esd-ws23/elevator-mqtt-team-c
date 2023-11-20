@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 public class BuildingTest {
@@ -20,6 +21,17 @@ public class BuildingTest {
         assertEquals(0, uut.getFloorNum());
     }
 
+  @Test
+  public void ctor_List()
+  {
+    List<Elevator> elevators = List.of(Mockito.mock(Elevator.class));
+    List<Floor> floors = List.of(Mockito.mock(Floor.class));
+
+    var uut = new Building(elevators, floors);
+    assertEquals(elevators, uut.getElevators());
+    assertEquals(floors, uut.getFloors());
+  }
+
     @Test
     public void addElevatorFloor(){
         var uut=new Building();
@@ -29,7 +41,7 @@ public class BuildingTest {
         assertEquals(1, uut.getElevatorNum());
         assertEquals(2, uut.getFloorNum());
     }
-    
+
     @Test
     public void getElevator_valid(){
         var uut=new Building();
