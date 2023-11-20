@@ -8,7 +8,6 @@ import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.ElevatorButton;
-import at.fhhagenberg.sqelevator.model.Floor;
 import at.fhhagenberg.sqelevator.update.IUpdate;
 
 public class ElevatorUpdater implements IUpdate {
@@ -28,15 +27,14 @@ public class ElevatorUpdater implements IUpdate {
     // todo: isUpdate logic missing
     int elevatorId = elevator.getElevatorNumber();
 
-    for (Floor floor : building.getFloors()) {
-      if (controller.getServicesFloors(elevatorId, floor.getFloorNumber())) {
-        elevator.addServedFloor(floor);
-
+    for (ElevatorButton btn : elevator.getAllElevatorButtons()) {
+      if (controller.getServicesFloors(elevatorId, btn.getFloor().getFloorNumber())) {
+        elevator.addServedFloor(btn.getFloor());
         // todo: check if just served buttons are used
-        elevator.addServedFloorButton(new ElevatorButton(floor));
+        elevator.addServedFloorButton(btn);
       } else {
-        elevator.removeServedFloor(floor);
-//        elevator.removeServedFloorButton(floor.);
+        elevator.removeServedFloor(btn.getFloor());
+        elevator.removeServedFloorButton(btn);
       }
     }
 
@@ -50,6 +48,7 @@ public class ElevatorUpdater implements IUpdate {
       boolean buttonPressed = controller.getElevatorButton(elevatorId, button.getFloor().getFloorNumber());
       button.setPressed(buttonPressed);
     }
+
     int elevatorDoorStatus = controller.getElevatorDoorStatus(elevatorId);
     elevator.setDoorStatus(DoorStatus.values()[elevatorDoorStatus]);
 

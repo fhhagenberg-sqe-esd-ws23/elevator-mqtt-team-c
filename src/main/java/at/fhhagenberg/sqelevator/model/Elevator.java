@@ -22,13 +22,25 @@ public class Elevator {
   private Floor targetFloor;
   private List<Integer> floorRequests;
 
-  public Elevator(int elevatorNumber) {
+  public Elevator(int elevatorNumber,List<Floor>floors) {
     this.elevatorNumber = elevatorNumber;
+    this.allButtons= new ArrayList<>();
     this.servedButtons = new ArrayList<>();
     this.servicesFloors = new ArrayList<>();
     this.floorRequests = new ArrayList<>();
+    updateFloors(floors);
   }
 
+  public void updateFloors(List<Floor> floors)
+  {
+    servedButtons.clear();
+    servicesFloors.clear();
+    allButtons.clear();
+    for (Floor floor : floors) {
+      allButtons.add(new ElevatorButton(floor));
+    }
+
+  }
   public void setServicesFloors(List<Floor> servicesFloors) {
     this.servicesFloors = servicesFloors;
   }
@@ -136,4 +148,8 @@ public class Elevator {
   public void setFloorRequests(List<Integer> floorRequests) {
     this.floorRequests = floorRequests;
   }
+
+public List<ElevatorButton> getAllElevatorButtons() {
+    return allButtons;
+}
 }

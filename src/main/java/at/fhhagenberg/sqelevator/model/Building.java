@@ -18,19 +18,19 @@ public class Building {
     this.floors = floors;
   }
 
-  public Building(int numberOfFloors, int numberOfElevators) {
-    floors = new ArrayList<>();
-    elevators = new ArrayList<>();
+  // public Building(int numberOfFloors, int numberOfElevators) {
+  //   floors = new ArrayList<>();
+  //   elevators = new ArrayList<>();
 
-    for (int i = 0; i < numberOfFloors; i++) {
-      Floor floor = new Floor(i);
-      floors.add(floor);
-    }
+  //   for (int i = 0; i < numberOfFloors; i++) {
+  //     Floor floor = new Floor(i);
+  //     floors.add(floor);
+  //   }
 
-    IntStream.range(0, numberOfElevators)
-        .mapToObj(Elevator::new)
-        .forEachOrdered(elevators::add);
-  }
+  //   IntStream.range(0, numberOfElevators)
+  //       .mapToObj(Elevator::new)
+  //       .forEachOrdered(elevators::add);
+  // }
 
   public Elevator getElevator(int elevatorNumber) {
     if (elevatorNumber >= elevators.size()) {
