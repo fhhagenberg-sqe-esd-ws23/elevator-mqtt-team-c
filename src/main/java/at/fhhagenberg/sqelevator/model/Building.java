@@ -2,7 +2,6 @@ package at.fhhagenberg.sqelevator.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Building {
   private List<Elevator> elevators;
@@ -18,22 +17,8 @@ public class Building {
     this.floors = floors;
   }
 
-  // public Building(int numberOfFloors, int numberOfElevators) {
-  //   floors = new ArrayList<>();
-  //   elevators = new ArrayList<>();
-
-  //   for (int i = 0; i < numberOfFloors; i++) {
-  //     Floor floor = new Floor(i);
-  //     floors.add(floor);
-  //   }
-
-  //   IntStream.range(0, numberOfElevators)
-  //       .mapToObj(Elevator::new)
-  //       .forEachOrdered(elevators::add);
-  // }
-
   public Elevator getElevator(int elevatorNumber) {
-    if (elevatorNumber >= elevators.size()) {
+    if (elevatorNumber >= elevators.size() || elevatorNumber<0) {
       return null;
     }
 
@@ -41,7 +26,7 @@ public class Building {
   }
 
   public Floor getFloor(int floorNumber) {
-    if (floorNumber >= elevators.size()) {
+    if (floorNumber >= floors.size() || floorNumber<0) {
       return null;
     }
 
