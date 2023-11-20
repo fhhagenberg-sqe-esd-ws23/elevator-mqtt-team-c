@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Direction;
-import at.fhhagenberg.sqelevator.service.impl.ElevatorService;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
 
 @ExtendWith(MockitoExtension.class)

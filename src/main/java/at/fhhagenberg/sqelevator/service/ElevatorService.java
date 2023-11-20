@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqelevator.service.impl;
+package at.fhhagenberg.sqelevator.service;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
