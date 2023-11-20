@@ -19,7 +19,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import at.fhhagenberg.sqelevator.IElevator;
-import at.fhhagenberg.sqelevator.model.Building;
+import at.fhhagenberg.sqelevator.model.Direction;
+import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.ElevatorButton;
 import at.fhhagenberg.sqelevator.model.Floor;
@@ -30,11 +31,10 @@ public class ElevatorUpdaterTest {
     private IElevator controller;
     @Mock
     private Elevator elevator;
-    @Captor ArgumentCaptor<List> captor;
 
 
     @Test
-    void UpdateTest() throws RemoteException
+    void testUpdate() throws RemoteException
     {
         List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0)),new ElevatorButton(new Floor(1)),new ElevatorButton(new Floor(2)));
         var uut=new ElevatorUpdater(controller, elevator);
@@ -54,9 +54,21 @@ public class ElevatorUpdaterTest {
         Mockito.when(controller.getTarget(1)).thenReturn(0);
         uut.update();
 
+        verify(elevator,times(1)).clearServesFloors();
+        verify(elevator,times(1)).clearServedButtons();
         verify(elevator,times(2)).addServedFloor(any(Floor.class));
-        // verify(elevator,times(1)).addServedFloo(any(Floor.class));
-      
-        assertEquals(btnlist, btnlist);
+        verify(elevator,times(2)).addServedFloorButton(any(ElevatorButton.class));
+        verify(elevator,times(1)).setCommittedDirection(Direction.DOWN);
+        verify(elevator,times(1)).setAcceleration(12);
+        verify(elevator,times(1)).setDoorStatus(DoorStatus.CLOSED);
+        verify(elevator,times(1)).setCurrentFloor(btnlist.get(2).getFloor());
+        verify(elevator,times(1)).setCurrentPosition(200);
+        verify(elevator,times(1)).setCurrentSpeed(120);
+        verify(elevator,times(1)).setCurrentWeight(110);
+        verify(elevator,times(1)).setTargetFloor(btnlist.get(0).getFloor());
+
+
     }
+
+
 }
