@@ -31,21 +31,23 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-    - uses: actions/upload-artifact@v3
-      with:
-          name: code-coverage-report
-          path: target/{surefire-reports,test-classes}
+    - name: package reports
+      run: zip -r reports.zip target
+    # - uses: actions/upload-artifact@v3
+    #   with:
+    #       name: code-coverage-report
+    #       path: target/{surefire-reports,test-classes}
 
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: true
-          title: "Development Build"
-          files: |
-            LICENSE.txt
-            *.jar
-            reports.zip
+    # - uses: "marvinpinto/action-automatic-releases@latest"
+    #   with:
+    #       repo_token: "${{ secrets.GITHUB_TOKEN }}"
+    #       automatic_release_tag: "latest"
+    #       prerelease: true
+    #       title: "Development Build"
+    #       files: |
+    #         LICENSE.txt
+    #         *.jar
+    #         reports.zip
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     # - name: Update dependency graph
