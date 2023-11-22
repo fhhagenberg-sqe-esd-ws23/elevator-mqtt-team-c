@@ -34,10 +34,10 @@ jobs:
     - name: package
       # run: ls -la target/*
       run: zip -r reports.zip target/surefire-reports
-    # - uses: actions/upload-artifact@v3
-    #   with:
-    #       name: code-coverage-report
-    #       path: reports.zip
+    - uses: actions/upload-artifact@v3
+      with:
+          name: code-coverage-report
+          path: reports.zip
 
     # - uses: "marvinpinto/action-automatic-releases@latest"
     #   with:
