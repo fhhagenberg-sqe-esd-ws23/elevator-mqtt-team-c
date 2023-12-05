@@ -1,10 +1,6 @@
 package at.fhhagenberg.sqelevator.update.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -13,8 +9,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -68,22 +62,49 @@ public class ElevatorUpdaterTest {
         verify(elevator,times(1)).setCurrentWeight(110);
         verify(elevator,times(1)).setTargetFloor(btnlist.get(0).getFloor());
 
-
     }
+    // @Test
+    // void testUpdate2() throws RemoteException
+    // {
+    //     var uut=new ElevatorUpdater(controller, elevator);
+        
+    //     Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
+    //     Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(2);
+    //     Mockito.when(controller.getElevatorFloor(1)).thenReturn(4);
+    //     Mockito.when(controller.getTarget(1)).thenReturn(4);
+    //     uut.update();
+    //     verify(elevator,times(0)).setDoorStatus(any());
+    //     verify(elevator,times(0)).setCurrentFloor(any());
+    //     verify(elevator,times(0)).setTargetFloor(any());
+    // }
     @Test
-    void testUpdate2() throws RemoteException
+    void testUpdate_faultyControler() throws RemoteException
     {
         List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0)),new ElevatorButton(new Floor(1)),new ElevatorButton(new Floor(2)));
         var uut=new ElevatorUpdater(controller, elevator);
+
+        Mockito.when(elevator.getAllElevatorButtons()).thenReturn(btnlist);
+        Mockito.when(elevator.getElevatorNumber()).thenReturn(2);
         
-        Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
-        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(2);
-        Mockito.when(controller.getElevatorFloor(1)).thenReturn(4);
-        Mockito.when(controller.getTarget(1)).thenReturn(4);
+
+        Mockito.when(controller.getCommittedDirection(1)).thenReturn(-1);
+        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(-1);
+        Mockito.when(controller.getElevatorFloor(1)).thenReturn(-1);
+        Mockito.when(controller.getTarget(1)).thenReturn(-1);
+
+        Mockito.when(controller.getCommittedDirection(2)).thenReturn(3);
+        Mockito.when(controller.getElevatorDoorStatus(2)).thenReturn(2);
+        Mockito.when(controller.getElevatorFloor(2)).thenReturn(3);
+        Mockito.when(controller.getTarget(2)).thenReturn(3);
+
         uut.update();
+        Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
+        uut.update();
+
         verify(elevator,times(0)).setDoorStatus(any());
         verify(elevator,times(0)).setCurrentFloor(any());
         verify(elevator,times(0)).setTargetFloor(any());
-    }
+        verify(elevator,times(0)).setCommittedDirection(any());
 
+    }
 }
