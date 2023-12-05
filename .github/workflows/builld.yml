@@ -33,10 +33,10 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: package reports
       run: zip -r reports.zip target
-    # - uses: actions/upload-artifact@v3
-    #   with:
-    #       name: code-coverage-report
-    #       path: target/{surefire-reports,test-classes}
+    - uses: actions/upload-artifact@v3
+      with:
+          name: code-coverage-report
+          path: reports.zip
 
     # - uses: "marvinpinto/action-automatic-releases@latest"
     #   with:
