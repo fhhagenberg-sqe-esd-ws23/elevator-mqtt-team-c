@@ -144,7 +144,7 @@ class ElevatorTest {
     Floor f2 = mock(Floor.class);
     Elevator elevator = new Elevator(1, List.of(f1));
     elevator.getButton(f1).setServed(true);
-    elevator.getButton(f2).serverListner=(a,b)->{
+    elevator.getButton(f1).serverListner=(a,b)->{
       assertEquals(elevator.getButton(f2), a); 
       assertEquals(true, b);
     };
