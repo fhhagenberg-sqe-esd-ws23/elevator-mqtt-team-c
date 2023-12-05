@@ -1,0 +1,6 @@
+// address
+PLC=rmi://localhost/ElevatorSim
+//polling interval at PLC [ms]
+interval=250 
+mqtt_address=localhost
+mqtt_prefix=
