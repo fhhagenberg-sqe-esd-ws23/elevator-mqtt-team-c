@@ -3,7 +3,15 @@ package at.fhhagenberg.sqelevator.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.fhhagenberg.sqelevator.Listener;
+
 public class Elevator {
+
+  public Listener<Direction> commitedDirectionListener;
+  public Listener<Integer> accelListener;
+  public Listener<DoorStatus> doorStatusListener;
+  public Listener<Floor> currentFloorListener;
+
 
   private final int elevatorNumber;
   private Direction committedDirection;
@@ -94,7 +102,14 @@ public class Elevator {
   }
 
   public void setAcceleration(int acceleration) {
-    this.acceleration = acceleration;
+    if (this.acceleration != acceleration) {
+      this.acceleration = acceleration;
+
+      if (accelListener != null) {
+        accelListener.call(elevatorNumber, acceleration);
+      }
+//      mqttService.publish("elevator/" + elevatorNumber + "/accelertation/", String.valueOf(acceleration));
+    }
   }
 
   public List<ElevatorButton> getServedButtons() {

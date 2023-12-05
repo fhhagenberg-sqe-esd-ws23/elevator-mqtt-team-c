@@ -11,7 +11,10 @@ import java.rmi.RemoteException;
 
 
 import at.fhhagenberg.sqelevator.model.Building;
+import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.service.ElevatorService;
+import at.fhhagenberg.sqelevator.service.MqttService;
+import at.fhhagenberg.sqelevator.service.impl.MqttServiceImpl;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
 
 public class sqelevator {
@@ -40,8 +43,10 @@ public class sqelevator {
         IElevator controller;
         try {
             controller = (IElevator) Naming.lookup(p.getPlcAddress());
-            sqelevator app = new sqelevator(p, controller, new MqttClient() {
-            });
+
+            MqttService mqttService = new MqttServiceImpl();
+            mqttService.connect(p.getMqttAddress(), 1883);
+            sqelevator app = new sqelevator(p, controller, mqttService);
             app.run();
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
             // TODO Auto-generated catch block
@@ -57,9 +62,14 @@ public class sqelevator {
     ElevatorService service;
     Building building;
 
-    public sqelevator(Parser p, IElevator e, MqttClient r) {
+    public sqelevator(Parser p, IElevator e, MqttService mqttService) {
 
         building = new Building();
+
+        for (Elevator  elevator : building.getElevators()) {
+          elevator.accelListener = (id, value) -> mqttService.publish("elevator/" + id + "/accel", value);
+        }
+
         service = new ElevatorService(e, new BuildingUpdater(e, building), null);
     }
 
