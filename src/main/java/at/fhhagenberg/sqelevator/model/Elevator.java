@@ -7,10 +7,11 @@ import at.fhhagenberg.sqelevator.Listener;
 
 public class Elevator {
 
-  public Listener<Direction> commitedDirectionListener;
-  public Listener<Integer> accelListener;
-  public Listener<DoorStatus> doorStatusListener;
-  public Listener<Floor> currentFloorListener;
+  public Listener<Elevator,Direction> commitedDirectionListener;
+  public Listener<Elevator,Integer> accelListener;
+  public Listener<Elevator,DoorStatus> doorStatusListener;
+  public Listener<Elevator,Floor> currentFloorListener;
+  public Listener<Elevator,Integer> weightListner;
 
 
   private final int elevatorNumber;
@@ -44,7 +45,7 @@ public class Elevator {
   private void updateFloors(List<Floor> floors) {
 
     for (Floor floor : floors) {
-      allButtons.add(new ElevatorButton(floor));
+      allButtons.add(new ElevatorButton(floor,this));
     }
   }
 
@@ -69,7 +70,7 @@ public class Elevator {
       this.acceleration = acceleration;
 
       if (accelListener != null) {
-        accelListener.call(elevatorNumber, acceleration);
+        accelListener.call(this, acceleration);
       }
 //      mqttService.publish("elevator/" + elevatorNumber + "/accelertation/", String.valueOf(acceleration));
     }
@@ -142,7 +143,7 @@ public class Elevator {
   }
 
 public ElevatorButton getButton(Floor floor) {
-  for(var b:allButtons)
+  for(var b:getAllElevatorButtons())
   {
     if(b.getFloor()==floor)
       return b;

@@ -31,7 +31,7 @@ public class ElevatorUpdaterTest {
     @Test
     void testUpdate() throws RemoteException
     {
-        List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0)),new ElevatorButton(new Floor(1)),new ElevatorButton(new Floor(2)));
+        List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0),null),new ElevatorButton(new Floor(1),null),new ElevatorButton(new Floor(2),null));
         var uut=new ElevatorUpdater(controller, elevator);
         Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
         Mockito.when(elevator.getAllElevatorButtons()).thenReturn(btnlist);
@@ -39,7 +39,9 @@ public class ElevatorUpdaterTest {
         Mockito.when(controller.getServicesFloors(1,1)).thenReturn(true);
         Mockito.when(controller.getCommittedDirection(1)).thenReturn(1);
         Mockito.when(controller.getElevatorAccel(1)).thenReturn(12);
-        // Mockito.when(elevator.getServedButtons()).thenReturn(btnlist);
+        Mockito.when(elevator.getButton(btnlist.get(0).getFloor())).thenReturn(btnlist.get(0));
+        Mockito.when(elevator.getButton(btnlist.get(1).getFloor())).thenReturn(btnlist.get(1));
+        Mockito.when(elevator.getButton(btnlist.get(2).getFloor())).thenReturn(btnlist.get(2));
         Mockito.when(controller.getElevatorButton(1, 0)).thenReturn(true);
         Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(1);
         Mockito.when(controller.getElevatorFloor(1)).thenReturn(2);
@@ -80,7 +82,7 @@ public class ElevatorUpdaterTest {
     @Test
     void testUpdate_faultyControler() throws RemoteException
     {
-        List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0)),new ElevatorButton(new Floor(1)),new ElevatorButton(new Floor(2)));
+        List<ElevatorButton> btnlist = List.of(new ElevatorButton(new Floor(0),null),new ElevatorButton(new Floor(1),null),new ElevatorButton(new Floor(2),null));
         var uut=new ElevatorUpdater(controller, elevator);
 
         Mockito.when(elevator.getAllElevatorButtons()).thenReturn(btnlist);
@@ -92,6 +94,9 @@ public class ElevatorUpdaterTest {
         Mockito.when(controller.getElevatorFloor(1)).thenReturn(-1);
         Mockito.when(controller.getTarget(1)).thenReturn(-1);
 
+        Mockito.when(elevator.getButton(btnlist.get(0).getFloor())).thenReturn(btnlist.get(0));
+        Mockito.when(elevator.getButton(btnlist.get(1).getFloor())).thenReturn(btnlist.get(1));
+        Mockito.when(elevator.getButton(btnlist.get(2).getFloor())).thenReturn(btnlist.get(2));
         Mockito.when(controller.getCommittedDirection(2)).thenReturn(3);
         Mockito.when(controller.getElevatorDoorStatus(2)).thenReturn(2);
         Mockito.when(controller.getElevatorFloor(2)).thenReturn(3);

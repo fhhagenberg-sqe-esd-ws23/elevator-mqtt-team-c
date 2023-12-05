@@ -67,7 +67,7 @@ public class sqelevator {
         building = new Building();
 
         for (Elevator  elevator : building.getElevators()) {
-          elevator.accelListener = (id, value) -> mqttService.publish("elevator/" + id + "/accel", value);
+          elevator.accelListener = (id, value) -> mqttService.publish("elevator/" + id.getElevatorNumber() + "/accel", value);
         }
 
         service = new ElevatorService(e, new BuildingUpdater(e, building), null);

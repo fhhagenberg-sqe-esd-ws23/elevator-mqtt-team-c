@@ -1,5 +1,5 @@
 package at.fhhagenberg.sqelevator;
 
-public interface Listener<T> {
-    void call(int id,T Val);
+public interface Listener<F,T> {
+    void call(F obj,T Val);
 }

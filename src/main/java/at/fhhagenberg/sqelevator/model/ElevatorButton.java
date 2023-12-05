@@ -1,21 +1,25 @@
 package at.fhhagenberg.sqelevator.model;
 
-import at.fhhagenberg.sqelevator.listner;
+import at.fhhagenberg.sqelevator.Listener;
 
 public class ElevatorButton extends Button {
   private boolean serverd;
   private final Floor floor;
-  public listner stateListner;
-  public listner serverListner;
+  private final Elevator elevator;
+  public Listener<ElevatorButton,Boolean> serverListner;
 
-  public ElevatorButton(Floor floor) {
+  public ElevatorButton(Floor floor,Elevator elevator) {
     this.floor = floor;
+    this.elevator=elevator;
   }
 
   public Floor getFloor() {
     return floor;
   }
-
+  public Elevator getElevator()
+  {
+    return elevator;
+  }
   public boolean isServerd() {
     return serverd;
   }
@@ -24,7 +28,7 @@ public class ElevatorButton extends Button {
     if (serverd != b) {
       serverd = b;
       if (serverListner != null)
-        serverListner.call(0, floor);
+        serverListner.call(this, b);
     }
   }
 }

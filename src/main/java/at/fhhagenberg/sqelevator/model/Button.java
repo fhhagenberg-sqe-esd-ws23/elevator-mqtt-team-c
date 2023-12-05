@@ -1,6 +1,9 @@
 package at.fhhagenberg.sqelevator.model;
 
+import at.fhhagenberg.sqelevator.Listener;
+
 public class Button {
+  public Listener<Button,Boolean> stateListner;
   private boolean pressed;
 
   public Button() {
@@ -12,6 +15,10 @@ public class Button {
   }
 
   public void setPressed(boolean pressed) {
-    this.pressed = pressed;
+    if(this.pressed!=pressed)
+    {
+      this.pressed = pressed;
+      if(stateListner!=null) stateListner.call(this,pressed);
+    }
   }
 }
