@@ -9,7 +9,6 @@ public class Elevator {
   private Direction committedDirection;
   private int acceleration;
   private List<ElevatorButton> allButtons;
-  private List<ElevatorButton> servedButtons;
   private DoorStatus doorStatus;
   private Floor currentFloor;
   /**
@@ -24,57 +23,21 @@ public class Elevator {
    * current passenger weight
    */
   private int currentWeight;
-  private List<Floor> servicesFloors;
   private Floor targetFloor;
   private List<Integer> floorRequests;
 
   public Elevator(int elevatorNumber, List<Floor> floors) {
     this.elevatorNumber = elevatorNumber;
     this.allButtons = new ArrayList<>();
-    this.servedButtons = new ArrayList<>();
-    this.servicesFloors = new ArrayList<>();
     this.floorRequests = new ArrayList<>();
     updateFloors(floors);
   }
 
-  public void updateFloors(List<Floor> floors) {
-    servedButtons.clear();
-    servicesFloors.clear();
-    allButtons.clear();
-
-    this.servicesFloors.addAll(floors);
+  private void updateFloors(List<Floor> floors) {
 
     for (Floor floor : floors) {
       allButtons.add(new ElevatorButton(floor));
     }
-  }
-
-  public void setServicesFloors(List<Floor> servicesFloors) {
-    this.servicesFloors = servicesFloors;
-  }
-
-  public void addServedFloor(Floor floor) {
-    this.servicesFloors.add(floor);
-  }
-
-  public void clearServesFloors() {
-    this.servicesFloors.clear();
-  }
-
-  public void clearServedButtons() {
-    this.servedButtons.clear();
-  }
-
-  public boolean removeServedFloor(Floor floor) {
-    return this.servicesFloors.remove(floor);
-  }
-
-  public void addServedFloorButton(ElevatorButton button) {
-    this.servedButtons.add(button);
-  }
-
-  public boolean removeServedFloorButton(ElevatorButton button) {
-    return this.servedButtons.remove(button);
   }
 
   public int getElevatorNumber() {
@@ -97,14 +60,6 @@ public class Elevator {
     this.acceleration = acceleration;
   }
 
-  public List<ElevatorButton> getServedButtons() {
-    return servedButtons;
-  }
-
-  public void setServedButtons(List<ElevatorButton> servedButtons) {
-    this.servedButtons = servedButtons;
-  }
-
   public DoorStatus getDoorStatus() {
     return doorStatus;
   }
@@ -118,8 +73,9 @@ public class Elevator {
   }
 
   public void setCurrentFloor(Floor currentFloor) {
-    if (this.getServicesFloors().contains(currentFloor)) {
-      this.currentFloor = currentFloor;
+    for (var b : allButtons) {
+      if (b.getFloor() == currentFloor && b.isServerd())
+        this.currentFloor = currentFloor;
     }
   }
 
@@ -147,17 +103,14 @@ public class Elevator {
     this.currentWeight = currentWeight;
   }
 
-  public List<Floor> getServicesFloors() {
-    return servicesFloors;
-  }
-
   public Floor getTargetFloor() {
     return targetFloor;
   }
 
   public void setTargetFloor(Floor targetFloor) {
-    if (this.getServicesFloors().contains(targetFloor)) {
-      this.targetFloor = targetFloor;
+    for (var b : allButtons) {
+      if (b.getFloor() == targetFloor && b.isServerd())
+        this.targetFloor = targetFloor;
     }
   }
 
@@ -172,4 +125,13 @@ public class Elevator {
   public List<ElevatorButton> getAllElevatorButtons() {
     return allButtons;
   }
+
+public ElevatorButton getButton(Floor floor) {
+  for(var b:allButtons)
+  {
+    if(b.getFloor()==floor)
+      return b;
+  }
+  return null;
+}
 }

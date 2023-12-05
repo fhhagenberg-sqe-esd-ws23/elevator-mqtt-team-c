@@ -26,17 +26,9 @@ public class ElevatorUpdater implements IUpdater {
     // todo: isUpdate logic missing
     int elevatorId = elevator.getElevatorNumber();
 
-    elevator.clearServesFloors();
-    elevator.clearServedButtons();
 
     for (ElevatorButton btn : elevator.getAllElevatorButtons()) {
-      if (controller.getServicesFloors(elevatorId, btn.getFloor().getFloorNumber())) {
-        elevator.addServedFloor(btn.getFloor());
-        elevator.addServedFloorButton(btn);
-      } else {
-        elevator.removeServedFloor(btn.getFloor());
-        elevator.removeServedFloorButton(btn);
-      }
+        elevator.getButton(btn.getFloor()).setServed(controller.getServicesFloors(elevatorId, btn.getFloor().getFloorNumber()));
     }
 
     int committedDirection = controller.getCommittedDirection(elevatorId);
@@ -46,7 +38,7 @@ public class ElevatorUpdater implements IUpdater {
     int acceleration = controller.getElevatorAccel(elevatorId);
     elevator.setAcceleration(acceleration);
 
-    for (ElevatorButton button : elevator.getServedButtons()) {
+    for (ElevatorButton button : elevator.getAllElevatorButtons()) {
       boolean buttonPressed = controller.getElevatorButton(elevatorId, button.getFloor().getFloorNumber());
       button.setPressed(buttonPressed);
     }
