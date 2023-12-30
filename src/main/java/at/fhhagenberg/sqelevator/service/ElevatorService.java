@@ -29,6 +29,7 @@ public class ElevatorService {
     for (Floor floor : building.getFloors()) {
       this.updaters.add(new FloorUpdater(controller, floor));
     }
+    
     for (Elevator elevator : building.getElevators()) {
       this.updaters.add(new ElevatorUpdater(controller, elevator));
     }

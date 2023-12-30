@@ -49,7 +49,8 @@ class ElevatorServiceTest {
   void testUpdateWithBuildingChange() throws RemoteException {
     Building building = Mockito.mock(Building.class);
     List<Floor> floors = List.of(mock(Floor.class));
-    List<Elevator> elevators = List.of(mock(Elevator.class));
+    // List<Elevator> elevators = List.of(mock(Elevator.class));
+    List<Elevator> elevators = List.of(new Elevator(0, floors));
 
     Mockito.when(building.getFloors()).thenReturn(floors);
     Mockito.when(building.getElevators()).thenReturn(elevators);

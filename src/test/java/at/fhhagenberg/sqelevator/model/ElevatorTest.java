@@ -23,8 +23,8 @@ class ElevatorTest {
 
     assertEquals(1, elevator.getElevatorNumber());
     assertEquals(floors.size(), elevator.getAllElevatorButtons().size());
-    assertNull(elevator.getTargetFloor());
-    assertNull(elevator.getCurrentFloor());
+    assertNull(elevator.targetFloor.get());
+    assertNull(elevator.currentFloor.get());
     // assertEquals(floors, elevator.getServicesFloors());
     // Add more assertions based on your class structure
   }
@@ -33,13 +33,13 @@ class ElevatorTest {
   @Test
   void testSetAndGetCommittedDirection() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.commitedDirectionListener=(a,b)->
+    elevator.committedDirection.addListner((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(Direction.UP, b);
-    };
-    elevator.setCommittedDirection(Direction.UP);
-    assertEquals(Direction.UP, elevator.getCommittedDirection());
+    });
+    elevator.committedDirection.set(Direction.UP);
+    assertEquals(Direction.UP, elevator.committedDirection.get());
   }
 
   // Add more test methods for other functionalities
@@ -47,37 +47,37 @@ class ElevatorTest {
   @Test
   void testSetAndGetDoorStatus() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.doorStatusListener=(a,b)->
+    elevator.doorStatus.addListner((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(DoorStatus.OPEN, b);
-    };
-    elevator.setDoorStatus(DoorStatus.OPEN);
-    assertEquals(DoorStatus.OPEN, elevator.getDoorStatus());
+    });
+    elevator.doorStatus.set(DoorStatus.OPEN);
+    assertEquals(DoorStatus.OPEN, elevator.doorStatus.get());
   }
 
   @Test
   void testSetandGetAcceleration() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.accelListener=(a,b)->
+    elevator.acceleration.addListner((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(12, b);
-    };
-    elevator.setAcceleration(12);
-    assertEquals(12, elevator.getAcceleration());
+    });
+    elevator.acceleration.set(12);
+    assertEquals(12, elevator.acceleration.get());
   }
 
   @Test
   void testSetandGetWheight() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.weightListner=(a,b)->
+    elevator.currentWeight.addListner((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(12, b);
-    };
-    elevator.setCurrentWeight(12);
-    assertEquals(12, elevator.getCurrentWeight());
+    });
+    elevator.currentWeight.set(12);
+    assertEquals(12, elevator.currentWeight.get());
   }
 
   @Test
@@ -92,15 +92,15 @@ class ElevatorTest {
       assertEquals(elevator.getButton(f2), a); 
       assertEquals(true, b);
     };
-    assertNull(elevator.getTargetFloor());
-    elevator.setTargetFloor(f2);
-    assertEquals(f2, elevator.getTargetFloor());
+    assertNull(elevator.targetFloor.get());
+    elevator.targetFloor.set(f2);
+    assertEquals(f2, elevator.targetFloor.get());
   }
 
   @Test
   void testSetandGetTargetfloorEmpty() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    assertNull(elevator.getTargetFloor());
+    assertNull(elevator.targetFloor.get());
   }
 
   // @Test
@@ -127,15 +127,15 @@ class ElevatorTest {
       assertEquals(elevator.getButton(f2), a); 
       assertEquals(true, b);
     };
-    assertNull(elevator.getCurrentFloor());
-    elevator.setCurrentFloor(f2);
-    assertEquals(f2, elevator.getCurrentFloor());
+    assertNull(elevator.currentFloor.get());
+    elevator.currentFloor.set(f2);
+    assertEquals(f2, elevator.currentFloor.get());
   }
 
   @Test
   void testSetandGetCurrentFloorEmpty() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    assertNull(elevator.getCurrentFloor());
+    assertNull(elevator.currentFloor.get());
   }
 
   @Test
@@ -148,8 +148,8 @@ class ElevatorTest {
       assertEquals(elevator.getButton(f2), a); 
       assertEquals(true, b);
     };
-    elevator.setCurrentFloor(f1);
-    elevator.setCurrentFloor(f2);
-    assertEquals(f1, elevator.getCurrentFloor());
+    elevator.currentFloor.set(f1);
+    elevator.currentFloor.set(f2);
+    assertEquals(f1, elevator.currentFloor.get());
   }
 }

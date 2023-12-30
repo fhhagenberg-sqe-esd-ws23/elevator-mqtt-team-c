@@ -33,10 +33,10 @@ public class ElevatorUpdater implements IUpdater {
 
     int committedDirection = controller.getCommittedDirection(elevatorId);
     if(committedDirection< Direction.values().length && committedDirection>=0)
-    elevator.setCommittedDirection(Direction.values()[committedDirection]);
+    elevator.committedDirection.set(Direction.values()[committedDirection]);
 
     int acceleration = controller.getElevatorAccel(elevatorId);
-    elevator.setAcceleration(acceleration);
+    elevator.acceleration.set(acceleration);
 
     for (ElevatorButton button : elevator.getAllElevatorButtons()) {
       boolean buttonPressed = controller.getElevatorButton(elevatorId, button.getFloor().getFloorNumber());
@@ -45,24 +45,24 @@ public class ElevatorUpdater implements IUpdater {
 
     int elevatorDoorStatus = controller.getElevatorDoorStatus(elevatorId);
     if(elevatorDoorStatus< DoorStatus.values().length && elevatorDoorStatus>=0)
-{    elevator.setDoorStatus(DoorStatus.values()[elevatorDoorStatus]);
+{    elevator.doorStatus.set(DoorStatus.values()[elevatorDoorStatus]);
 }
     int elevatorFloor = controller.getElevatorFloor(elevatorId);
 if(elevatorFloor>=0&&elevatorFloor<elevator.getAllElevatorButtons().size())
-{    elevator.setCurrentFloor(elevator.getAllElevatorButtons().get(elevatorFloor).getFloor());
+{    elevator.currentFloor.set(elevator.getAllElevatorButtons().get(elevatorFloor).getFloor());
 }
     int elevatorPosition = controller.getElevatorPosition(elevatorId);
-    elevator.setCurrentPosition(elevatorPosition);
+    elevator.currentPosition.set(elevatorPosition);
 
     int elevatorSpeed = controller.getElevatorSpeed(elevatorId);
-    elevator.setCurrentSpeed(elevatorSpeed);
+    elevator.currentSpeed.set(elevatorSpeed);
 
     int elevatorWeight = controller.getElevatorWeight(elevatorId);
-    elevator.setCurrentWeight(elevatorWeight);
+    elevator.currentWeight.set(elevatorWeight);
 
     int elevatorTarget = controller.getTarget(elevatorId);
     if(elevatorTarget>=0&&elevatorTarget<elevator.getAllElevatorButtons().size())
-    elevator.setTargetFloor(elevator.getAllElevatorButtons().get(elevatorTarget).getFloor());
+    elevator.targetFloor.set(elevator.getAllElevatorButtons().get(elevatorTarget).getFloor());
 
     return isUpdated;
   }
