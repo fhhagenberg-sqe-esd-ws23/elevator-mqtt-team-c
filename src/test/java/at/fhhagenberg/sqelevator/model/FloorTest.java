@@ -25,14 +25,14 @@ class FloorTest {
   void testSetUpButtonPressed() {
     Floor floor = new Floor(1);
     floor.setUpButton(true);
-    assertTrue(floor.getUpButton().isPressed());
+    assertTrue(floor.getUpButton());
   }
 
   @Test
   void testSetUpButtonNotPressed() {
     Floor floor = new Floor(1);
     floor.setUpButton(false);
-    assertFalse(floor.getUpButton().isPressed());
+    assertFalse(floor.getUpButton());
   }
 
   @Test
@@ -45,13 +45,13 @@ class FloorTest {
   void testSetDownButtonPressed() {
     Floor floor = new Floor(1);
     floor.setDownButton(true);
-    assertTrue(floor.getDownButton().isPressed());
+    assertTrue(floor.getDownButton());
   }
 
   @Test
   void testSetDownButtonNotPressed() {
     Floor floor = new Floor(1);
     floor.setDownButton(false);
-    assertFalse(floor.getDownButton().isPressed());
+    assertFalse(floor.getDownButton());
   }
 }

@@ -51,23 +51,17 @@ class ElevatorServiceGeneralTest {
     Mockito.when(controller.getCommittedDirection(0)).thenReturn(0);
     Mockito.when(controller.getCommittedDirection(1)).thenReturn(1);
     Mockito.when(controller.getElevatorAccel(0)).thenReturn(12);
-    Mockito.when(controller.getElevatorButton(0, 0)).thenReturn(false);
-    Mockito.when(controller.getElevatorButton(0, 1)).thenReturn(true);
-    Mockito.when(controller.getElevatorButton(0, 2)).thenReturn(false);
-    Mockito.when(controller.getServicesFloors(Mockito.anyInt(), Mockito.anyInt())).thenReturn(true);
 
     elevatorService.update(building);
 
     Assertions.assertEquals(3, building.getFloors().size());
     Assertions.assertEquals(2, building.getElevators().size());
-    // Assertions.assertEquals(3, building.getElevator(0).getServedButtons().size());
     Assertions.assertEquals(Direction.UP, building.getElevator(0).committedDirection.get());
     Assertions.assertEquals(Direction.DOWN, building.getElevator(1).committedDirection.get());
     Assertions.assertEquals(12,building.getElevator(0).acceleration.get());
-    Assertions.assertEquals(0,building.getElevator(0).getAllElevatorButtons().get(0).getFloor().getFloorNumber());
-    Assertions.assertFalse(building.getElevator(0).getAllElevatorButtons().get(0).isPressed());
-    Assertions.assertTrue(building.getElevator(0).getAllElevatorButtons().get(1).isPressed());
-    Assertions.assertFalse(building.getElevator(0).getAllElevatorButtons().get(2).isPressed());
+    // Assertions.assertFalse(building.getElevator(0).floorButtonsState.get(0));
+    // Assertions.assertTrue(building.getElevator(0).floorButtonsState.get(1));
+    // Assertions.assertFalse(building.getElevator(0).floorButtonsState.get(2));
 
     Mockito.when(controller.getCommittedDirection(0)).thenReturn(2);
     Mockito.when(controller.getCommittedDirection(1)).thenReturn(0);

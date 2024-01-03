@@ -17,7 +17,9 @@ public class Elevator {
   private final int elevatorNumber;
   public Property<Elevator, Direction> committedDirection;
   public Property<Elevator, Integer> acceleration;
-  public List<ElevatorButton> allButtons;
+  public List<Floor> Floors;
+  public ListProperty<Elevator,Boolean> floorsServerd;
+  public ListProperty<Elevator,Boolean> floorButtonsState;
   public Property<Elevator, DoorStatus> doorStatus;
   public Property<Elevator, Floor> currentFloor;
   /**
@@ -36,17 +38,18 @@ public class Elevator {
   private ListProperty<Elevator,Integer> floorRequests;
 
   private boolean isFloorServed(Floor f) {
-    for (var b : allButtons) {
-      if (b.getFloor() == f && b.isServerd())
-        return true;
-    }
-    return false;
+    int nr=f.getFloorNumber();
+    int size=floorsServerd.get().size();
+    if(size<=nr) return false;
+    return floorsServerd.get(nr);
   }
 
   public Elevator(int elevatorNumber, List<Floor> floors) {
     this.elevatorNumber = elevatorNumber;
-    this.allButtons = new ArrayList<>();
+    this.Floors = new ArrayList<>();
     this.floorRequests = new ListProperty<>(this);
+    this.floorsServerd = new ListProperty<>(this);
+    this.floorButtonsState = new ListProperty<>(this);
     this.committedDirection = new Property<>(this);
     this.acceleration = new Property<>(this);
     this.doorStatus = new Property<>(this);
@@ -65,9 +68,11 @@ public class Elevator {
   }
 
   private void updateFloors(List<Floor> floors) {
-
+    Floors.clear();
+    floorButtonsState.setSize(floors.size(),false);
+    floorsServerd.setSize(floors.size(),false);
     for (Floor floor : floors) {
-      allButtons.add(new ElevatorButton(floor, this));
+      Floors.add(floor);
     }
   }
 
@@ -75,23 +80,13 @@ public class Elevator {
     return elevatorNumber;
   }
 
-  // public List<Integer> getFloorRequests() {
-  //   return floorRequests;
-  // }
 
-  // public void setFloorRequests(List<Integer> floorRequests) {
-  //   this.floorRequests = floorRequests;
-  // }
 
-  public List<ElevatorButton> getAllElevatorButtons() {
-    return allButtons;
+  public List<Boolean> getAllElevatorButtons() {
+    return floorButtonsState.get();
   }
 
-  public ElevatorButton getButton(Floor floor) {
-    for (var b : getAllElevatorButtons()) {
-      if (b.getFloor() == floor)
-        return b;
-    }
-    return null;
+  public Boolean getButton(Floor floor) {
+    return floorButtonsState.get(floor.getFloorNumber());  
   }
 }

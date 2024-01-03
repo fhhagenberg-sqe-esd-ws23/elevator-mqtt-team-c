@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ListProperty<F, T> {
+public class ListProperty<F, T extends Comparable<? super T> > {
     List<ListListener<F, T>> listner = new ArrayList<>();
     List<T> value = new ArrayList<>();
     F ref;
@@ -42,7 +42,7 @@ public class ListProperty<F, T> {
     public T get(int index) {
         return value.get(index);
     }
-
+    public List<T> get(){return value;}
     public boolean set(T val, int index) {
         if (index < value.size()) {
 
@@ -53,5 +53,15 @@ public class ListProperty<F, T> {
             }
         }
         return false;
+    }
+
+    public void setSize(int size,T init) {
+        
+        value.clear();
+        for(int i=0;i<size;i++)
+        {
+            value.add(init);
+            emmit(ref, i, value.get(i));
+        }
     }
 }
