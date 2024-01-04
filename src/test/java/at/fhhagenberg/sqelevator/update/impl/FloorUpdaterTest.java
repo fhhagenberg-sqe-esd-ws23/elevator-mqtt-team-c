@@ -8,8 +8,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Floor;
+import sqelevator.IElevator;
 
 @ExtendWith(MockitoExtension.class)
 class FloorUpdaterTest {

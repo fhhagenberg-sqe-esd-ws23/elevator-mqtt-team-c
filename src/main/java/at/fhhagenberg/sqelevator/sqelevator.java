@@ -16,6 +16,7 @@ import at.fhhagenberg.sqelevator.service.ElevatorService;
 import at.fhhagenberg.sqelevator.service.MqttService;
 import at.fhhagenberg.sqelevator.service.impl.MqttServiceImpl;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
+import sqelevator.IElevator;
 
 public class sqelevator {
 

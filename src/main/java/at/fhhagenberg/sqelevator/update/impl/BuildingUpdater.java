@@ -4,11 +4,11 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 import at.fhhagenberg.sqelevator.update.IUpdater;
+import sqelevator.IElevator;
 
 public class BuildingUpdater implements IUpdater {
   private final IElevator controller;

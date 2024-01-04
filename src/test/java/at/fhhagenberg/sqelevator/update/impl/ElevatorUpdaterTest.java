@@ -13,12 +13,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.ElevatorButton;
 import at.fhhagenberg.sqelevator.model.Floor;
+import sqelevator.IElevator;
 
 @ExtendWith(MockitoExtension.class)
 public class ElevatorUpdaterTest {
