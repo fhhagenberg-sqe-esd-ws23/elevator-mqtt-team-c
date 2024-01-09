@@ -51,11 +51,14 @@ public class Sqelevator {
             Sqelevator app = new Sqelevator(p, controller, mqttService);
             app.run(p);
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
+            
+            System.err.println("Failed to connect RMI: " + e.getMessage());
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            // e.printStackTrace();
             System.exit(-1);
         } catch (RuntimeException e) {
             System.err.println("Failed to connect to the MQTT broker: " + e.getMessage());
+            System.exit(-1);
         }
 
     }
@@ -90,6 +93,9 @@ public class Sqelevator {
                 service.update(building);
             } catch (RemoteException e) {
                 // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch(Exception e)
+            {
                 e.printStackTrace();
             }
 
