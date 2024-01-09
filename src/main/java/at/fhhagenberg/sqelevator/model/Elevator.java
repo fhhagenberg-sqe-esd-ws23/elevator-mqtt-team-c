@@ -86,7 +86,4 @@ public class Elevator {
     return floorButtonsState.get();
   }
 
-  public Boolean getButton(Floor floor) {
-    return floorButtonsState.get(floor.getFloorNumber());  
-  }
 }

@@ -153,11 +153,6 @@ class ElevatorTest {
     Mockito.when(f2.getFloorNumber()).thenReturn(1);
     Elevator elevator = new Elevator(1, List.of(f1));
     elevator.floorsServerd.set(true, 0);
-    // elevator.getButton(f1).setServed(true);
-    // elevator.getButton(f1).serverListner=(a,b)->{
-    //   assertEquals(elevator.getButton(f2), a); 
-    //   assertEquals(true, b);
-    // };
     elevator.currentFloor.set(f1);
     elevator.currentFloor.set(f2);
     assertEquals(f1, elevator.currentFloor.get());
