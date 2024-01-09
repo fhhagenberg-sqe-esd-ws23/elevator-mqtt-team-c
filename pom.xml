@@ -85,6 +85,24 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <!-- Here come other details
+        ...
+        -->
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>at.fhhagenberg.sqelevator.Sqelevator</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <!-- Here come other details
+        ...
+        -->
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
       </plugin> 

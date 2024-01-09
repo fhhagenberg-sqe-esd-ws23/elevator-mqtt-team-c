@@ -55,7 +55,7 @@ public class Parser {
         return defaultMqttPrefix;
     }
 }
-// PLC="""
+// plc=""
 // interval=250[ms]
 // mqtt_address=localhost
 // mqtt_prefix=""
