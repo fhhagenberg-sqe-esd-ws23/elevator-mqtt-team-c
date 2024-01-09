@@ -29,9 +29,9 @@ class FloorUpdaterTest {
 
     floorUpdater.update();
 
-    Mockito.verify(floor, Mockito.times(0)).setUpButton(false);
-    Mockito.verify(floor, Mockito.times(1)).setUpButton(true);
-    Mockito.verify(floor, Mockito.times(0)).setDownButton(false);
-    Mockito.verify(floor, Mockito.times(1)).setDownButton(true);
+    Mockito.verify(floor, Mockito.times(0)).upButton.set(false);
+    Mockito.verify(floor, Mockito.times(1)).upButton.set(true);
+    Mockito.verify(floor, Mockito.times(0)).downButton.set(false);
+    Mockito.verify(floor, Mockito.times(1)).downButton.set(true);
   }
 }

@@ -18,40 +18,40 @@ class FloorTest {
   @Test
   void testGetUpButton() {
     Floor floor = new Floor(1);
-    assertNotNull(floor.getUpButton());
+    assertNotNull(floor.upButton.get());
   }
 
   @Test
   void testSetUpButtonPressed() {
     Floor floor = new Floor(1);
-    floor.setUpButton(true);
-    assertTrue(floor.getUpButton());
+    floor.upButton.set(true);
+    assertTrue(floor.upButton.get());
   }
 
   @Test
   void testSetUpButtonNotPressed() {
     Floor floor = new Floor(1);
-    floor.setUpButton(false);
-    assertFalse(floor.getUpButton());
+    floor.upButton.set(false);
+    assertFalse(floor.upButton.get());
   }
 
   @Test
   void testGetDownButton() {
     Floor floor = new Floor(1);
-    assertNotNull(floor.getDownButton());
+    assertNotNull(floor.downButton.get());
   }
 
   @Test
   void testSetDownButtonPressed() {
     Floor floor = new Floor(1);
-    floor.setDownButton(true);
-    assertTrue(floor.getDownButton());
+    floor.downButton.set(true);
+    assertTrue(floor.downButton.get());
   }
 
   @Test
   void testSetDownButtonNotPressed() {
     Floor floor = new Floor(1);
-    floor.setDownButton(false);
-    assertFalse(floor.getDownButton());
+    floor.downButton.set(false);
+    assertFalse(floor.downButton.get());
   }
 }
