@@ -14,7 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import at.fhhagenberg.sqelevator.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.ListProperty;
 import at.fhhagenberg.sqelevator.Property;
 import at.fhhagenberg.sqelevator.model.Direction;

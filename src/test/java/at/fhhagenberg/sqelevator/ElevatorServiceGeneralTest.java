@@ -17,6 +17,7 @@ import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.service.ElevatorService;
 import at.fhhagenberg.sqelevator.update.IUpdater;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
+import sqelevator.IElevator;
 
 
 @ExtendWith(MockitoExtension.class)

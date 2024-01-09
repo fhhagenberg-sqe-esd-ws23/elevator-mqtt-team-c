@@ -1,10 +1,9 @@
 package at.fhhagenberg.sqelevator.model;
 
+import at.fhhagenberg.sqelevator.Listener;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import at.fhhagenberg.sqelevator.IProperty;
-import at.fhhagenberg.sqelevator.Listener;
 
 public class Button<F>  {
   public List<Listener<F,Boolean>> stateListners;

@@ -8,13 +8,16 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 
+import at.fhhagenberg.sqelevator.controller.ElevatorController;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.service.ElevatorService;
 import at.fhhagenberg.sqelevator.service.MqttService;
 import at.fhhagenberg.sqelevator.service.impl.MqttServiceImpl;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
+import sqelevator.IElevator;
 
 public class Sqelevator {
 
@@ -46,7 +49,7 @@ public class Sqelevator {
             MqttService mqttService = new MqttServiceImpl();
             mqttService.connect(p.getMqttAddress(), 1883);
             Sqelevator app = new Sqelevator(p, controller, mqttService);
-            app.run();
+            app.run(p);
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -55,21 +58,29 @@ public class Sqelevator {
 
     }
 
-    Parser config;
-    IElevator controller;
+//    Parser config;
+//    IElevator controller;
     MqttClient client;
     ElevatorService service;
+    ElevatorController controller;
     Building building;
 
-    public Sqelevator(Parser p, IElevator e, MqttService mqttService) {
+    public Sqelevator(Parser p, IElevator e, MqttService mqttService) throws RemoteException {
 
         building = new Building();
         
-        service = new ElevatorService(e, new BuildingUpdater(e, building), null);
-        new MqttBuildingConnector(mqttService, building);
+        service = new ElevatorService(e, new BuildingUpdater(e, building), new ArrayList<>());
+        controller = new ElevatorController(e);
+
+        // update building one time for MqttBuildingConnector
+        service.update(building);
+
+        //Todo: Does MqttBuildingConnector recognize elevator number changes?
+        // bc this is done in Sqelevator ctor only
+        new MqttBuildingConnector(mqttService, controller, building);
     }
 
-    public void run() {
+    public void run(Parser config) {
         int interval = config.getInterval();
         while (true) {
 

@@ -2,11 +2,11 @@ package at.fhhagenberg.sqelevator.update.impl;
 
 import java.rmi.RemoteException;
 
-import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.update.IUpdater;
+import sqelevator.IElevator;
 
 public class ElevatorUpdater implements IUpdater {
   private final IElevator controller;

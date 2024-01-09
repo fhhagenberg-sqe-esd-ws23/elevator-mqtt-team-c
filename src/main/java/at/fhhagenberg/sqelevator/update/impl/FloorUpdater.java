@@ -2,7 +2,7 @@ package at.fhhagenberg.sqelevator.update.impl;
 
 import java.rmi.RemoteException;
 
-import at.fhhagenberg.sqelevator.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 import at.fhhagenberg.sqelevator.update.IUpdater;
 
