@@ -58,7 +58,7 @@ public class Elevator {
     });
     this.currentPosition = new Property<>(this);
     this.currentSpeed = new Property<>(this);
-    this.currentWeight = new Property<>(this);
+    this.currentWeight = new Property<>(this,0);
     this.targetFloor = new Property<>(this, (a) -> {
       return isFloorServed(a);
     });

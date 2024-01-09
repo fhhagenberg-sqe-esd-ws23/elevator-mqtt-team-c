@@ -50,7 +50,7 @@ public class Property<F, T> {
         }
     }
     public boolean set(T val) {
-        if (value != val && validate(val)) {
+        if (value!=null &&!value.equals(val) && validate(val)) {
             value = val;
             emmit(ref, value);
         }
