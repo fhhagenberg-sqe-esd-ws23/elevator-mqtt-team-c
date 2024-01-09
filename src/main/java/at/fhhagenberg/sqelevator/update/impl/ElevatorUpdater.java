@@ -2,12 +2,11 @@ package at.fhhagenberg.sqelevator.update.impl;
 
 import java.rmi.RemoteException;
 
-import at.fhhagenberg.sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.model.Elevator;
-import at.fhhagenberg.sqelevator.model.ElevatorButton;
 import at.fhhagenberg.sqelevator.update.IUpdater;
+import sqelevator.IElevator;
 
 public class ElevatorUpdater implements IUpdater {
   private final IElevator controller;
@@ -26,51 +25,45 @@ public class ElevatorUpdater implements IUpdater {
     // todo: isUpdate logic missing
     int elevatorId = elevator.getElevatorNumber();
 
-    elevator.clearServesFloors();
-    elevator.clearServedButtons();
-
-    for (ElevatorButton btn : elevator.getAllElevatorButtons()) {
-      if (controller.getServicesFloors(elevatorId, btn.getFloor().getFloorNumber())) {
-        elevator.addServedFloor(btn.getFloor());
-        elevator.addServedFloorButton(btn);
-      } else {
-        elevator.removeServedFloor(btn.getFloor());
-        elevator.removeServedFloorButton(btn);
-      }
+    int index = 0;
+    for (Boolean state : elevator.getAllElevatorButtons()) {
+      elevator.floorsServerd.set(controller.getServicesFloors(elevatorId, index), index);
+      index++;
     }
 
     int committedDirection = controller.getCommittedDirection(elevatorId);
-    if(committedDirection< Direction.values().length && committedDirection>=0)
-    elevator.setCommittedDirection(Direction.values()[committedDirection]);
+    if (committedDirection < Direction.values().length && committedDirection >= 0)
+      elevator.committedDirection.set(Direction.values()[committedDirection]);
 
     int acceleration = controller.getElevatorAccel(elevatorId);
-    elevator.setAcceleration(acceleration);
+    elevator.acceleration.set(acceleration);
 
-    for (ElevatorButton button : elevator.getServedButtons()) {
-      boolean buttonPressed = controller.getElevatorButton(elevatorId, button.getFloor().getFloorNumber());
-      button.setPressed(buttonPressed);
+    index = 0;
+    for (Boolean state : elevator.getAllElevatorButtons()) {
+      elevator.floorButtonsState.set(controller.getElevatorButton(elevatorId, index), index);
+      index++;
     }
 
     int elevatorDoorStatus = controller.getElevatorDoorStatus(elevatorId);
-    if(elevatorDoorStatus< DoorStatus.values().length && elevatorDoorStatus>=0)
-{    elevator.setDoorStatus(DoorStatus.values()[elevatorDoorStatus]);
-}
+    if (elevatorDoorStatus < DoorStatus.values().length && elevatorDoorStatus >= 0) {
+      elevator.doorStatus.set(DoorStatus.values()[elevatorDoorStatus]);
+    }
     int elevatorFloor = controller.getElevatorFloor(elevatorId);
-if(elevatorFloor>=0&&elevatorFloor<elevator.getAllElevatorButtons().size())
-{    elevator.setCurrentFloor(elevator.getAllElevatorButtons().get(elevatorFloor).getFloor());
-}
+    if (elevatorFloor >= 0 && elevatorFloor < elevator.getAllElevatorButtons().size()) {
+      elevator.currentFloor.set(elevator.Floors.get(elevatorFloor));
+    }
     int elevatorPosition = controller.getElevatorPosition(elevatorId);
-    elevator.setCurrentPosition(elevatorPosition);
+    elevator.currentPosition.set(elevatorPosition);
 
     int elevatorSpeed = controller.getElevatorSpeed(elevatorId);
-    elevator.setCurrentSpeed(elevatorSpeed);
+    elevator.currentSpeed.set(elevatorSpeed);
 
     int elevatorWeight = controller.getElevatorWeight(elevatorId);
-    elevator.setCurrentWeight(elevatorWeight);
+    elevator.currentWeight.set(elevatorWeight);
 
     int elevatorTarget = controller.getTarget(elevatorId);
-    if(elevatorTarget>=0&&elevatorTarget<elevator.getAllElevatorButtons().size())
-    elevator.setTargetFloor(elevator.getAllElevatorButtons().get(elevatorTarget).getFloor());
+    if (elevatorTarget >= 0 && elevatorTarget < elevator.getAllElevatorButtons().size())
+      elevator.targetFloor.set(elevator.Floors.get(elevatorTarget));
 
     return isUpdated;
   }

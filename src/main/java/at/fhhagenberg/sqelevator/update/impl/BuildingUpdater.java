@@ -4,7 +4,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqelevator.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
@@ -38,7 +38,7 @@ public class BuildingUpdater implements IUpdater {
 
         elevators.add(elevator);
       }
-
+      //todo: also set update true if invalid? e.g. negative
       isUpdated = true;
 
       this.building.setFloors(floors);

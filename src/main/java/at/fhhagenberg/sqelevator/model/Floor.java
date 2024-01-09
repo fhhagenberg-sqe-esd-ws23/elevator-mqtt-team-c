@@ -1,33 +1,18 @@
 package at.fhhagenberg.sqelevator.model;
 
+import at.fhhagenberg.sqelevator.property.Property;
+
 public class Floor {
   private final int floorNumber;
-  private final Button upButton;
-  private final Button downButton;
+  public Property<Floor, Boolean> upButton = new Property<>(this,false);
+  public Property<Floor, Boolean> downButton = new Property<>(this,false);
+
 
   public Floor(int floorNumber) {
     this.floorNumber = floorNumber;
-    upButton = new Button();
-    downButton = new Button();
   }
 
   public int getFloorNumber() {
     return floorNumber;
-  }
-
-  public Button getUpButton() {
-    return upButton;
-  }
-
-  public void setUpButton(boolean pressed) {
-    this.upButton.setPressed(pressed);
-  }
-
-  public Button getDownButton() {
-    return downButton;
-  }
-
-  public void setDownButton(boolean pressed) {
-    this.downButton.setPressed(pressed);
   }
 }

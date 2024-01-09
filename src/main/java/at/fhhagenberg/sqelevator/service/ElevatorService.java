@@ -3,7 +3,7 @@ package at.fhhagenberg.sqelevator.service;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import at.fhhagenberg.sqelevator.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
@@ -29,6 +29,7 @@ public class ElevatorService {
     for (Floor floor : building.getFloors()) {
       this.updaters.add(new FloorUpdater(controller, floor));
     }
+    
     for (Elevator elevator : building.getElevators()) {
       this.updaters.add(new ElevatorUpdater(controller, elevator));
     }

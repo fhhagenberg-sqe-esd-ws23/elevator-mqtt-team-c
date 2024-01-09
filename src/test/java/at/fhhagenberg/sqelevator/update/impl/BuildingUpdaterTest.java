@@ -16,7 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import at.fhhagenberg.sqelevator.IElevator;
+import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 
 @ExtendWith(MockitoExtension.class)
