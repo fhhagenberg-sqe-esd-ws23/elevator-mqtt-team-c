@@ -2,7 +2,6 @@ package at.fhhagenberg.sqelevator.service.impl;
 
 import com.hivemq.client.mqtt.datatypes.MqttQos;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5AsyncClient;
-import com.hivemq.client.mqtt.mqtt5.Mqtt5BlockingClient;
 import com.hivemq.client.mqtt.mqtt5.Mqtt5Client;
 
 import at.fhhagenberg.sqelevator.property.Listener;
@@ -15,13 +14,23 @@ public class MqttServiceImpl implements MqttService {
   private Mqtt5AsyncClient client;
 
   @Override
-  public void connect(String brokerUrl, int port) {
+  public void connect(String brokerUrl, int port) throws RuntimeException {
     client = Mqtt5Client.builder()
             .identifier(UUID.randomUUID().toString())
             .serverHost(brokerUrl)
             .buildAsync();
 
-    client.connect();
+    client.connect().whenComplete((connAck, throwable) -> {
+      if (throwable != null) {
+        // Handle connection error
+        System.err.println("Failed to connect to the MQTT broker: " + throwable.getMessage());
+
+        throw new RuntimeException("Failed to connect to the MQTT broker");
+      } else {
+        // Connection established successfully
+        System.out.println("Connected to the MQTT broker successfully.");
+      }
+    });
   }
 
   @Override
