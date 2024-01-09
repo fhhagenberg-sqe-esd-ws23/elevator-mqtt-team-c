@@ -37,8 +37,7 @@ public class MqttBuildingConnector {
     static String targetFloor="targetfloor";
     static String btnUp="btn/up";
     static String btnDown="btn/down";
-    public MqttBuildingConnector(MqttService mqttService, ElevatorController controller, Building building)
-    {
+    public MqttBuildingConnector(MqttService mqttService, ElevatorController controller, Building building) throws Exception {
         for (Elevator  elevator : building.getElevators()) {
             
             // ================= publish =================

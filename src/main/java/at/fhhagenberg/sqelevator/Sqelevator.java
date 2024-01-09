@@ -9,6 +9,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 import at.fhhagenberg.sqelevator.controller.ElevatorController;
@@ -46,8 +47,8 @@ public class Sqelevator {
         try {
             controller = (IElevator) Naming.lookup(p.getPlcAddress());
 
-            MqttService mqttService = new MqttServiceImpl();
-            mqttService.connect(p.getMqttAddress(), 1883);
+            MqttService mqttService = new MqttServiceImpl(p.getMqttAddress(), 1883);
+            mqttService.connect();
             Sqelevator app = new Sqelevator(p, controller, mqttService);
             app.run(p);
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
@@ -56,6 +57,12 @@ public class Sqelevator {
             System.exit(-1);
         } catch (RuntimeException e) {
             System.err.println("Failed to connect to the MQTT broker: " + e.getMessage());
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
     }
@@ -67,7 +74,7 @@ public class Sqelevator {
     ElevatorController controller;
     Building building;
 
-    public Sqelevator(Parser p, IElevator e, MqttService mqttService) throws RemoteException {
+    public Sqelevator(Parser p, IElevator e, MqttService mqttService) throws Exception {
 
         building = new Building();
         
