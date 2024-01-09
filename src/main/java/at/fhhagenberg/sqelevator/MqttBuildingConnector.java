@@ -9,8 +9,7 @@ public class MqttBuildingConnector {
     public MqttBuildingConnector(MqttService mqttService,Building building)
     {
         for (Elevator  elevator : building.getElevators()) {
-            elevator.accelListener = (id, value) -> 
-            mqttService.publish("elevator/" + id.getElevatorNumber() + "/accel", value);
+            elevator.acceleration.addListner((id, value) -> mqttService.publish("elevator/" + id.getElevatorNumber() + "/accel", value));
           }  
     }
 }
