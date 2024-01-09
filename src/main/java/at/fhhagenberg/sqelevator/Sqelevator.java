@@ -54,6 +54,8 @@ public class Sqelevator {
             // TODO Auto-generated catch block
             e.printStackTrace();
             System.exit(-1);
+        } catch (RuntimeException e) {
+            System.err.println("Failed to connect to the MQTT broker: " + e.getMessage());
         }
 
     }
