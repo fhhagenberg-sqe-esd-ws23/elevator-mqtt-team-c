@@ -19,6 +19,7 @@ import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
+import at.fhhagenberg.sqelevator.property.Property;
 import at.fhhagenberg.sqelevator.update.IUpdater;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
 
@@ -49,6 +50,8 @@ class ElevatorServiceTest {
   void testUpdateWithBuildingChange() throws RemoteException {
     Building building = Mockito.mock(Building.class);
     List<Floor> floors = List.of(mock(Floor.class));
+    floors.get(0).upButton=Mockito.mock(Property.class);
+    floors.get(0).downButton=Mockito.mock(Property.class);
     // List<Elevator> elevators = List.of(mock(Elevator.class));
     List<Elevator> elevators = List.of(new Elevator(0, floors));
 

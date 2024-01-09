@@ -2,6 +2,7 @@ package at.fhhagenberg.sqelevator.update.impl;
 
 import java.rmi.RemoteException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -10,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import sqelevator.IElevator;
 import at.fhhagenberg.sqelevator.model.Floor;
+import at.fhhagenberg.sqelevator.property.Property;
 
 @ExtendWith(MockitoExtension.class)
 class FloorUpdaterTest {
@@ -18,6 +20,14 @@ class FloorUpdaterTest {
 
   @Mock
   private Floor floor;
+
+  @BeforeEach
+  void setup(){
+    floor.upButton=Mockito.mock(Property.class);
+    floor.downButton=Mockito.mock(Property.class);
+    
+  }
+  
 
   @Test
   void testButtonsPressed() throws RemoteException {

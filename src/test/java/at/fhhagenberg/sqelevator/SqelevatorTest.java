@@ -3,6 +3,8 @@ package at.fhhagenberg.sqelevator;
 
 import org.junit.jupiter.api.Test;
 
+import at.fhhagenberg.sqelevator.property.ListProperty;
+
 public class SqelevatorTest {
     @Test
     public void testT(){

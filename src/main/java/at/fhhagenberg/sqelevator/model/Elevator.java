@@ -3,8 +3,8 @@ package at.fhhagenberg.sqelevator.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.fhhagenberg.sqelevator.ListProperty;
-import at.fhhagenberg.sqelevator.Property;
+import at.fhhagenberg.sqelevator.property.ListProperty;
+import at.fhhagenberg.sqelevator.property.Property;
 
 public class Elevator {
 

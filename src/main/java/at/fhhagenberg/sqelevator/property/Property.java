@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqelevator;
+package at.fhhagenberg.sqelevator.property;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +17,17 @@ public class Property<F, T> {
     public Property(F f, Predicate<T> p) {
         ref = f;
         pred = p;
+    } public Property(F f,T initial) {
+        ref = f;
+        value=initial;
     }
+
+    public Property(F f,T initial, Predicate<T> p) {
+        ref = f;
+        pred = p;
+        value=initial;
+    }
+
 
     public void emmit(F a, T b) {
         for (Listener<F, T> l : listner) {

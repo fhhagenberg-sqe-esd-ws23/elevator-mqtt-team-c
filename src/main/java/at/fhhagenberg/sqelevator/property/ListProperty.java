@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqelevator;
+package at.fhhagenberg.sqelevator.property;
 
 import java.util.ArrayList;
 import java.util.List;

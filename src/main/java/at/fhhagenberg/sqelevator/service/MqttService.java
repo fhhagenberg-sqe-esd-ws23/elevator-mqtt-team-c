@@ -1,7 +1,8 @@
 package at.fhhagenberg.sqelevator.service;
 
-import at.fhhagenberg.sqelevator.Listener;
 import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
+
+import at.fhhagenberg.sqelevator.property.Listener;
 
 public interface MqttService {
   void connect(String brokerUrl, int port);
