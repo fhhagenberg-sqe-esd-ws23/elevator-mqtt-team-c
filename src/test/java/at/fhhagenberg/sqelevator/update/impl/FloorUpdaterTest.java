@@ -25,7 +25,6 @@ class FloorUpdaterTest {
   void setup(){
     floor.upButton=Mockito.mock(Property.class);
     floor.downButton=Mockito.mock(Property.class);
-    
   }
   
 
@@ -39,9 +38,9 @@ class FloorUpdaterTest {
 
     floorUpdater.update();
 
-    Mockito.verify(floor, Mockito.times(0)).upButton.set(false);
-    Mockito.verify(floor, Mockito.times(1)).upButton.set(true);
-    Mockito.verify(floor, Mockito.times(0)).downButton.set(false);
-    Mockito.verify(floor, Mockito.times(1)).downButton.set(true);
+    Mockito.verify(floor.upButton, Mockito.times(0)).set(false);
+    Mockito.verify(floor.upButton, Mockito.times(1)).set(true);
+    Mockito.verify(floor.downButton, Mockito.times(0)).set(false);
+    Mockito.verify(floor.downButton, Mockito.times(1)).set(true);
   }
 }
