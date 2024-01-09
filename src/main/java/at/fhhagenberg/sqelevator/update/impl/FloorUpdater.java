@@ -23,10 +23,10 @@ public class FloorUpdater implements IUpdater {
 
     boolean buttonDown = controller.getFloorButtonDown(floorId);
     // todo: isUpdated |= floor.setDownButton(buttonDown);
-    floor.setDownButton(buttonDown);
+    floor.downButton.set(buttonDown);
 
     boolean buttonUp = controller.getFloorButtonUp(floorId);
-    floor.setUpButton(buttonUp);
+    floor.upButton.set(buttonUp);
 
     return isUpdated;
   }

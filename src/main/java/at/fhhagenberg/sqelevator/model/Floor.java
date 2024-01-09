@@ -1,9 +1,12 @@
 package at.fhhagenberg.sqelevator.model;
 
+import at.fhhagenberg.sqelevator.Property;
+
 public class Floor {
   private final int floorNumber;
-  private Boolean upButton=false;
-  private Boolean downButton=false;
+  public Property<Floor, Boolean> upButton = new Property<>(this);
+  public Property<Floor, Boolean> downButton = new Property<>(this);
+
 
   public Floor(int floorNumber) {
     this.floorNumber = floorNumber;
@@ -11,21 +14,5 @@ public class Floor {
 
   public int getFloorNumber() {
     return floorNumber;
-  }
-
-  public Boolean getUpButton() {
-    return upButton;
-  }
-
-  public void setUpButton(boolean pressed) {
-    this.upButton=pressed;
-  }
-
-  public Boolean getDownButton() {
-    return downButton;
-  }
-
-  public void setDownButton(boolean pressed) {
-    this.downButton =pressed;
   }
 }
