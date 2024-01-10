@@ -46,7 +46,7 @@ public class MqttBuildingConnector {
             elevator.committedDirection.addListner((id, value) -> mqttService
                 .publish(elPath(id,direction), String.valueOf(value)));
             elevator.currentFloor.addListner((id,value)->mqttService
-                .publish(elPath(id,currentFloor),  String.valueOf(value)));
+                .publish(elPath(id,currentFloor),  String.valueOf(value.getFloorNumber())));
             elevator.currentPosition.addListner((id,value)->mqttService
                 .publish(elPath(id,currentPosition),  String.valueOf(value)));
             elevator.currentSpeed.addListner((id,value)->mqttService
@@ -91,14 +91,14 @@ public class MqttBuildingConnector {
 
             // // ================= subscribe =================
 
-            // mqttService.subscribe(flPath(floor,btnUp), (topic, publish) -> {
-            //     System.out.println("Floor " + floor.getFloorNumber() + " UP Pressed: " + new String(publish.getPayloadAsBytes()));
-            //     controller.setTarget(0, floor.getFloorNumber());
-            // });
-            // mqttService.subscribe(flPath(floor,btnDown), (topic, publish) -> {
-            //     System.out.println("Floor " + floor.getFloorNumber() + " DOWN Pressed: " + new String(publish.getPayloadAsBytes()));
-            //     controller.setTarget(0, floor.getFloorNumber());
-            // });
+            mqttService.subscribe(flPath(floor,btnUp), (topic, publish) -> {
+                System.out.println("Floor " + floor.getFloorNumber() + " UP Pressed: " + new String(publish.getPayloadAsBytes()));
+                controller.setTarget(0, floor.getFloorNumber());
+            });
+            mqttService.subscribe(flPath(floor,btnDown), (topic, publish) -> {
+                System.out.println("Floor " + floor.getFloorNumber() + " DOWN Pressed: " + new String(publish.getPayloadAsBytes()));
+                controller.setTarget(0, floor.getFloorNumber());
+            });
         }
     }
 }
