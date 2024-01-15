@@ -1,45 +1,41 @@
 package at.fhhagenberg.sqelevator;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
-
-
 import at.fhhagenberg.sqelevator.controller.ElevatorController;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.service.ElevatorService;
 import at.fhhagenberg.sqelevator.service.MqttService;
 import at.fhhagenberg.sqelevator.service.impl.MqttServiceImpl;
 import at.fhhagenberg.sqelevator.update.impl.BuildingUpdater;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sqelevator.IElevator;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Sqelevator {
 
-    public static void main(String[] args) {
-        // Options options = new Options();
-        // options.addOption("config",true,"configfile");
-        // CommandLineParser parser = new DefaultParser();
-        // CommandLine cmd = parser.parse(options, args);
+    public static void main(String[] args) throws Exception {
         Parser p = new Parser();
         var configFile = new File(p.parse(args));
         try {
             if (!configFile.exists()) {
-                System.err.print(configFile.getAbsolutePath() + " not found");
+                logger.error("File not found: {}", configFile.getAbsolutePath());
                 System.exit(-1);
             }
             p.Parse(new FileInputStream(configFile));
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.exit(-1);
         } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
             System.exit(-1);
         }
@@ -49,34 +45,26 @@ public class Sqelevator {
 
             MqttService mqttService = new MqttServiceImpl(p.getMqttAddress(), 1883);
             mqttService.connect();
-            Sqelevator app = new Sqelevator(p, controller, mqttService);
+            Sqelevator app = new Sqelevator(controller, mqttService);
             app.run(p);
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
-            
-            System.err.println("Failed to connect RMI: " + e.getMessage());
-            // TODO Auto-generated catch block
-            // e.printStackTrace();
+
+            logger.error("Failed to connect RMI: {}", e.getMessage(), e);
             System.exit(-1);
         } catch (RuntimeException e) {
-            System.err.println("Failed to connect to the MQTT broker: " + e.getMessage());
-        } catch (ExecutionException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.error("Failed to connect to the MQTT broker: {}", e.getMessage(), e);
         }
-
     }
 
-//    Parser config;
-//    IElevator controller;
-    MqttClient client;
     ElevatorService service;
     ElevatorController controller;
     Building building;
 
-    public Sqelevator(Parser p, IElevator e, MqttService mqttService) throws Exception {
+    private static AtomicBoolean stopFlag = new AtomicBoolean(false);
+
+    private static final Logger logger = LogManager.getLogger(Sqelevator.class);
+
+    public Sqelevator(IElevator e, MqttService mqttService) throws Exception {
 
         building = new Building();
         
@@ -93,24 +81,26 @@ public class Sqelevator {
 
     public void run(Parser config) {
         int interval = config.getInterval();
-        while (true) {
+        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+        try {
+            executor.scheduleAtFixedRate(() -> {
+                if (stopFlag.get()) {
+                    executor.shutdown();
+                    return;
+                }
 
-            try {
-                service.update(building);
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch(Exception e)
-            {
-                e.printStackTrace();
-            }
+                try {
+                    service.update(building);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
 
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+                    throw new RuntimeException(e);
+                }
+            }, 0, interval, TimeUnit.MILLISECONDS);
+
+            // todo: implement stopFlag logic
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }
