@@ -76,7 +76,7 @@ public class Sqelevator {
 
         //Todo: Does MqttBuildingConnector recognize elevator number changes?
         // bc this is done in Sqelevator ctor only
-        new MqttBuildingConnector(mqttService, controller, building);
+        MqttBuildingConnector.connect(mqttService, controller, building);
     }
 
     public void run(Parser config) {
