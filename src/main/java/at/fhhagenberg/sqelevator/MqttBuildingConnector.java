@@ -7,6 +7,7 @@ import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 import at.fhhagenberg.sqelevator.service.MqttService;
+import at.fhhagenberg.sqelevator.service.ScheduleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +16,8 @@ import java.nio.ByteBuffer;
 
 public final class MqttBuildingConnector {
     private static final Logger logger = LogManager.getLogger(MqttBuildingConnector.class);
+
+    static String stopPath = "system/stop";
     static String elPath(Elevator id,String p)
     {
         return "elevator/" + id.getElevatorNumber()+"/"+p;
@@ -44,7 +47,8 @@ public final class MqttBuildingConnector {
         // Utility Class pattern
     }
 
-    public static void connect(MqttService mqttService, ElevatorController controller, Building building) {
+    public static void connect(MqttService mqttService, ElevatorController controller, Building building,
+                               ScheduleService scheduler) {
         for (Elevator  elevator : building.getElevators()) {
 
             // ================= publish =================
@@ -70,7 +74,7 @@ public final class MqttBuildingConnector {
                     .publish(elPath(id,targetFloor),  String.valueOf(value.getFloorNumber())));
             // ================= subscribe =================
 
-
+            mqttService.subscribe(stopPath, (ign, ored) -> scheduler.stop());
             mqttService.subscribe(elPath(elevator, direction), (topic,publish)->{
                 logger.debug("{} {}", topic, publish.getPayloadAsBytes());
 
