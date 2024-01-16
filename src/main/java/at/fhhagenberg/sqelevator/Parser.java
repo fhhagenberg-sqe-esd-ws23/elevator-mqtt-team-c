@@ -12,6 +12,7 @@ public class Parser {
     public static String keyInterval="interval"; 
     public static String keyPLC="plc"; 
     public static String keyMqttAddress="mqtt_address"; 
+    public static String keyMqttPort="mqtt_port"; 
     public static String keyMqttPrefix="mqtt_prefix"; 
     Properties appProps = new Properties();
     
@@ -47,6 +48,8 @@ public class Parser {
 
     public String getMqttAddress() {
         return appProps.getProperty(keyMqttAddress);
+    }public Integer getMqttPort() {
+        return Integer.parseInt(appProps.getProperty(keyMqttPort));
     }
 
     public String getMqttPrefix() {
@@ -58,4 +61,5 @@ public class Parser {
 // PLC="""
 // interval=250[ms]
 // mqtt_address=localhost
+// mqtt_port=localhost
 // mqtt_prefix=""

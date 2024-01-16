@@ -1,0 +1,109 @@
+package at.fhhagenberg.sqelevatorController;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+
+import org.junit.Test;
+
+import at.fhhagenberg.sqelevator.model.Direction;
+
+public class BuildingTest {
+    
+    @Test
+    public void UpButtonsTest(){
+        Building uut=new Building();
+        assertEquals(false, uut.getUpButton(0));
+        uut.setUpButton(0, true);
+        assertEquals(true, uut.getUpButton(0));
+        uut.setUpButton(2, true);
+        assertEquals(true, uut.getUpButton(2));
+        assertEquals(false, uut.getUpButton(1));
+        uut.setUpButton(2, false);
+        assertEquals(false, uut.getUpButton(2));
+    }
+    @Test
+    public void DownButtonsTest(){
+        Building uut=new Building();
+        assertEquals(false, uut.getDownButton(0));
+        uut.setDownButton(0, true);
+        assertEquals(true, uut.getDownButton(0));
+        uut.setDownButton(2, true);
+        assertEquals(true, uut.getDownButton(2));
+        assertEquals(false, uut.getDownButton(1));
+        uut.setDownButton(2, false);
+        assertEquals(false, uut.getDownButton(2));
+    }
+    @Test
+    public void DirectionTest(){
+        Building uut=new Building();
+        assertEquals(Direction.UNCOMMITTED, uut.getDirection(0));
+        uut.setDirection(0, Direction.DOWN);
+        assertEquals(Direction.DOWN, uut.getDirection(0));
+        uut.setDirection(2, Direction.DOWN);
+        assertEquals(Direction.DOWN, uut.getDirection(2));
+        assertEquals(Direction.UNCOMMITTED, uut.getDirection(1));
+        uut.setDirection(2,Direction.UP);
+        assertEquals(Direction.UP, uut.getDirection(2));
+    }
+    @Test
+    public void currentFloorTest(){
+        Building uut=new Building();
+        assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
+            uut.getCurrentFloor(2);
+        });
+        assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
+            uut.setCurrentFloor(2,5);
+        });
+        uut.setElevatorCount(3);
+        assertEquals(0, uut.getCurrentFloor(0));
+        uut.setCurrentFloor(0, 5);
+        assertEquals(5, uut.getCurrentFloor(0));
+        assertEquals(0, uut.getCurrentFloor(2));
+        uut.setCurrentFloor(2, 4);
+        assertEquals(4, uut.getCurrentFloor(2));
+    }
+    @Test
+    public void ElevatorTest(){
+        Building uut=new Building();
+        assertEquals(0, uut.getElevatorCount());
+        uut.setElevatorCount(4);
+        assertEquals(4, uut.getElevatorCount());
+        uut.setElevatorCount(2);
+        assertEquals(2, uut.getElevatorCount());
+    }
+    @Test
+    public void FloorTest(){
+        Building uut=new Building();
+        assertEquals(0, uut.getFloorCount());
+        uut.setFloorCount(4);
+        assertEquals(4, uut.getFloorCount());
+        uut.setFloorCount(2);
+        assertEquals(2, uut.getFloorCount());
+    }
+    @Test
+    public void SpeedTest(){
+        Building uut=new Building();
+        assertEquals(0, uut.getSpeed(0));
+        uut.setSpeed(0, 4);
+        assertEquals(4, uut.getSpeed(0));
+        uut.setSpeed(2, 4);
+        assertEquals(4, uut.getSpeed(2));
+        assertEquals(0, uut.getSpeed(1));
+        uut.setSpeed(2, 1);
+        assertEquals(1, uut.getSpeed(2));
+    }
+    @Test
+    public void ElevatorButtonsTest(){
+        Building uut=new Building();
+        assertEquals(false, uut.getElevaorButton(0,0));
+        uut.setElevatorButton(0,0,true);
+        assertEquals(true, uut.getElevaorButton(0, 0));
+        uut.setElevatorButton(4,3,true);
+        assertEquals(true, uut.getElevaorButton(4, 3));
+        assertEquals(false, uut.getElevaorButton(3, 3));
+        assertEquals(false, uut.getElevaorButton(4, 2));
+        uut.setElevatorButton(4,3,false);
+        assertEquals(false, uut.getElevaorButton(4, 3));
+    }
+    
+}
