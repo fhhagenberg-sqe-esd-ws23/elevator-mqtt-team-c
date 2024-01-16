@@ -9,55 +9,55 @@ import java.io.InputStream;
 
 import org.junit.jupiter.api.Test;
 
-public class ParserTest {
+class ParserTest {
 
     @Test
-    public void Test1() throws IllegalArgumentException, IOException{
+    void Test1() throws IllegalArgumentException, IOException{
         Parser uut=new Parser();
         InputStream is=new ByteArrayInputStream("plc=rmi://localhost/ElevatorSim\ninterval=20\nmqtt_prefix=tst\nmqtt_address=localhost\n".getBytes());
-        uut.Parse(is);
+        uut.parseFile(is);
         assertEquals("rmi://localhost/ElevatorSim", uut.getPlcAddress());
         assertEquals("localhost", uut.getMqttAddress());
         assertEquals(20, uut.getInterval());
         assertEquals("tst", uut.getMqttPrefix());
     }
     @Test
-    public void Test2() throws IllegalArgumentException, IOException{
+    void Test2() throws IllegalArgumentException {
         Parser uut=new Parser();
         InputStream is=new ByteArrayInputStream("plc=rmi://localhost/ElevatorSim\n".getBytes());
         
-        assertThrows(IllegalArgumentException.class, ()->uut.Parse(is));
-        assertEquals(Parser.defaultInterval, uut.getInterval());
-        assertEquals(Parser.defaultMqttPrefix, uut.getMqttPrefix());
+        assertThrows(IllegalArgumentException.class, ()->uut.parseFile(is));
+        assertEquals(Parser.DEFAULT_INTERVAL, uut.getInterval());
+        assertEquals(Parser.DEFAULT_MQTT_PREFIX, uut.getMqttPrefix());
         
     }@Test
-    public void Test3() throws IllegalArgumentException, IOException{
+    void Test3() throws IllegalArgumentException {
         Parser uut=new Parser();
         InputStream is=new ByteArrayInputStream("".getBytes());
         
-        assertThrows(IllegalArgumentException.class, ()->uut.Parse(is));
+        assertThrows(IllegalArgumentException.class, ()->uut.parseFile(is));
         
     }
     @Test
-    public void TestParseString(){
+    void TestParseString(){
         Parser uut=new Parser();
         String[] args={"-config","test"};
         
-        assertEquals(args[1], uut.parse(args));
+        assertEquals(args[1], uut.parseArguments(args));
     }
     @Test
-    public void TestParseString2(){
+    void TestParseString2(){
         Parser uut=new Parser();
         String[] args={};
         
-        assertEquals(Parser.defaultConfigFile, uut.parse(args));
+        assertEquals(Parser.DEFAULT_CONFIG_FILE, uut.parseArguments(args));
     }
     @Test
-    public void TestParseString3(){
+    void TestParseString3(){
         Parser uut=new Parser();
         String[] args={"-verion","schmarrn"};
         
-        assertEquals(Parser.defaultConfigFile, uut.parse(args));
+        assertEquals(Parser.DEFAULT_CONFIG_FILE, uut.parseArguments(args));
     }
     
 }

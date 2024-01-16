@@ -27,13 +27,13 @@ public class Sqelevator {
 
     public static void main(String[] args) throws Exception {
         Parser p = new Parser();
-        var configFile = new File(p.parse(args));
+        var configFile = new File(p.parseArguments(args));
         try {
             if (!configFile.exists()) {
                 logger.error("File not found: {}", configFile.getAbsolutePath());
                 System.exit(-1);
             }
-            p.Parse(new FileInputStream(configFile));
+            p.parseFile(new FileInputStream(configFile));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
