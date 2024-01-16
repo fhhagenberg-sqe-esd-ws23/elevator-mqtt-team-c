@@ -4,6 +4,7 @@ import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 
 public class MqttTopicGenerator {
+    public static final String stopPath="system/stop";
     public static String elPath(Elevator id,String p)
     {
         return "elevator/" + id.getElevatorNumber()+"/"+p;

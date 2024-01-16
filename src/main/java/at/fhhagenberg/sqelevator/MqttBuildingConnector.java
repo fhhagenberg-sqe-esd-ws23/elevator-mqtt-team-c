@@ -7,6 +7,7 @@ import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 import at.fhhagenberg.sqelevator.service.MqttService;
+import at.fhhagenberg.sqelevator.service.ScheduleService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,7 +27,7 @@ public final class MqttBuildingConnector {
         building.addFloorCountListner((id,val)-> mqttService
         .publish(MqttTopicGenerator.floors, String.valueOf(val)));
     }
-    public static void connect(MqttService mqttService, ElevatorController controller, Building building) throws Exception {
+    public static void connect(MqttService mqttService, ElevatorController controller, Building building,ScheduleService scheduler) throws Exception {
         
         for (Elevator  elevator : building.getElevators()) {
 
@@ -54,6 +55,7 @@ public final class MqttBuildingConnector {
             // ================= subscribe =================
 
 
+            mqttService.subscribe(MqttTopicGenerator.stopPath, (ign, ored) -> scheduler.stop());
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.direction), (topic,publish)->{
                 logger.debug("{} {}", topic, publish.getPayloadAsBytes());
 
