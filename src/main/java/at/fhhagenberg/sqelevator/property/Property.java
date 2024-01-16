@@ -29,7 +29,7 @@ public class Property<F, T> {
     }
 
 
-    public void emmit(F a, T b) {
+    private void emmit(F a, T b) {
         for (Listener<F, T> l : listner) {
             l.call(a, b);
         }

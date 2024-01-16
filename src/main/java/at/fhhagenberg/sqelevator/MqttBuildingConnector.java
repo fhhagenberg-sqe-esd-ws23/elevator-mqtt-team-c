@@ -48,25 +48,25 @@ public final class MqttBuildingConnector {
         for (Elevator  elevator : building.getElevators()) {
 
             // ================= publish =================
-            elevator.acceleration.addListner((id, value) -> mqttService
+            elevator.addAccelerationListener((id, value) -> mqttService
                     .publish(elPath(id,acceleration), value));
-            elevator.committedDirection.addListner((id, value) -> mqttService
+            elevator.addCommittedDirectionListener((id, value) -> mqttService
                     .publish(elPath(id,direction), String.valueOf(value)));
-            elevator.currentFloor.addListner((id,value)->mqttService
+            elevator.addCurrentFloorListener((id,value)->mqttService
                     .publish(elPath(id,currentFloor),  String.valueOf(value.getFloorNumber())));
-            elevator.currentPosition.addListner((id,value)->mqttService
+            elevator.addCurrentPositionListener((id,value)->mqttService
                     .publish(elPath(id,currentPosition),  String.valueOf(value)));
-            elevator.currentSpeed.addListner((id,value)->mqttService
+            elevator.addCurrentSpeedListener((id,value)->mqttService
                     .publish(elPath(id,speed),  String.valueOf(value)));
-            elevator.currentWeight.addListner((id,value)->mqttService
+            elevator.addCurrentWeightListener((id,value)->mqttService
                     .publish(elPath(id,weight),  String.valueOf(value)));
-            elevator.doorStatus.addListner((id,value)->mqttService
+            elevator.addDoorStatusListener((id,value)->mqttService
                     .publish(elPath(id,doorStatus),  String.valueOf(value)));
-            elevator.floorButtonsState.addListner((id,index,val)->mqttService
+            elevator.addFloorButtonsStateListener((id,index,val)->mqttService
                     .publish(elPath(id, flPath(index,floorBtn)), val));
-            elevator.floorsServerd.addListner((id,index,val)->mqttService
+            elevator.addFloorsServerdListener((id,index,val)->mqttService
                     .publish(elPath(id, flPath(index, servedFloor)), val));
-            elevator.targetFloor.addListner((id,value)->mqttService
+            elevator.addTargetFloorListener((id,value)->mqttService
                     .publish(elPath(id,targetFloor),  String.valueOf(value.getFloorNumber())));
             // ================= subscribe =================
 

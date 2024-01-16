@@ -11,12 +11,10 @@ import sqelevator.IElevator;
 public class ElevatorUpdater implements IUpdater {
   private final IElevator controller;
   private final Elevator elevator;
-  // private final Building building;
 
   public ElevatorUpdater(IElevator controller, Elevator elevator) {
     this.controller = controller;
     this.elevator = elevator;
-    // this.building = building;
   }
 
   @Override
@@ -25,45 +23,41 @@ public class ElevatorUpdater implements IUpdater {
     // todo: isUpdate logic missing
     int elevatorId = elevator.getElevatorNumber();
 
-    int index = 0;
-    for (Boolean state : elevator.getAllElevatorButtons()) {
-      elevator.floorsServerd.set(controller.getServicesFloors(elevatorId, index), index);
-      index++;
+    for (int index = 0; index < elevator.getAllElevatorButtons().size(); index++) {
+      elevator.setFloorsServerdValue(controller.getServicesFloors(elevatorId, index), index);
     }
 
     int committedDirection = controller.getCommittedDirection(elevatorId);
     if (committedDirection < Direction.values().length && committedDirection >= 0)
-      elevator.committedDirection.set(Direction.values()[committedDirection]);
+      elevator.setCommittedDirectionValue(Direction.values()[committedDirection]);
 
     int acceleration = controller.getElevatorAccel(elevatorId);
-    elevator.acceleration.set(acceleration);
+    elevator.setAccelerationValue(acceleration);
 
-    index = 0;
-    for (Boolean state : elevator.getAllElevatorButtons()) {
-      elevator.floorButtonsState.set(controller.getElevatorButton(elevatorId, index), index);
-      index++;
+    for (int index = 0; index < elevator.getAllElevatorButtons().size(); index++) {
+      elevator.setFloorButtonsStateValue(controller.getElevatorButton(elevatorId, index), index);
     }
 
     int elevatorDoorStatus = controller.getElevatorDoorStatus(elevatorId);
     if (elevatorDoorStatus < DoorStatus.values().length && elevatorDoorStatus >= 0) {
-      elevator.doorStatus.set(DoorStatus.values()[elevatorDoorStatus]);
+      elevator.setDoorStatusValue(DoorStatus.values()[elevatorDoorStatus]);
     }
     int elevatorFloor = controller.getElevatorFloor(elevatorId);
     if (elevatorFloor >= 0 && elevatorFloor < elevator.getAllElevatorButtons().size()) {
-      elevator.currentFloor.set(elevator.Floors.get(elevatorFloor));
+      elevator.setCurrentFloorValue(elevator.getFloors().get(elevatorFloor));
     }
     int elevatorPosition = controller.getElevatorPosition(elevatorId);
-    elevator.currentPosition.set(elevatorPosition);
+    elevator.setCurrentPositionValue(elevatorPosition);
 
     int elevatorSpeed = controller.getElevatorSpeed(elevatorId);
-    elevator.currentSpeed.set(elevatorSpeed);
+    elevator.setCurrentSpeedValue(elevatorSpeed);
 
     int elevatorWeight = controller.getElevatorWeight(elevatorId);
-    elevator.currentWeight.set(elevatorWeight);
+    elevator.setCurrentWeightValue(elevatorWeight);
 
     int elevatorTarget = controller.getTarget(elevatorId);
     if (elevatorTarget >= 0 && elevatorTarget < elevator.getAllElevatorButtons().size())
-      elevator.targetFloor.set(elevator.Floors.get(elevatorTarget));
+      elevator.setTargetFloorValue(elevator.getFloors().get(elevatorTarget));
 
     return isUpdated;
   }
