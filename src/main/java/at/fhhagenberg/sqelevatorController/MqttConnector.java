@@ -11,18 +11,20 @@ MqttService mqttService;
     }
     public void connect( Building b) throws Exception {
         // TODO Auto-generated method stub 
-        mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.flPath('+',MqttTopicGenerator.floorBtn)),(topic,publish)->{
-            String[] topics=topic.split("/");
+        String t=MqttTopicGenerator.elPath('+', MqttTopicGenerator.flPath('+',MqttTopicGenerator.floorBtn));
+        mqttService.subscribe(t,(topic,publish)->{
+            String[] topics=publish.getTopic().toString().split("/");
             int floor=Integer.parseInt(topics[topics.length-2]);
             int elevator=Integer.parseInt(topics[topics.length-4]);
-            b.setElevatorButton(elevator, floor, new String(publish.getPayloadAsBytes())=="1");
+            b.setElevatorButton(elevator, floor, new String(publish.getPayloadAsBytes())=="true");
     });
-    mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.currentFloor),(topic,publish)->{String[] topics=topic.split("/");
+    mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.currentFloor),(topic,publish)->{
+            String[] topics=publish.getTopic().toString().split("/");
             int floor=Integer.parseInt(topics[topics.length-2]);
             int currentFloor=Integer.parseInt(new String(publish.getPayloadAsBytes()));
             b.setCurrentFloor(floor, currentFloor);
     });
-    // mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.doorStatus),(topic,publish)->{String[] topics=topic.split("/");
+    // mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.doorStatus),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
     //         int floor=Integer.parseInt(topics[topics.length-2]);
     //         int door=DoorStatus.values()[Integer.parseInt(new String(publish.getPayloadAsBytes()))];
     // });
@@ -34,13 +36,19 @@ MqttService mqttService;
         int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
         b.setFloorCount(i);
     });
-    mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnUp),(topic,publish)->{String[] topics=topic.split("/");
+    mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnUp),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
     int floor=Integer.parseInt(topics[topics.length-3]);
-        b.setUpButton(floor, new String(publish.getPayloadAsBytes())=="1");
+    String s=new String(publish.getPayloadAsBytes());
+    b.setUpButton(floor, s.compareTo("true")==0);
     });
-    mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnDown),(topic,publish)->{String[] topics=topic.split("/");
+    mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnDown),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
     int floor=Integer.parseInt(topics[topics.length-3]);
-        b.setDownButton(floor, new String(publish.getPayloadAsBytes())=="1");
+        b.setDownButton(floor, new String(publish.getPayloadAsBytes())=="true");
+    });
+    mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.direction),(topic,publish)->{
+        String[] topics=publish.getTopic().toString().split("/");
+    int floor=Integer.parseInt(topics[topics.length-2]);
+        b.setDirection(floor, Direction.valueOf(new String(publish.getPayloadAsBytes())));
     });
 
 }

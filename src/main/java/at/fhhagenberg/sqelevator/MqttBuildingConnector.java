@@ -19,8 +19,15 @@ public final class MqttBuildingConnector {
     private MqttBuildingConnector(){
         // Utility Class pattern
     }
-
+    public static void preConnect(MqttService mqttService, ElevatorController controller, Building building)
+    {
+        building.addElevatorCountListner((id,val)-> mqttService
+        .publish(MqttTopicGenerator.elevators, String.valueOf(val)));
+        building.addFloorCountListner((id,val)-> mqttService
+        .publish(MqttTopicGenerator.floors, String.valueOf(val)));
+    }
     public static void connect(MqttService mqttService, ElevatorController controller, Building building) throws Exception {
+        
         for (Elevator  elevator : building.getElevators()) {
 
             // ================= publish =================
@@ -50,11 +57,11 @@ public final class MqttBuildingConnector {
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.direction), (topic,publish)->{
                 logger.debug("{} {}", topic, publish.getPayloadAsBytes());
 
-                int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
-                controller.setCommittedDirection(elevator.getElevatorNumber(), Direction.values()[i]);
+                String i=new String(publish.getPayloadAsBytes());
+                controller.setCommittedDirection(elevator.getElevatorNumber(), Direction.valueOf(i));
             });
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.flPath('+',MqttTopicGenerator.servedFloor)), (topic,publish)->{
-                String[] topics=topic.split("/");
+                String[] topics=publish.getTopic().toString().split("/");
                 int floor=Integer.parseInt(topics[topics.length-2]);
                 controller.setServicesFloors(elevator.getElevatorNumber(),floor,ByteBuffer.wrap(publish.getPayloadAsBytes()).getInt()==1);
             });
@@ -74,14 +81,14 @@ public final class MqttBuildingConnector {
 
             // // ================= subscribe =================
 
-            mqttService.subscribe(MqttTopicGenerator.flPath(floor,MqttTopicGenerator.btnUp), (topic, publish) -> {
-                logger.debug("Floor {} UP Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
-                controller.setTarget(0, floor.getFloorNumber());
-            });
-            mqttService.subscribe(MqttTopicGenerator.flPath(floor,MqttTopicGenerator.btnDown), (topic, publish) -> {
-                logger.debug("Floor {} DOWN Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
-                controller.setTarget(0, floor.getFloorNumber());
-            });
+        //     mqttService.subscribe(MqttTopicGenerator.flPath(floor,MqttTopicGenerator.btnUp), (topic, publish) -> {
+        //         logger.debug("Floor {} UP Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
+        //         controller.setTarget(0, floor.getFloorNumber());
+        //     });
+        //     mqttService.subscribe(MqttTopicGenerator.flPath(floor,MqttTopicGenerator.btnDown), (topic, publish) -> {
+        //         logger.debug("Floor {} DOWN Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
+        //         controller.setTarget(0, floor.getFloorNumber());
+        //     });
         }
     }
 }

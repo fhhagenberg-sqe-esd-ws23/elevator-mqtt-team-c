@@ -22,9 +22,9 @@ public class MqttTopicGenerator {
     }
     public static String flPath(char id,String p)
     {
-        return flPath(String.valueOf(id) ,p);
+        return "floor/" + id +"/"+p;
     }
-    private static String flPath(String id,String p)
+    private static String flPath(String id, String p)
     {
         return "floor/" + id +"/"+p;
     }
@@ -44,7 +44,7 @@ public class MqttTopicGenerator {
     public static final String targetFloor="targetfloor";
     public static final String btnUp="btn/up";
     public static final String btnDown="btn/down";
-    public static final String elevators = null;
-    public static final String floors = null;
+    public static final String elevators = "elevators";
+    public static final String floors = "elevators";
 
 }

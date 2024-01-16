@@ -43,7 +43,7 @@ public class Sqelevator {
         try {
             controller = (IElevator) Naming.lookup(p.getPlcAddress());
 
-            MqttService mqttService = new MqttServiceImpl(p.getMqttAddress(), 1883);
+            MqttService mqttService = new MqttServiceImpl(p.getMqttAddress(), p.getMqttPort());
             mqttService.connect();
             Sqelevator app = new Sqelevator(controller, mqttService);
             app.run(p);
@@ -70,6 +70,8 @@ public class Sqelevator {
         
         service = new ElevatorService(e, new BuildingUpdater(e, building), new ArrayList<>());
         controller = new ElevatorController(e);
+        //
+        MqttBuildingConnector.preConnect(mqttService, controller, building);
 
         // update building one time for MqttBuildingConnector
         service.update(building);

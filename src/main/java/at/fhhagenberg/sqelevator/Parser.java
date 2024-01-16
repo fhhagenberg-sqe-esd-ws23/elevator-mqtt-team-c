@@ -7,7 +7,8 @@ import java.util.Properties;
 
 public class Parser {
     public static final String DEFAULT_CONFIG_FILE = "./sqelevator.conf";
-    public static final int DEFAULT_INTERVAL = 250;// ms
+    public static final int DEFAULT_INTERVAL = 250;// ms 1883
+    public static final int DEFAULT_MQTT_PORT = 1883;
     public static final String DEFAULT_MQTT_PREFIX = "";
     public static final String KEY_INTERVAL ="interval";
     public static final String KEY_PLC ="plc";
@@ -49,8 +50,10 @@ public class Parser {
         return appProps.getProperty(KEY_MQTT_ADDRESS);
     }
     
-    public String getMqttPort(){
-        return appProps.getProperty(KEY_MQTT_PORT);
+    public int getMqttPort(){
+        if(appProps.contains(KEY_MQTT_PORT))
+            return Integer.parseInt(appProps.getProperty(KEY_MQTT_PORT));
+        return DEFAULT_MQTT_PORT;
     }
 
     public String getMqttPrefix() {
