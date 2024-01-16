@@ -44,7 +44,7 @@ public final class MqttBuildingConnector {
         // Utility Class pattern
     }
 
-    public static void connect(MqttService mqttService, ElevatorController controller, Building building) throws Exception {
+    public static void connect(MqttService mqttService, ElevatorController controller, Building building) {
         for (Elevator  elevator : building.getElevators()) {
 
             // ================= publish =================
