@@ -12,6 +12,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 
 import java.time.Duration;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,7 +43,7 @@ class MqttServiceImplTest {
     @Test
     void testConnect_containerUnavailable() {
         MqttServiceImpl clientFailure = new MqttServiceImpl("169.221.211.1", 55555);
-        Assertions.assertThrows(RuntimeException.class, clientFailure::connect);
+        Assertions.assertThrows(CompletionException.class, clientFailure::connect);
     }
 
 
@@ -52,19 +53,19 @@ class MqttServiceImplTest {
     }
 
     @Test
-    void testDisconnect() throws Exception {
+    void testDisconnect() {
         mqttService.connect();
         assertDoesNotThrow(() -> mqttService.disconnect());
     }
 
     @Test
-    void testPublish() throws Exception {
+    void testPublish() {
         mqttService.connect();
         assertDoesNotThrow(() -> mqttService.publish("test/topic", "Hello"));
     }
 
     @Test
-    void testSubscribe() throws Exception {
+    void testSubscribe() {
         AtomicBoolean messageReceived = new AtomicBoolean(false);
         Listener<String, Mqtt5Publish> listener = (topic, msg) -> messageReceived.set(true);
 
