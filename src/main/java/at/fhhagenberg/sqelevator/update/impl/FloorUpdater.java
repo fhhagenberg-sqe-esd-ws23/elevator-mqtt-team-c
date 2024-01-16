@@ -18,11 +18,10 @@ public class FloorUpdater implements IUpdater {
   @Override
   public boolean update() throws RemoteException {
     boolean isUpdated = false;
-    // todo: isUpdate logic missing
+
     int floorId = floor.getFloorNumber();
 
     boolean buttonDown = controller.getFloorButtonDown(floorId);
-    // todo: isUpdated |= floor.setDownButton(buttonDown);
     floor.downButton.set(buttonDown);
 
     boolean buttonUp = controller.getFloorButtonUp(floorId);
