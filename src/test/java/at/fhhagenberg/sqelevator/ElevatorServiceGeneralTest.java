@@ -57,9 +57,9 @@ class ElevatorServiceGeneralTest {
 
     Assertions.assertEquals(3, building.getFloors().size());
     Assertions.assertEquals(2, building.getElevators().size());
-    Assertions.assertEquals(Direction.UP, building.getElevator(0).committedDirection.get());
-    Assertions.assertEquals(Direction.DOWN, building.getElevator(1).committedDirection.get());
-    Assertions.assertEquals(12,building.getElevator(0).acceleration.get());
+    Assertions.assertEquals(Direction.UP, building.getElevator(0).getCommittedDirectionValue());
+    Assertions.assertEquals(Direction.DOWN, building.getElevator(1).getCommittedDirectionValue());
+    Assertions.assertEquals(12,building.getElevator(0).getAccelerationValue());
     // Assertions.assertFalse(building.getElevator(0).floorButtonsState.get(0));
     // Assertions.assertTrue(building.getElevator(0).floorButtonsState.get(1));
     // Assertions.assertFalse(building.getElevator(0).floorButtonsState.get(2));
@@ -70,8 +70,8 @@ class ElevatorServiceGeneralTest {
     elevatorService.update(building);
     Assertions.assertEquals(3, building.getFloors().size());
     Assertions.assertEquals(2, building.getElevators().size());
-    Assertions.assertEquals(Direction.UNCOMMITTED, building.getElevator(0).committedDirection.get());
-    Assertions.assertEquals(Direction.UP, building.getElevator(1).committedDirection.get());
+    Assertions.assertEquals(Direction.UNCOMMITTED, building.getElevator(0).getCommittedDirectionValue());
+    Assertions.assertEquals(Direction.UP, building.getElevator(1).getCommittedDirectionValue());
 
   }
 

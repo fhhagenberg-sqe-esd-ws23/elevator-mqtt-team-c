@@ -1,8 +1,6 @@
 package at.fhhagenberg.sqelevator.model;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -24,9 +22,9 @@ class ElevatorTest {
     Elevator elevator = new Elevator(1, floors);
 
     assertEquals(1, elevator.getElevatorNumber());
-    assertEquals(floors.size(), elevator.Floors.size());
-    assertNull(elevator.targetFloor.get());
-    assertNull(elevator.currentFloor.get());
+    assertEquals(floors.size(), elevator.getFloors().size());
+    assertNull(elevator.getTargetFloorValue());
+    assertNull(elevator.getCurrentFloorValue());
     // assertEquals(floors, elevator.getServicesFloors());
     // Add more assertions based on your class structure
   }
@@ -35,13 +33,13 @@ class ElevatorTest {
   @Test
   void testSetAndGetCommittedDirection() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.committedDirection.addListner((a,b)->
+    elevator.addCommittedDirectionListener((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(Direction.UP, b);
     });
-    elevator.committedDirection.set(Direction.UP);
-    assertEquals(Direction.UP, elevator.committedDirection.get());
+    elevator.setCommittedDirectionValue(Direction.UP);
+    assertEquals(Direction.UP, elevator.getCommittedDirectionValue());
   }
 
   // Add more test methods for other functionalities
@@ -49,37 +47,37 @@ class ElevatorTest {
   @Test
   void testSetAndGetDoorStatus() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.doorStatus.addListner((a,b)->
+    elevator.addDoorStatusListener((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(DoorStatus.OPEN, b);
     });
-    elevator.doorStatus.set(DoorStatus.OPEN);
-    assertEquals(DoorStatus.OPEN, elevator.doorStatus.get());
+    elevator.setDoorStatusValue(DoorStatus.OPEN);
+    assertEquals(DoorStatus.OPEN, elevator.getDoorStatusValue());
   }
 
   @Test
   void testSetandGetAcceleration() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.acceleration.addListner((a,b)->
+    elevator.addAccelerationListener((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(12, b);
     });
-    elevator.acceleration.set(12);
-    assertEquals(12, elevator.acceleration.get());
+    elevator.setAccelerationValue(12);
+    assertEquals(12, elevator.getAccelerationValue());
   }
 
   @Test
   void testSetandGetWheight() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    elevator.currentWeight.addListner((a,b)->
+    elevator.addCurrentWeightListener((a,b)->
     {
       assertEquals(elevator, a);
       assertEquals(12, b);
     });
-    elevator.currentWeight.set(12);
-    assertEquals(12, elevator.currentWeight.get());
+    elevator.setCurrentWeightValue(12);
+    assertEquals(12, elevator.getCurrentWeightValue());
   }
 
   @Test
@@ -92,17 +90,17 @@ class ElevatorTest {
         
     List<Floor> floors = List.of(f1, f2);
     Elevator elevator = new Elevator(1, floors);
-    elevator.floorsServerd.set(true,1);
+    elevator.setFloorsServerdValue(true,1);
 
-    assertNull(elevator.targetFloor.get());
-    elevator.targetFloor.set(f2);
-    assertEquals(f2, elevator.targetFloor.get());
+    assertNull(elevator.getTargetFloorValue());
+    elevator.setTargetFloorValue(f2);
+    assertEquals(f2, elevator.getTargetFloorValue());
   }
 
   @Test
   void testSetandGetTargetfloorEmpty() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    assertNull(elevator.targetFloor.get());
+    assertNull(elevator.getTargetFloorValue());
   }
 
   @Test
@@ -112,10 +110,10 @@ class ElevatorTest {
     Mockito.when(f1.getFloorNumber()).thenReturn(0);
     Mockito.when(f2.getFloorNumber()).thenReturn(1);
     Elevator elevator = new Elevator(1, List.of(f1));
-    elevator.floorsServerd.set(true,0);
-    elevator.targetFloor.set(f1);
-    elevator.targetFloor.set(f2);
-    assertEquals(f1, elevator.targetFloor.get());
+    elevator.setFloorsServerdValue(true,0);
+    elevator.setTargetFloorValue(f1);
+    elevator.setTargetFloorValue(f2);
+    assertEquals(f1, elevator.getTargetFloorValue());
   }
 
   @Test
@@ -127,22 +125,22 @@ class ElevatorTest {
     Mockito.when(f2.getFloorNumber()).thenReturn(1);
     List<Floor> floors = List.of(f1, f2);
     Elevator elevator = new Elevator(1, floors);
-    elevator.floorsServerd.set(true,0);
-    elevator.floorsServerd.set(true,1);
-    elevator.floorsServerd.addListner((a,b,c)->{
+    elevator.setFloorsServerdValue(true,0);
+    elevator.setFloorsServerdValue(true,1);
+    elevator.addFloorsServerdListener((a,b,c)->{
       assertEquals(elevator, a);
       assertEquals(1, b);
       assertTrue(c);
     });
-    assertNull(elevator.currentFloor.get());
-    elevator.currentFloor.set(f2);
-    assertEquals(f2, elevator.currentFloor.get());
+    assertNull(elevator.getCurrentFloorValue());
+    elevator.setCurrentFloorValue(f2);
+    assertEquals(f2, elevator.getCurrentFloorValue());
   }
 
   @Test
   void testSetandGetCurrentFloorEmpty() {
     Elevator elevator = new Elevator(1, new ArrayList<>());
-    assertNull(elevator.currentFloor.get());
+    assertNull(elevator.getCurrentFloorValue());
   }
 
   @Test
@@ -152,9 +150,9 @@ class ElevatorTest {
     Mockito.when(f1.getFloorNumber()).thenReturn(0);
     Mockito.when(f2.getFloorNumber()).thenReturn(1);
     Elevator elevator = new Elevator(1, List.of(f1));
-    elevator.floorsServerd.set(true, 0);
-    elevator.currentFloor.set(f1);
-    elevator.currentFloor.set(f2);
-    assertEquals(f1, elevator.currentFloor.get());
+    elevator.setFloorsServerdValue(true, 0);
+    elevator.setCurrentFloorValue(f1);
+    elevator.setCurrentFloorValue(f2);
+    assertEquals(f1, elevator.getCurrentFloorValue());
   }
 }

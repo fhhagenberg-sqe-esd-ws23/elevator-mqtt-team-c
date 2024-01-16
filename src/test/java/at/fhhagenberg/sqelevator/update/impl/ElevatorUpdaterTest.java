@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import sqelevator.IElevator;
@@ -23,7 +24,7 @@ import at.fhhagenberg.sqelevator.property.ListProperty;
 import at.fhhagenberg.sqelevator.property.Property;
 
 @ExtendWith(MockitoExtension.class)
-public class ElevatorUpdaterTest {
+class ElevatorUpdaterTest {
     @Mock
     private IElevator controller;
     @Mock
@@ -33,23 +34,13 @@ public class ElevatorUpdaterTest {
     void beforeach()
     {
         // make pritty
-        elevator.committedDirection=Mockito.mock(Property.class);
-        elevator.acceleration=Mockito.mock(Property.class);
-        elevator.doorStatus=Mockito.mock(Property.class);
-        elevator.currentFloor=Mockito.mock(Property.class);
-        elevator.currentPosition=Mockito.mock(Property.class);
-        elevator.currentSpeed=Mockito.mock(Property.class);
-        elevator.currentWeight=Mockito.mock(Property.class);
-        elevator.targetFloor=Mockito.mock(Property.class);
-        elevator.floorButtonsState=Mockito.mock(ListProperty.class);
-        elevator.floorsServerd=Mockito.mock(ListProperty.class);
     }
 
     @Test
     void testUpdate() throws RemoteException
     {
         List<Floor> floors=List.of(new Floor(0),new Floor(1),new Floor(2));
-        elevator.Floors=floors;
+        elevator.setFloors(floors);
         List<Boolean> btnlist = List.of(false,false,false);
        
         var uut=new ElevatorUpdater(controller, elevator);
@@ -71,14 +62,14 @@ public class ElevatorUpdaterTest {
         Mockito.when(controller.getTarget(1)).thenReturn(0);
         uut.update();
 
-        verify(elevator.committedDirection,times(1)).set(Direction.DOWN);
-        verify(elevator.acceleration,times(1)).set(12);
-        verify(elevator.doorStatus,times(1)).set(DoorStatus.CLOSED);
-        verify(elevator.currentFloor,times(1)).set(floors.get(2));
-        verify(elevator.currentPosition,times(1)).set(200);
-        verify(elevator.currentSpeed,times(1)).set(120);
-        verify(elevator.currentWeight,times(1)).set(110);
-        verify(elevator.targetFloor,times(1)).set(floors.get(0));
+        verify(elevator,times(1)).setCommittedDirectionValue(Direction.DOWN);
+        verify(elevator,times(1)).setAccelerationValue(12);
+        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.CLOSED);
+        verify(elevator,times(1)).setCurrentFloorValue(floors.get(2));
+        verify(elevator,times(1)).setCurrentPositionValue(200);
+        verify(elevator,times(1)).setCurrentSpeedValue(120);
+        verify(elevator,times(1)).setCurrentWeightValue(110);
+        verify(elevator,times(1)).setTargetFloorValue(floors.get(0));
 
     }
     @Test
@@ -94,9 +85,9 @@ public class ElevatorUpdaterTest {
         Mockito.when(controller.getTarget(1)).thenReturn(4);
         Mockito.when(elevator.getAllElevatorButtons()).thenReturn(btnlist);
         uut.update();
-        verify(elevator.doorStatus,times(0)).set(any());
-        verify(elevator.currentFloor,times(0)).set(any());
-        verify(elevator.targetFloor,times(0)).set(any());
+        verify(elevator,times(0)).setDoorStatusValue(any());
+        verify(elevator,times(0)).setCurrentFloorValue(any());
+        verify(elevator,times(0)).setTargetFloorValue(any());
     }
     @Test
     void testUpdate_faultyControler() throws RemoteException
@@ -126,10 +117,10 @@ public class ElevatorUpdaterTest {
         Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
         uut.update();
 
-        verify(elevator.doorStatus,times(0)).set(any());
-        verify(elevator.currentFloor,times(0)).set(any());
-        verify(elevator.targetFloor,times(0)).set(any());
-        verify(elevator.committedDirection,times(0)).set(any());
+        verify(elevator,times(0)).setDoorStatusValue(any());
+        verify(elevator,times(0)).setCurrentFloorValue(any());
+        verify(elevator,times(0)).setTargetFloorValue(any());
+        verify(elevator,times(0)).setCommittedDirectionValue(any());
 
     }
 }
