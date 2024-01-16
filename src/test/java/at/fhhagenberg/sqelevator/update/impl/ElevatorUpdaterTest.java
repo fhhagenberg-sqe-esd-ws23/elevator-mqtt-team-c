@@ -1,27 +1,23 @@
 package at.fhhagenberg.sqelevator.update.impl;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-
-import java.rmi.RemoteException;
-import java.util.List;
-
+import at.fhhagenberg.sqelevator.model.Direction;
+import at.fhhagenberg.sqelevator.model.DoorStatus;
+import at.fhhagenberg.sqelevator.model.Elevator;
+import at.fhhagenberg.sqelevator.model.Floor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import sqelevator.IElevator;
-import at.fhhagenberg.sqelevator.model.Direction;
-import at.fhhagenberg.sqelevator.model.DoorStatus;
-import at.fhhagenberg.sqelevator.model.Elevator;
-import at.fhhagenberg.sqelevator.model.Floor;
-import at.fhhagenberg.sqelevator.property.ListProperty;
-import at.fhhagenberg.sqelevator.property.Property;
+
+import java.rmi.RemoteException;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class ElevatorUpdaterTest {
@@ -45,6 +41,7 @@ class ElevatorUpdaterTest {
        
         var uut=new ElevatorUpdater(controller, elevator);
         Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
+        Mockito.when(elevator.getFloors()).thenReturn(floors);
         Mockito.when(elevator.getAllElevatorButtons()).thenReturn(btnlist);
         Mockito.when(controller.getServicesFloors(1,0)).thenReturn(true);
         Mockito.when(controller.getServicesFloors(1,1)).thenReturn(true);
