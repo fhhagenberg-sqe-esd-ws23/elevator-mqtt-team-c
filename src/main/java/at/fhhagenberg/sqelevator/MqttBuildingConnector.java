@@ -1,18 +1,20 @@
 package at.fhhagenberg.sqelevator;
 
 
-import java.io.Console;
-import java.nio.ByteBuffer;
-
 import at.fhhagenberg.sqelevator.controller.ElevatorController;
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 import at.fhhagenberg.sqelevator.service.MqttService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.nio.ByteBuffer;
 
 
-public class MqttBuildingConnector {
+public final class MqttBuildingConnector {
+    private static final Logger logger = LogManager.getLogger(MqttBuildingConnector.class);
     static String elPath(Elevator id,String p)
     {
         return "elevator/" + id.getElevatorNumber()+"/"+p;
@@ -37,46 +39,51 @@ public class MqttBuildingConnector {
     static String targetFloor="targetfloor";
     static String btnUp="btn/up";
     static String btnDown="btn/down";
-    public MqttBuildingConnector(MqttService mqttService, ElevatorController controller, Building building) throws Exception {
+
+    private MqttBuildingConnector(){
+        // Utility Class pattern
+    }
+
+    public static void connect(MqttService mqttService, ElevatorController controller, Building building) throws Exception {
         for (Elevator  elevator : building.getElevators()) {
-            
+
             // ================= publish =================
             elevator.acceleration.addListner((id, value) -> mqttService
-                .publish(elPath(id,acceleration), value));    
+                    .publish(elPath(id,acceleration), value));
             elevator.committedDirection.addListner((id, value) -> mqttService
-                .publish(elPath(id,direction), String.valueOf(value)));
+                    .publish(elPath(id,direction), String.valueOf(value)));
             elevator.currentFloor.addListner((id,value)->mqttService
-                .publish(elPath(id,currentFloor),  String.valueOf(value.getFloorNumber())));
+                    .publish(elPath(id,currentFloor),  String.valueOf(value.getFloorNumber())));
             elevator.currentPosition.addListner((id,value)->mqttService
-                .publish(elPath(id,currentPosition),  String.valueOf(value)));
+                    .publish(elPath(id,currentPosition),  String.valueOf(value)));
             elevator.currentSpeed.addListner((id,value)->mqttService
-                .publish(elPath(id,speed),  String.valueOf(value)));
+                    .publish(elPath(id,speed),  String.valueOf(value)));
             elevator.currentWeight.addListner((id,value)->mqttService
-                .publish(elPath(id,weight),  String.valueOf(value)));
+                    .publish(elPath(id,weight),  String.valueOf(value)));
             elevator.doorStatus.addListner((id,value)->mqttService
-                .publish(elPath(id,doorStatus),  String.valueOf(value)));
+                    .publish(elPath(id,doorStatus),  String.valueOf(value)));
             elevator.floorButtonsState.addListner((id,index,val)->mqttService
-                .publish(elPath(id, flPath(index,floorBtn)), val));
+                    .publish(elPath(id, flPath(index,floorBtn)), val));
             elevator.floorsServerd.addListner((id,index,val)->mqttService
-                .publish(elPath(id, flPath(index, servedFloor)), val));
+                    .publish(elPath(id, flPath(index, servedFloor)), val));
             elevator.targetFloor.addListner((id,value)->mqttService
-                .publish(elPath(id,targetFloor),  String.valueOf(value.getFloorNumber())));
+                    .publish(elPath(id,targetFloor),  String.valueOf(value.getFloorNumber())));
             // ================= subscribe =================
-            
-            
+
+
             mqttService.subscribe(elPath(elevator, direction), (topic,publish)->{
-                // System.out.println(topic+" "+publish.getPayloadAsBytes());
+                logger.debug("{} {}", topic, publish.getPayloadAsBytes());
+
                 int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
                 controller.setCommittedDirection(elevator.getElevatorNumber(), Direction.values()[i]);
             });
             mqttService.subscribe(elPath(elevator, "floor/+/served"), (topic,publish)->{
-                System.out.println(topic+" "+publish.getPayloadAsBytes());
                 String[] topics=topic.split("/");
                 int floor=Integer.parseInt(topics[topics.length-2]);
                 controller.setServicesFloors(elevator.getElevatorNumber(),floor,ByteBuffer.wrap(publish.getPayloadAsBytes()).getInt()==1);
             });
             mqttService.subscribe(elPath(elevator, targetFloor), (topic,publish)->{
-                System.out.println(topic+" "+new String(publish.getPayloadAsBytes()));
+                logger.debug("{} {}", topic, publish.getPayloadAsBytes());
                 int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
                 controller.setTarget(elevator.getElevatorNumber(),i);
             });
@@ -92,11 +99,11 @@ public class MqttBuildingConnector {
             // // ================= subscribe =================
 
             mqttService.subscribe(flPath(floor,btnUp), (topic, publish) -> {
-                System.out.println("Floor " + floor.getFloorNumber() + " UP Pressed: " + new String(publish.getPayloadAsBytes()));
+                logger.debug("Floor {} UP Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
                 controller.setTarget(0, floor.getFloorNumber());
             });
             mqttService.subscribe(flPath(floor,btnDown), (topic, publish) -> {
-                System.out.println("Floor " + floor.getFloorNumber() + " DOWN Pressed: " + new String(publish.getPayloadAsBytes()));
+                logger.debug("Floor {} DOWN Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
                 controller.setTarget(0, floor.getFloorNumber());
             });
         }

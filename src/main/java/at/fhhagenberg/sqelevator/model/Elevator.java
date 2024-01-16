@@ -35,7 +35,6 @@ public class Elevator {
    */
   public Property<Elevator, Integer> currentWeight;
   public Property<Elevator, Floor> targetFloor;
-  private ListProperty<Elevator,Integer> floorRequests;
 
   private boolean isFloorServed(Floor f) {
     int nr=f.getFloorNumber();
@@ -47,7 +46,6 @@ public class Elevator {
   public Elevator(int elevatorNumber, List<Floor> floors) {
     this.elevatorNumber = elevatorNumber;
     this.Floors = new ArrayList<>();
-    this.floorRequests = new ListProperty<>(this);
     this.floorsServerd = new ListProperty<>(this);
     this.floorButtonsState = new ListProperty<>(this);
     this.committedDirection = new Property<>(this);
