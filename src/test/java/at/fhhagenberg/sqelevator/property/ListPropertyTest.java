@@ -1,19 +1,17 @@
 package at.fhhagenberg.sqelevator.property;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.anyInt;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class ListPropertyTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class ListPropertyTest {
     @Test
-    public void TestSetGet() {
+    void TestSetGet() {
         Object o=new Object();
         ListProperty<Object,Integer> uut = new ListProperty<Object,Integer>(o);
         Integer val=13;
@@ -27,7 +25,7 @@ public class ListPropertyTest {
         assertEquals(val, uut.get(0));
     }
     @Test
-    public void TestSetGetListner() {
+    void TestSetGetListner() {
         Object o=new Object();
         ListListener<Object,Integer> l = Mockito.mock(ListListener.class);
         ListProperty<Object,Integer> uut = new ListProperty<Object,Integer>(o);
@@ -48,7 +46,7 @@ public class ListPropertyTest {
     }
 
     @Test
-    public void TestSetGetPredicatTrue() {
+    void TestSetGetPredicatTrue() {
         Predicate<Integer> f=Mockito.mock(Predicate.class);
         Object o=new Object();
         ListListener<Object,Integer> l = Mockito.mock(ListListener.class);
@@ -71,7 +69,7 @@ public class ListPropertyTest {
         Mockito.verify(f, Mockito.times(1)).test(13);        
     }
     @Test
-    public void TestSetGetPredicatFalse() {
+    void TestSetGetPredicatFalse() {
         Predicate<Integer> f=Mockito.mock(Predicate.class);
         Object o=new Object();
         ListListener<Object,Integer> l = Mockito.mock(ListListener.class);

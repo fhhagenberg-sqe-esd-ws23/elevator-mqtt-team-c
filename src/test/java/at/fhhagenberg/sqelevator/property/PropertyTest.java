@@ -5,12 +5,12 @@ import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.util.function.Predicate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-public class PropertyTest {
+class PropertyTest {
     @Test
-    public void TestCtorInitial() {
+    void TestCtorInitial() {
         Object o=new Object();
         Integer val1=13;
         Property<Object,Integer> uut = new Property<Object,Integer>(o,val1);
@@ -20,7 +20,7 @@ public class PropertyTest {
         assertEquals(val2,uut.get());
     }
     @Test
-    public void TestCtorInitialPredFalse() {
+    void TestCtorInitialPredFalse() {
         Object o=new Object();
         Integer val1=13;
         Predicate<Integer> f=Mockito.mock(Predicate.class);
@@ -33,7 +33,7 @@ public class PropertyTest {
         Mockito.verify(f, Mockito.times(1)).test(12);
     }
     @Test
-    public void TestSetGet() {
+    void TestSetGet() {
         Object o=new Object();
         Property<Object,Integer> uut = new Property<Object,Integer>(o);
         Integer val=12;
@@ -42,7 +42,7 @@ public class PropertyTest {
         assertEquals(val,uut.get());
     }
     @Test
-    public void TestSetGetListner() {
+    void TestSetGetListner() {
         Object o=new Object();
         Property<Object,Integer> uut = new Property<Object,Integer>(o);
         Integer val=12;
@@ -56,7 +56,7 @@ public class PropertyTest {
     }
 
     @Test
-    public void TestSetGetPredicatTrue() {
+    void TestSetGetPredicatTrue() {
         Object o=new Object();
         Predicate<Integer> f=Mockito.mock(Predicate.class);
         Listener<Object,Integer> l = Mockito.mock(Listener.class);
@@ -70,7 +70,7 @@ public class PropertyTest {
         Mockito.verify(l, Mockito.times(1)).call(o,12);        
     }
     @Test
-    public void TestSetGetPredicatFalse() {
+    void TestSetGetPredicatFalse() {
         Object o=new Object();
         Predicate<Integer> f=Mockito.mock(Predicate.class);
         Listener<Object,Integer> l = Mockito.mock(Listener.class);

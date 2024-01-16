@@ -1,13 +1,12 @@
 package at.fhhagenberg.sqelevatorController;
 
-import org.junit.Test;
+import at.fhhagenberg.sqelevator.model.Direction;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import at.fhhagenberg.sqelevator.model.Direction;
-
-public class ControllerTest {
+class ControllerTest {
     @Test
-    public void ControlleTest(){
+    void ControlleTest(){
         Building b = new Building();
         MqttConnector c = Mockito.mock(MqttConnector.class);
         Controller uut=new Controller(0,b, c);
@@ -48,7 +47,7 @@ public class ControllerTest {
         Mockito.verify(c,Mockito.times(1)).setDirection(0, Direction.DOWN);
     }
     @Test
-    public void Controlle2Test(){
+    void Controlle2Test(){
         Building b = new Building();
         MqttConnector c = Mockito.mock(MqttConnector.class);
         Controller uut=new Controller(0,b, c);

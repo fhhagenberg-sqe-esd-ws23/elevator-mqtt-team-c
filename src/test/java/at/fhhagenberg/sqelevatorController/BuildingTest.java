@@ -1,16 +1,15 @@
 package at.fhhagenberg.sqelevatorController;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-
-import org.junit.Test;
-
 import at.fhhagenberg.sqelevator.model.Direction;
+import org.junit.jupiter.api.Test;
 
-public class BuildingTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+class BuildingTest {
     
     @Test
-    public void UpButtonsTest(){
+    void UpButtonsTest(){
         Building uut=new Building();
         assertEquals(false, uut.getUpButton(0));
         uut.setUpButton(0, true);
@@ -22,7 +21,7 @@ public class BuildingTest {
         assertEquals(false, uut.getUpButton(2));
     }
     @Test
-    public void DownButtonsTest(){
+    void DownButtonsTest(){
         Building uut=new Building();
         assertEquals(false, uut.getDownButton(0));
         uut.setDownButton(0, true);
@@ -34,7 +33,7 @@ public class BuildingTest {
         assertEquals(false, uut.getDownButton(2));
     }
     @Test
-    public void DirectionTest(){
+    void DirectionTest(){
         Building uut=new Building();
         assertEquals(Direction.UNCOMMITTED, uut.getDirection(0));
         uut.setDirection(0, Direction.DOWN);
@@ -46,7 +45,7 @@ public class BuildingTest {
         assertEquals(Direction.UP, uut.getDirection(2));
     }
     @Test
-    public void currentFloorTest(){
+    void currentFloorTest(){
         Building uut=new Building();
         assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
             uut.getCurrentFloor(2);
@@ -63,7 +62,7 @@ public class BuildingTest {
         assertEquals(4, uut.getCurrentFloor(2));
     }
     @Test
-    public void ElevatorTest(){
+    void ElevatorTest(){
         Building uut=new Building();
         assertEquals(0, uut.getElevatorCount());
         uut.setElevatorCount(4);
@@ -72,7 +71,7 @@ public class BuildingTest {
         assertEquals(2, uut.getElevatorCount());
     }
     @Test
-    public void FloorTest(){
+    void FloorTest(){
         Building uut=new Building();
         assertEquals(0, uut.getFloorCount());
         uut.setFloorCount(4);
@@ -81,7 +80,7 @@ public class BuildingTest {
         assertEquals(2, uut.getFloorCount());
     }
     @Test
-    public void SpeedTest(){
+    void SpeedTest(){
         Building uut=new Building();
         assertEquals(0, uut.getSpeed(0));
         uut.setSpeed(0, 4);
@@ -93,7 +92,7 @@ public class BuildingTest {
         assertEquals(1, uut.getSpeed(2));
     }
     @Test
-    public void ElevatorButtonsTest(){
+    void ElevatorButtonsTest(){
         Building uut=new Building();
         assertEquals(false, uut.getElevaorButton(0,0));
         uut.setElevatorButton(0,0,true);

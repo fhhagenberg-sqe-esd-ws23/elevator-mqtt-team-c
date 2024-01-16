@@ -1,16 +1,17 @@
 package at.fhhagenberg.sqelevator;
 
-import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 
-public class MqttTopicGeneratorTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class MqttTopicGeneratorTest {
     @Test
-    public void CodeCoverage(){
+    void CodeCoverage(){
         Floor f = Mockito.mock(Floor.class);
         Elevator e = Mockito.mock(Elevator.class);
         Mockito.when(e.getElevatorNumber()).thenReturn(5);
