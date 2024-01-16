@@ -2,7 +2,6 @@ package at.fhhagenberg.sqelevator.update.impl;
 
 import at.fhhagenberg.sqelevator.model.Building;
 import at.fhhagenberg.sqelevator.model.Direction;
-import at.fhhagenberg.sqelevator.update.IUpdater;
 import sqelevator.IElevator;
 
 import java.rmi.RemoteException;
@@ -20,7 +19,7 @@ public class PLCUpdater{
 
     public void updateCommittedDirection(int elevatorNumber, int direction) throws RemoteException {
 
-        if (Direction.values()[direction] != building.getElevator(elevatorNumber).committedDirection.get()) {
+        if (Direction.values()[direction] != building.getElevator(elevatorNumber).getCommittedDirectionValue()) {
             controller.setCommittedDirection(elevatorNumber, direction);
         }
     }

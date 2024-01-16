@@ -24,26 +24,26 @@ public final class MqttBuildingConnector {
         for (Elevator  elevator : building.getElevators()) {
 
             // ================= publish =================
-            elevator.acceleration.addListner((id, value) -> mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.acceleration), value));
-            elevator.committedDirection.addListner((id, value) -> mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.direction), String.valueOf(value)));
-            elevator.currentFloor.addListner((id,value)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.currentFloor),  String.valueOf(value.getFloorNumber())));
-            elevator.currentPosition.addListner((id,value)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.currentPosition),  String.valueOf(value)));
-            elevator.currentSpeed.addListner((id,value)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.speed),  String.valueOf(value)));
-            elevator.currentWeight.addListner((id,value)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.weight),  String.valueOf(value)));
-            elevator.doorStatus.addListner((id,value)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.doorStatus),  String.valueOf(value)));
-            elevator.floorButtonsState.addListner((id,index,val)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id, MqttTopicGenerator.flPath(index,MqttTopicGenerator.floorBtn)), val));
-            elevator.floorsServerd.addListner((id,index,val)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id, MqttTopicGenerator.flPath(index, MqttTopicGenerator.servedFloor)), val));
-            elevator.targetFloor.addListner((id,value)->mqttService
-                    .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.targetFloor),  String.valueOf(value.getFloorNumber())));
+            elevator.addAccelerationListener((id, value) -> mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.acceleration), value));
+            elevator.addCommittedDirectionListener((id, value) -> mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.direction), String.valueOf(value)));
+            elevator.addCurrentFloorListener((id,value)->mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.currentFloor),  String.valueOf(value.getFloorNumber())));
+            elevator.addCurrentPositionListener((id,value)->mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.currentPosition),  String.valueOf(value)));
+            elevator.addCurrentSpeedListener((id,value)->mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.speed),  String.valueOf(value)));
+            elevator.addCurrentWeightListener((id,value)->mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.weight),  String.valueOf(value)));
+            elevator.addDoorStatusListener((id,value)->mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.doorStatus),  String.valueOf(value)));
+            elevator.addFloorButtonsStateListener((id,index,val)->mqttService
+            .publish(MqttTopicGenerator.elPath(id, MqttTopicGenerator.flPath(index,MqttTopicGenerator.floorBtn)), val));
+            elevator.addFloorsServerdListener((id,index,val)->mqttService
+            .publish(MqttTopicGenerator.elPath(id, MqttTopicGenerator.flPath(index, MqttTopicGenerator.servedFloor)), val));
+            elevator.addTargetFloorListener((id,value)->mqttService
+            .publish(MqttTopicGenerator.elPath(id,MqttTopicGenerator.targetFloor),  String.valueOf(value.getFloorNumber())));
             // ================= subscribe =================
 
 
