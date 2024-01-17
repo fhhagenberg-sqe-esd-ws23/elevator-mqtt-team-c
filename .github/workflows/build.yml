@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Java CI with Maven
+name: Java Build with Maven
 
 on:
   push:
@@ -41,7 +41,7 @@ jobs:
           path: target/mqtt-elevator-c-Connector.jar
     - uses: actions/upload-artifact@v3
       with:
-          name: executable2
+          name: executable
           path: target/mqtt-elevator-c-Controller.jar
 
     # - uses: "marvinpinto/action-automatic-releases@latest"
