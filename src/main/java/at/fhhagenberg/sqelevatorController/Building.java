@@ -6,6 +6,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import at.fhhagenberg.sqelevator.model.Direction;
+import at.fhhagenberg.sqelevator.model.DoorStatus;
 
 public class Building {
     private int floorCount;
@@ -17,6 +18,7 @@ public class Building {
     private List<Integer> currentFloors=new ArrayList<>();
     private List<Integer> speeds=new ArrayList<>();
     private List<Direction> directions=new ArrayList<>();
+    private List<DoorStatus> doorstates=new ArrayList<>();
 
     private Queue<Integer> floorRequests=new ConcurrentLinkedDeque<Integer>();
     private List<Queue<Integer>> elevatorRequests = new ArrayList<>();
@@ -133,5 +135,17 @@ public class Building {
     public Integer dequeFloorRequest()
     {
         return floorRequests.poll();
+    }
+    public DoorStatus getElevatorDoor(int elevatorNumber) {
+        if(doorstates.size()<elevatorNumber)
+            return DoorStatus.CLOSED;
+        return doorstates.get(elevatorNumber);
+    }
+    
+    public void setElevatorDoor(int index,DoorStatus val) {
+        while (this.doorstates.size()<=index) {
+            this.doorstates.add(DoorStatus.CLOSED);
+        }
+        this.doorstates.set(index, val);
     }
 }

@@ -58,10 +58,9 @@ public final class MqttBuildingConnector {
             mqttService.subscribe(MqttTopicGenerator.stopPath, (ign, ored) -> {scheduler.stop();
             logger.info("Received stop signal. Bye!");});
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.direction), (topic,publish)->{
-                logger.debug("{} {}", topic, publish.getPayloadAsBytes());
-
-                String i=new String(publish.getPayloadAsBytes());
-                controller.setCommittedDirection(elevator.getElevatorNumber(), Direction.valueOf(i));
+                
+                MqttParser.Ret<Direction,Integer> x=MqttParser.parse(topic, publish, Direction::valueOf, Integer::valueOf);
+                controller.setCommittedDirection(x.topics[0], x.value);
             });
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.flPath('+',MqttTopicGenerator.servedFloor)), (topic,publish)->{
                 String[] topics=publish.getTopic().toString().split("/");

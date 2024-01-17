@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import at.fhhagenberg.sqelevator.Parser;
 import at.fhhagenberg.sqelevator.model.Direction;
+import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.service.MqttService;
 import at.fhhagenberg.sqelevator.service.impl.MqttServiceImpl;
 
@@ -51,9 +52,7 @@ public class Controller {
     }
 
     void run() {
-        if (timeout > 0&&building.getSpeed(ElevatorNumber) == 0)
-            timeout--;
-        if (building.getSpeed(ElevatorNumber) == 0 && timeout == 0 ) {
+        if (building.getSpeed(ElevatorNumber) == 0&&building.getElevatorDoor(ElevatorNumber)==DoorStatus.OPEN && timeout == 0 ) {
             Integer nextFloor = building.dequeElevatorRequest(ElevatorNumber);
 
             if (nextFloor == null)
@@ -77,9 +76,9 @@ public class Controller {
                 }else{
                     conn.setDirection(ElevatorNumber,Direction.UNCOMMITTED);   
                 }
-                logger.info("depart {} to {}",ElevatorNumber,nextFloor);
+                logger.info("elevator {} departs to {}",ElevatorNumber,nextFloor);
                 conn.setTargetFloor(ElevatorNumber,nextFloor);
-                timeout=10;
+                // timeout=10;
             }
         }
     }

@@ -2,6 +2,7 @@ package at.fhhagenberg.sqelevatorController;
 
 import at.fhhagenberg.sqelevator.MqttTopicGenerator;
 import at.fhhagenberg.sqelevator.model.Direction;
+import at.fhhagenberg.sqelevator.model.DoorStatus;
 import at.fhhagenberg.sqelevator.service.MqttService;
 
 public class MqttConnector {
@@ -52,6 +53,13 @@ MqttService mqttService;
         String[] topics=publish.getTopic().toString().split("/");
     int floor=Integer.parseInt(topics[topics.length-2]);
         b.setDirection(floor, Direction.valueOf(new String(publish.getPayloadAsBytes())));
+    });
+    mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.doorStatus), (topic,publish)->{
+        // Object x=MqttParser.get<DoorStatus>(topic,publish);
+        String[] topics=publish.getTopic().toString().split("/");
+        int floor=Integer.valueOf(topics[topics.length-2]);
+        // int floor=Integer.parseInt(topics[topics.length-2]);
+        b.setElevatorDoor(floor, DoorStatus.valueOf(new String(publish.getPayloadAsBytes())));
     });
 
 }
