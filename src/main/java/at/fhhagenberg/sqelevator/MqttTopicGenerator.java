@@ -4,18 +4,24 @@ import at.fhhagenberg.sqelevator.model.Elevator;
 import at.fhhagenberg.sqelevator.model.Floor;
 
 public class MqttTopicGenerator {
-    public static final String stopPath="system/stop";
+
+    private MqttTopicGenerator() {
+        //utility class pattern
+    }
+
+    public static final String ELEVATOR_PRE = "elevator/";
+    public static final String STOP_PATH ="system/stop";
     public static String elPath(Elevator id,String p)
     {
-        return "elevator/" + id.getElevatorNumber()+"/"+p;
+        return ELEVATOR_PRE + id.getElevatorNumber()+"/"+p;
     }
     public static String elPath(int id,String p)
     {
-        return "elevator/" + id +"/"+p;
+        return ELEVATOR_PRE + id +"/"+p;
     }
     public static String elPath(char id,String p)
     {
-        return "elevator/" + id +"/"+p;
+        return ELEVATOR_PRE + id +"/"+p;
     }
     public static String flPath(Floor id,String p)
     {
@@ -33,19 +39,19 @@ public class MqttTopicGenerator {
     {
         return flPath(String.valueOf(id) ,p);
     }
-    public static final String acceleration="accel";
-    public static final String direction="direction";
-    public static final String currentFloor="floor";
-    public static final String currentPosition="curentPos";
-    public static final String speed="curentspeed";
-    public static final String weight="weight";
-    public static final String doorStatus="doorState";
-    public static final String floorBtn="Button";
-    public static final String servedFloor="served";
-    public static final String targetFloor="targetfloor";
-    public static final String btnUp="btn/up";
-    public static final String btnDown="btn/down";
-    public static final String elevators = "elevators";
-    public static final String floors = "floors";
+    public static final String ACCELERATION ="accel";
+    public static final String DIRECTION ="direction";
+    public static final String CURRENT_FLOOR ="floor";
+    public static final String CURRENT_POSITION ="curentPos";
+    public static final String SPEED ="curentspeed";
+    public static final String WEIGHT ="weight";
+    public static final String DOOR_STATE ="doorState";
+    public static final String FLOOR_BTN ="Button";
+    public static final String SERVED_FLOOR ="served";
+    public static final String TARGET_FLOOR ="targetfloor";
+    public static final String BTN_UP ="btn/up";
+    public static final String BTN_DOWN ="btn/down";
+    public static final String ELEVATORS = "elevators";
+    public static final String FLOORS = "floors";
 
 }

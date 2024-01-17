@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqelevatorController;
+package at.fhhagenberg.sqelevatorcontroller;
 
 
 import at.fhhagenberg.sqelevator.MqttTopicGenerator;
