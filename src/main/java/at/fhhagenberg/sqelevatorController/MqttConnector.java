@@ -50,7 +50,7 @@ MqttService mqttService;
         b.setDirection(x.topics[0].intValue(), x.value);
     });
     mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.doorStatus), (topic,publish)->{
-        MqttParser.Ret<DoorStatus,Integer> x=MqttParser.parse(topic, publish, DoorStatus::valueOf, Integer::valueOf)
+        MqttParser.Ret<DoorStatus,Integer> x=MqttParser.parse(topic, publish, DoorStatus::valueOf, Integer::valueOf);
         b.setElevatorDoor(x.topics[0], x.value);
     });
 
