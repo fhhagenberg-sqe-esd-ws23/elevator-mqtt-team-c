@@ -48,7 +48,7 @@ public class Sqelevator {
         } catch (RuntimeException e) {
             logger.error("Failed to connect to the MQTT broker: {}", e.getMessage(), e);
         } catch (Exception e) {
-            logger.error("unknown error",e.getMessage(),e);
+            logger.error("unknown error: {}",e.getMessage(),e);
         }
     }
 
@@ -68,7 +68,7 @@ public class Sqelevator {
         elevatorController = new ElevatorController(e);
         scheduler = new ScheduleService();
 
-        MqttBuildingConnector.preConnect(mqttService, elevatorController, building);
+        MqttBuildingConnector.preConnect(mqttService, building);
         // update building one time for MqttBuildingConnector
         service.update(building);
 

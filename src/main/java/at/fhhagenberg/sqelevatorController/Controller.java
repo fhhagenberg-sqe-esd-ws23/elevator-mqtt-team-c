@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqelevatorController;
+package at.fhhagenberg.sqelevatorcontroller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ import at.fhhagenberg.sqelevator.service.impl.MqttServiceImpl;
 
 public class Controller {
 
-    private final int ElevatorNumber;
+    private final int elevatorNumber;
     Building building;
     MqttConnector conn;
     Integer timeout = 0;
@@ -34,26 +34,14 @@ public class Controller {
     State state = State.WAITING;
 
     Controller(int rlnr, Building b, MqttConnector c) {
-        ElevatorNumber = rlnr;
+        elevatorNumber = rlnr;
         building = b;
         conn = c;
     }
 
-    int findElButton(int start, Boolean up) {
-        int i = start;
-        Boolean found = false;
-        while (up ? (i < building.getFloorCount()) : (i > 0) && !found) {
-            if (up) {
-                // found=building.getFloorButtonUp
-            }
-            i = up ? i + 1 : i - 1;
-        }
-        return i;
-    }
-
     void run() {
-        if (building.getSpeed(ElevatorNumber) == 0&&building.getElevatorDoor(ElevatorNumber)==DoorStatus.OPEN && timeout == 0 ) {
-            Integer nextFloor = building.dequeElevatorRequest(ElevatorNumber);
+        if (building.getSpeed(elevatorNumber) == 0&&building.getElevatorDoor(elevatorNumber)==DoorStatus.OPEN && timeout == 0 ) {
+            Integer nextFloor = building.dequeElevatorRequest(elevatorNumber);
 
             if (nextFloor == null)
                 {
@@ -62,23 +50,22 @@ public class Controller {
 
             if(nextFloor == null)
             {
-                conn.setDirection(ElevatorNumber,Direction.UNCOMMITTED);
+                conn.setDirection(elevatorNumber,Direction.UNCOMMITTED);
             }
             else
             {
-                int cmp=nextFloor-building.getCurrentFloor(ElevatorNumber);
+                int cmp=nextFloor-building.getCurrentFloor(elevatorNumber);
                 if(cmp>0)
                 {
-                    conn.setDirection(ElevatorNumber,Direction.UP);
+                    conn.setDirection(elevatorNumber,Direction.UP);
                 }else if(cmp<0)
                 {
-                    conn.setDirection(ElevatorNumber,Direction.DOWN);
+                    conn.setDirection(elevatorNumber,Direction.DOWN);
                 }else{
-                    conn.setDirection(ElevatorNumber,Direction.UNCOMMITTED);   
+                    conn.setDirection(elevatorNumber,Direction.UNCOMMITTED);
                 }
-                logger.info("elevator {} departs to {}",ElevatorNumber,nextFloor);
-                conn.setTargetFloor(ElevatorNumber,nextFloor);
-                // timeout=10;
+                logger.info("elevator {} departs to {}", elevatorNumber,nextFloor);
+                conn.setTargetFloor(elevatorNumber,nextFloor);
             }
         }
     }
@@ -96,7 +83,7 @@ public class Controller {
             }
             p.parseFile(new FileInputStream(configFile));
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
             System.exit(-1);
         }
@@ -128,10 +115,8 @@ public class Controller {
                 }
 
             }, 0, interval, TimeUnit.MILLISECONDS);
-
-            // todo: implement stopFlag logic
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            logger.error("Error scheduling elevators ", e);
         }
     }
 }

@@ -1,4 +1,4 @@
-package at.fhhagenberg.sqelevatorController;
+package at.fhhagenberg.sqelevatorcontroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +12,16 @@ public class Building {
     private int floorCount;
     private int elevatorCount;
 
-    private List<List<Boolean>> elevaorButtons=new ArrayList<>();
-    private List<Boolean> upButtons=new ArrayList<>();
-    private List<Boolean> downButtons=new ArrayList<>();
-    private List<Integer> currentFloors=new ArrayList<>();
-    private List<Integer> speeds=new ArrayList<>();
-    private List<Direction> directions=new ArrayList<>();
-    private List<DoorStatus> doorstates=new ArrayList<>();
+    private final List<List<Boolean>> elevatorButtons =new ArrayList<>();
+    private final List<Boolean> upButtons=new ArrayList<>();
+    private final List<Boolean> downButtons=new ArrayList<>();
+    private final List<Integer> currentFloors=new ArrayList<>();
+    private final List<Integer> speeds=new ArrayList<>();
+    private final List<Direction> directions=new ArrayList<>();
+    private final List<DoorStatus> doorStates =new ArrayList<>();
 
-    private Queue<Integer> floorRequests=new ConcurrentLinkedDeque<Integer>();
-    private List<Queue<Integer>> elevatorRequests = new ArrayList<>();
+    private final Queue<Integer> floorRequests=new ConcurrentLinkedDeque<>();
+    private final List<Queue<Integer>> elevatorRequests = new ArrayList<>();
 
     public void setFloorCount(int floorCount) {
         this.floorCount = floorCount;
@@ -42,7 +42,7 @@ public class Building {
     }
     public Boolean getDownButton(int index) {
         if(downButtons.size()<=index)
-        return false;
+            return false;
         return downButtons.get(index);
     }
     public void setUpButton(int index,Boolean upButtons) {
@@ -54,7 +54,7 @@ public class Building {
     public Boolean getUpButton(int index) {
         
         if(upButtons.size()<=index)
-        return false;
+            return false;
         return upButtons.get(index);
     }
     public void setDirection(int index,Direction direction) {
@@ -66,24 +66,24 @@ public class Building {
     public Direction getDirection(int index) {
         
         if(directions.size()<=index)
-        return Direction.UNCOMMITTED;
+            return Direction.UNCOMMITTED;
         return directions.get(index);
     }
     public Boolean getElevaorButton(int elevator,int floor) {
-        if(elevaorButtons.size()<=elevator)
+        if(elevatorButtons.size()<=elevator)
             return false;
-        if(elevaorButtons.get(elevator).size()<=floor)
+        if(elevatorButtons.get(elevator).size()<=floor)
             return false;
-        return elevaorButtons.get(elevator).get(floor);
+        return elevatorButtons.get(elevator).get(floor);
     }
     public void setElevatorButton(int elevator, int floor, boolean state) {
-        while (this.elevaorButtons.size()<=elevator+1) {
-            this.elevaorButtons.add(new ArrayList<>());
+        while (this.elevatorButtons.size()<=elevator+1) {
+            this.elevatorButtons.add(new ArrayList<>());
         }
-        while (this.elevaorButtons.get(elevator).size()<=floor+1) {
-            this.elevaorButtons.get(elevator).add(false);
+        while (this.elevatorButtons.get(elevator).size()<=floor+1) {
+            this.elevatorButtons.get(elevator).add(false);
         }
-        this.elevaorButtons.get(elevator).set(floor,state);
+        this.elevatorButtons.get(elevator).set(floor,state);
     }
     public int getCurrentFloor(int elevator) {
         if(elevator>=elevatorCount)
@@ -102,7 +102,7 @@ public class Building {
     }
     public int getSpeed(int index) {
         if(speeds.size()<=index)
-        return 0;
+            return 0;
         return speeds.get(index);
     }
     public void setSpeed(int index,int val) {
@@ -115,7 +115,7 @@ public class Building {
     public void enqueElevatorRequest(int elevator,int floor)
     {
         while (this.elevatorRequests.size()<=elevator) {
-            this.elevatorRequests.add(new ConcurrentLinkedDeque<Integer>());
+            this.elevatorRequests.add(new ConcurrentLinkedDeque<>());
         }
         this.elevatorRequests.get(elevator).add(floor);
     }
@@ -137,15 +137,15 @@ public class Building {
         return floorRequests.poll();
     }
     public DoorStatus getElevatorDoor(int elevatorNumber) {
-        if(doorstates.size()<elevatorNumber)
+        if(doorStates.size()<elevatorNumber)
             return DoorStatus.CLOSED;
-        return doorstates.get(elevatorNumber);
+        return doorStates.get(elevatorNumber);
     }
     
     public void setElevatorDoor(int index,DoorStatus val) {
-        while (this.doorstates.size()<=index) {
-            this.doorstates.add(DoorStatus.CLOSED);
+        while (this.doorStates.size()<=index) {
+            this.doorStates.add(DoorStatus.CLOSED);
         }
-        this.doorstates.set(index, val);
+        this.doorStates.set(index, val);
     }
 }

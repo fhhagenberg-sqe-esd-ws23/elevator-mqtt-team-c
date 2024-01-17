@@ -1,9 +1,9 @@
 package at.fhhagenberg.sqelevator;
 
+import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
 
 public class MqttParser {
 
@@ -14,9 +14,9 @@ public class MqttParser {
     public interface IvalueOf<T> {
         T valueOf(String t);
     }
-    public static <T,F> Ret parse(String topic,Mqtt5Publish publish,IvalueOf<T> t,IvalueOf<F> f)
+    public static <T,F> Ret<T, F> parse(String topic,Mqtt5Publish publish,IvalueOf<T> t,IvalueOf<F> f)
     {
-        Ret<T,F> r=new Ret();
+        Ret<T,F> r=new Ret<>();
         List<F> topics=new ArrayList<>();
         String[] received=publish.getTopic().toString().split("/");
         String[] listened=topic.split("/");
