@@ -55,7 +55,8 @@ public final class MqttBuildingConnector {
             // ================= subscribe =================
 
 
-            mqttService.subscribe(MqttTopicGenerator.stopPath, (ign, ored) -> scheduler.stop());
+            mqttService.subscribe(MqttTopicGenerator.stopPath, (ign, ored) -> {scheduler.stop();
+            logger.info("Received stop signal. Bye!");});
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.direction), (topic,publish)->{
                 logger.debug("{} {}", topic, publish.getPayloadAsBytes());
 

@@ -54,6 +54,7 @@ public class MqttServiceImpl implements MqttService {
     public void publish(String topic, String payload) {
         handleFuture(client.publishWith()
                 .topic(topic)
+                .retain(true)
                 .payload(payload.getBytes()).send());
     }
 

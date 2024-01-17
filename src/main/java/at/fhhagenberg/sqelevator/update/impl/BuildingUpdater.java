@@ -38,7 +38,7 @@ public class BuildingUpdater implements IUpdater {
 
         elevators.add(elevator);
       }
-      //todo: also set update true if invalid? e.g. negative
+
       isUpdated = true;
 
       this.building.setFloors(floors);
