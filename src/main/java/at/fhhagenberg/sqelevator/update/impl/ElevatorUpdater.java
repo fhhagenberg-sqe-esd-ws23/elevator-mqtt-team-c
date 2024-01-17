@@ -20,7 +20,7 @@ public class ElevatorUpdater implements IUpdater {
   @Override
   public boolean update() throws RemoteException {
     boolean isUpdated = false;
-    // todo: isUpdate logic missing
+
     int elevatorId = elevator.getElevatorNumber();
 
     for (int index = 0; index < elevator.getAllElevatorButtons().size(); index++) {
