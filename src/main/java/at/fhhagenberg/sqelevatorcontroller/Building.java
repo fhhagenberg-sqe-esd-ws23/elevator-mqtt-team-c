@@ -5,10 +5,16 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import at.fhhagenberg.sqelevator.MqttBuildingConnector;
 import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Building {
+
+    private static final Logger logger = LogManager.getLogger(Building.class);
+
     private int floorCount;
     private int elevatorCount;
 
@@ -94,7 +100,7 @@ public class Building {
     }
     public void setCurrentFloor(int elevator, int floor) {
         if(elevator>=elevatorCount)
-            throw new ArrayIndexOutOfBoundsException(elevator);
+            logger.error("Elevator ArrayIndexOutOfBoundsException");
         while (this.currentFloors.size()<=elevator) {
             this.currentFloors.add(0);
         }

@@ -10,7 +10,7 @@ public class MqttParser {
     private MqttParser(){ }
     public static class Ret<T,F>{
         public T value;
-        public F[] topics;
+        public List<F> topics;
     }
     public interface IvalueOf<T> {
         T valueOf(String t);
@@ -18,7 +18,7 @@ public class MqttParser {
     public static <T,F> Ret<T, F> parse(String topic,Mqtt5Publish publish,IvalueOf<T> t,IvalueOf<F> f)
     {
         Ret<T,F> r=new Ret<>();
-        List<F> topics=new ArrayList<>();
+        r.topics=new ArrayList<>();
         String[] received=publish.getTopic().toString().split("/");
         String[] listened=topic.split("/");
         int i=0;
@@ -26,15 +26,15 @@ public class MqttParser {
         {
             if(listened[i].equals("+")||listened[i].equals("#"))
             {
-                topics.add(f.valueOf(received[i]));
+                r.topics.add(f.valueOf(received[i]));
             }
         }
         for(;i<received.length;i++)
         {
-            topics.add(f.valueOf(received[i]));
+            r.topics.add(f.valueOf(received[i]));
         }
         r.value=t.valueOf(new String(publish.getPayloadAsBytes()));
-        r.topics=(F[]) topics.toArray();
+
         return r;
     }
 }
