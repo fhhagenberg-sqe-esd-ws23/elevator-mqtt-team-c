@@ -80,4 +80,16 @@ class MqttServiceImplTest {
         assertTrue(messageReceived.get());
     }
 
+    @Test
+    void testRetained() {
+        AtomicBoolean messageReceived = new AtomicBoolean(false);
+        Listener<String, Mqtt5Publish> listener = (topic, msg) -> messageReceived.set(true);
+
+        mqttService.connect();
+        mqttService.publish("test/topic", "Hello");
+
+        mqttService.subscribe("test/topic", listener);
+        await().atMost(Duration.ofMillis(500)).until(messageReceived::get);
+        assertTrue(messageReceived.get());
+    }
 }
