@@ -1,5 +1,6 @@
 package at.fhhagenberg.sqelevatorController;
 
+import at.fhhagenberg.sqelevator.MqttParser;
 import at.fhhagenberg.sqelevator.MqttTopicGenerator;
 import at.fhhagenberg.sqelevator.model.Direction;
 import at.fhhagenberg.sqelevator.model.DoorStatus;
@@ -14,52 +15,43 @@ MqttService mqttService;
         // TODO Auto-generated method stub 
         String t=MqttTopicGenerator.elPath('+', MqttTopicGenerator.flPath('+',MqttTopicGenerator.floorBtn));
         mqttService.subscribe(t,(topic,publish)->{
-            String[] topics=publish.getTopic().toString().split("/");
-            int floor=Integer.parseInt(topics[topics.length-2]);
-            int elevator=Integer.parseInt(topics[topics.length-4]);
-            b.setElevatorButton(elevator, floor, new String(publish.getPayloadAsBytes())=="true");
-            b.enqueElevatorRequest(elevator, floor);
+            MqttParser.Ret<Boolean,Integer> x=MqttParser.parse(topic, publish, Boolean::valueOf, Integer::valueOf);
+            b.setElevatorButton(x.topics[0].intValue(), x.topics[1].intValue(), new String(publish.getPayloadAsBytes())=="true");
+            if(x.value) b.enqueElevatorRequest(x.topics[0].intValue(), x.topics[1].intValue());
     });
     mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.currentFloor),(topic,publish)->{
-            String[] topics=publish.getTopic().toString().split("/");
-            int floor=Integer.parseInt(topics[topics.length-2]);
-            int currentFloor=Integer.parseInt(new String(publish.getPayloadAsBytes()));
-            b.setCurrentFloor(floor, currentFloor);
+        MqttParser.Ret<Integer,Integer> x=MqttParser.parse(topic, publish, Integer::valueOf, Integer::valueOf);
+            b.setCurrentFloor(x.topics[0], x.value);
     });
     // mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.doorStatus),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
     //         int floor=Integer.parseInt(topics[topics.length-2]);
     //         int door=DoorStatus.values()[Integer.parseInt(new String(publish.getPayloadAsBytes()))];
     // });
     mqttService.subscribe(MqttTopicGenerator.elevators,(topic,publish)->{
-        int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
-        b.setElevatorCount(i);
+        MqttParser.Ret<Integer,Integer> x=MqttParser.parse(topic, publish, Integer::valueOf, Integer::valueOf);
+        b.setElevatorCount(x.value);
     });
     mqttService.subscribe(MqttTopicGenerator.floors,(topic,publish)->{
-        int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
-        b.setFloorCount(i);
+        MqttParser.Ret<Integer,Integer> x=MqttParser.parse(topic, publish, Integer::valueOf, Integer::valueOf);
+        b.setFloorCount(x.value);
     });
     mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnUp),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
-    int floor=Integer.parseInt(topics[topics.length-3]);
-    String s=new String(publish.getPayloadAsBytes());
-    b.setUpButton(floor, s.compareTo("true")==0);
-    b.enqueFloorRequest(floor);
+    MqttParser.Ret<Boolean,Integer> x=MqttParser.parse(topic, publish, Boolean::valueOf, Integer::valueOf);
+    b.setUpButton(x.topics[0], x.value);
+    if(x.value)b.enqueFloorRequest(x.topics[0]);
     });
     mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnDown),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
-    int floor=Integer.parseInt(topics[topics.length-3]);
-        b.setDownButton(floor, new String(publish.getPayloadAsBytes())=="true");
-        b.enqueFloorRequest(floor);
+    MqttParser.Ret<Boolean,Integer> x=MqttParser.parse(topic, publish, Boolean::valueOf, Integer::valueOf);
+        b.setDownButton(x.topics[0], x.value);
+        b.enqueFloorRequest(x.topics[0]);
     });
     mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.direction),(topic,publish)->{
-        String[] topics=publish.getTopic().toString().split("/");
-    int floor=Integer.parseInt(topics[topics.length-2]);
-        b.setDirection(floor, Direction.valueOf(new String(publish.getPayloadAsBytes())));
+        MqttParser.Ret<Direction,Integer> x=MqttParser.parse(topic, publish, Direction::valueOf, Integer::valueOf);
+        b.setDirection(x.topics[0].intValue(), x.value);
     });
     mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.doorStatus), (topic,publish)->{
-        // Object x=MqttParser.get<DoorStatus>(topic,publish);
-        String[] topics=publish.getTopic().toString().split("/");
-        int floor=Integer.valueOf(topics[topics.length-2]);
-        // int floor=Integer.parseInt(topics[topics.length-2]);
-        b.setElevatorDoor(floor, DoorStatus.valueOf(new String(publish.getPayloadAsBytes())));
+        MqttParser.Ret<DoorStatus,Integer> x=MqttParser.parse(topic, publish, DoorStatus::valueOf, Integer::valueOf)
+        b.setElevatorDoor(x.topics[0], x.value);
     });
 
 }

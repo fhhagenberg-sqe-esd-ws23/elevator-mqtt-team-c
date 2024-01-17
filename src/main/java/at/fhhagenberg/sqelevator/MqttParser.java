@@ -8,8 +8,8 @@ import com.hivemq.client.mqtt.mqtt5.message.publish.Mqtt5Publish;
 public class MqttParser {
 
     public static class Ret<T,F>{
-        T value;
-        F[] topics;
+        public T value;
+        public F[] topics;
     }
     public interface IvalueOf<T> {
         T valueOf(String t);

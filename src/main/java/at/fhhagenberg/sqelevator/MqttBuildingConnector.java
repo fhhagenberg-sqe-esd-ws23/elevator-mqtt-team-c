@@ -58,19 +58,16 @@ public final class MqttBuildingConnector {
             mqttService.subscribe(MqttTopicGenerator.stopPath, (ign, ored) -> {scheduler.stop();
             logger.info("Received stop signal. Bye!");});
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.direction), (topic,publish)->{
-                
                 MqttParser.Ret<Direction,Integer> x=MqttParser.parse(topic, publish, Direction::valueOf, Integer::valueOf);
                 controller.setCommittedDirection(x.topics[0], x.value);
             });
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.flPath('+',MqttTopicGenerator.servedFloor)), (topic,publish)->{
-                String[] topics=publish.getTopic().toString().split("/");
-                int floor=Integer.parseInt(topics[topics.length-2]);
-                controller.setServicesFloors(elevator.getElevatorNumber(),floor,ByteBuffer.wrap(publish.getPayloadAsBytes()).getInt()==1);
+                MqttParser.Ret<Boolean,Integer> x=MqttParser.parse(topic, publish, Boolean::valueOf, Integer::valueOf);
+                controller.setServicesFloors(elevator.getElevatorNumber(),x.topics[0].intValue(),x.value);
             });
             mqttService.subscribe(MqttTopicGenerator.elPath(elevator, MqttTopicGenerator.targetFloor), (topic,publish)->{
-                logger.debug("{} {}", topic, publish.getPayloadAsBytes());
-                int i=Integer.parseInt(new String(publish.getPayloadAsBytes()));
-                controller.setTarget(elevator.getElevatorNumber(),i);
+                MqttParser.Ret<Integer,Integer> x=MqttParser.parse(topic, publish, Integer::valueOf, Integer::valueOf);
+                controller.setTarget(elevator.getElevatorNumber(),x.value);
             });
         }
 
@@ -83,14 +80,6 @@ public final class MqttBuildingConnector {
 
             // // ================= subscribe =================
 
-        //     mqttService.subscribe(MqttTopicGenerator.flPath(floor,MqttTopicGenerator.btnUp), (topic, publish) -> {
-        //         logger.debug("Floor {} UP Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
-        //         controller.setTarget(0, floor.getFloorNumber());
-        //     });
-        //     mqttService.subscribe(MqttTopicGenerator.flPath(floor,MqttTopicGenerator.btnDown), (topic, publish) -> {
-        //         logger.debug("Floor {} DOWN Pressed: {}", floor.getFloorNumber(), publish.getPayloadAsBytes());
-        //         controller.setTarget(0, floor.getFloorNumber());
-        //     });
         }
     }
 }
