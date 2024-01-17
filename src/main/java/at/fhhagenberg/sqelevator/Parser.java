@@ -7,11 +7,13 @@ import java.util.Properties;
 
 public class Parser {
     public static final String DEFAULT_CONFIG_FILE = "./sqelevator.conf";
-    public static final int DEFAULT_INTERVAL = 250;// ms
+    public static final int DEFAULT_INTERVAL = 250;// ms 1883
+    public static final int DEFAULT_MQTT_PORT = 1883;
     public static final String DEFAULT_MQTT_PREFIX = "";
     public static final String KEY_INTERVAL ="interval";
     public static final String KEY_PLC ="plc";
     public static final String KEY_MQTT_ADDRESS ="mqtt_address";
+    public static final String KEY_MQTT_PORT = "mqtt_port"; 
     public static final String KEY_MQTT_PREFIX ="mqtt_prefix";
     Properties appProps = new Properties();
     
@@ -47,6 +49,12 @@ public class Parser {
     public String getMqttAddress() {
         return appProps.getProperty(KEY_MQTT_ADDRESS);
     }
+    
+    public int getMqttPort(){
+        if(appProps.containsKey(KEY_MQTT_PORT))
+            return Integer.parseInt(appProps.getProperty(KEY_MQTT_PORT));
+        return DEFAULT_MQTT_PORT;
+    }
 
     public String getMqttPrefix() {
         if (appProps.containsKey(KEY_MQTT_PREFIX))
@@ -57,4 +65,5 @@ public class Parser {
 // PLC="""
 // interval=250[ms]
 // mqtt_address=localhost
+// mqtt_port=localhost
 // mqtt_prefix=""

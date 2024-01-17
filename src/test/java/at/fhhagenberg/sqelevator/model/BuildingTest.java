@@ -108,4 +108,25 @@ class BuildingTest {
     uut.setFloors(floors);
     assertNull(uut.getFloor(-1));
   }
+
+  @Test
+  void testElevatorCount(){
+    var uut = new Building();
+    uut.addElevatorCountListner((a,b)->{
+      assertEquals(uut, a);
+      assertEquals(3, b);
+    });
+    uut.setElevators(List.of(Mockito.mock(Elevator.class),Mockito.mock(Elevator.class),Mockito.mock(Elevator.class)));
+    assertEquals(3, uut.getElevatorNum());
+  }
+  @Test
+  void testFloorCount(){
+    var uut = new Building();
+    uut.addFloorCountListner((a,b)->{
+      assertEquals(uut, a);
+      assertEquals(3, b);
+    });
+    uut.setFloors(List.of(Mockito.mock(Floor.class),Mockito.mock(Floor.class),Mockito.mock(Floor.class)));
+    assertEquals(3, uut.getFloorNum());
+  }
 }

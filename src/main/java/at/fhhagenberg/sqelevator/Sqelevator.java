@@ -38,7 +38,7 @@ public class Sqelevator {
         try {
             IElevator controller = (IElevator) Naming.lookup(p.getPlcAddress());
 
-            MqttService mqttService = new MqttServiceImpl(p.getMqttAddress(), 1883);
+            MqttService mqttService = new MqttServiceImpl(p.getMqttAddress(), p.getMqttPort());
             mqttService.connect();
             Sqelevator app = new Sqelevator(controller, mqttService);
             app.run(p);
@@ -47,6 +47,8 @@ public class Sqelevator {
             System.exit(-1);
         } catch (RuntimeException e) {
             logger.error("Failed to connect to the MQTT broker: {}", e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error("unknown error: {}",e.getMessage(),e);
         }
     }
 
@@ -58,7 +60,7 @@ public class Sqelevator {
 
     private static final Logger logger = LogManager.getLogger(Sqelevator.class);
 
-    public Sqelevator(IElevator e, MqttService mqttService) throws RemoteException {
+    public Sqelevator(IElevator e, MqttService mqttService) throws Exception {
 
         building = new Building();
         
@@ -66,6 +68,7 @@ public class Sqelevator {
         elevatorController = new ElevatorController(e);
         scheduler = new ScheduleService();
 
+        MqttBuildingConnector.preConnect(mqttService, building);
         // update building one time for MqttBuildingConnector
         service.update(building);
 

@@ -30,6 +30,8 @@ jobs:
       run: mvn -B test --file pom.xml
     - name: package reports
       run: zip -r reports.zip target
+    - name: ls
+      run: ls -la target/*
     - uses: actions/upload-artifact@v3
       with:
           name: code-coverage-report

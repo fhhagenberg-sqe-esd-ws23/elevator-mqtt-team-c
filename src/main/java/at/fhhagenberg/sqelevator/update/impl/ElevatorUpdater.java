@@ -39,8 +39,8 @@ public class ElevatorUpdater implements IUpdater {
     }
 
     int elevatorDoorStatus = controller.getElevatorDoorStatus(elevatorId);
-    if (elevatorDoorStatus < DoorStatus.values().length && elevatorDoorStatus >= 0) {
-      elevator.setDoorStatusValue(DoorStatus.values()[elevatorDoorStatus]);
+    if (elevatorDoorStatus <= DoorStatus.values().length && elevatorDoorStatus > 0) {
+      elevator.setDoorStatusValue(DoorStatus.values()[elevatorDoorStatus-1]);
     }
     int elevatorFloor = controller.getElevatorFloor(elevatorId);
     if (elevatorFloor >= 0 && elevatorFloor < elevator.getAllElevatorButtons().size()) {

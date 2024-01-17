@@ -47,9 +47,6 @@ class ElevatorUpdaterTest {
         Mockito.when(controller.getServicesFloors(1,1)).thenReturn(true);
         Mockito.when(controller.getCommittedDirection(1)).thenReturn(1);
         Mockito.when(controller.getElevatorAccel(1)).thenReturn(12);
-        // Mockito.when(elevator.getButton(btnlist.get(0).getFloor())).thenReturn(btnlist.get(0));
-        // Mockito.when(elevator.getButton(btnlist.get(1).getFloor())).thenReturn(btnlist.get(1));
-        // Mockito.when(elevator.getButton(btnlist.get(2).getFloor())).thenReturn(btnlist.get(2));
         Mockito.when(controller.getElevatorButton(1, 0)).thenReturn(true);
         Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(1);
         Mockito.when(controller.getElevatorFloor(1)).thenReturn(2);
@@ -61,7 +58,7 @@ class ElevatorUpdaterTest {
 
         verify(elevator,times(1)).setCommittedDirectionValue(Direction.DOWN);
         verify(elevator,times(1)).setAccelerationValue(12);
-        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.CLOSED);
+        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.OPEN);
         verify(elevator,times(1)).setCurrentFloorValue(floors.get(2));
         verify(elevator,times(1)).setCurrentPositionValue(200);
         verify(elevator,times(1)).setCurrentSpeedValue(120);
@@ -77,7 +74,7 @@ class ElevatorUpdaterTest {
         var uut=new ElevatorUpdater(controller, elevator);
         
         Mockito.when(elevator.getElevatorNumber()).thenReturn(1);
-        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(2);
+        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING+1);
         Mockito.when(controller.getElevatorFloor(1)).thenReturn(4);
         Mockito.when(controller.getTarget(1)).thenReturn(4);
         Mockito.when(elevator.getAllElevatorButtons()).thenReturn(btnlist);
@@ -98,15 +95,12 @@ class ElevatorUpdaterTest {
         
 
         Mockito.when(controller.getCommittedDirection(1)).thenReturn(-1);
-        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(-1);
+        Mockito.when(controller.getElevatorDoorStatus(1)).thenReturn(0);
         Mockito.when(controller.getElevatorFloor(1)).thenReturn(-1);
         Mockito.when(controller.getTarget(1)).thenReturn(-1);
 
-        // Mockito.when(elevator.getButton(btnlist.get(0).getFloor())).thenReturn(btnlist.get(0));
-        // Mockito.when(elevator.getButton(btnlist.get(1).getFloor())).thenReturn(btnlist.get(1));
-        // Mockito.when(elevator.getButton(btnlist.get(2).getFloor())).thenReturn(btnlist.get(2));
         Mockito.when(controller.getCommittedDirection(2)).thenReturn(3);
-        Mockito.when(controller.getElevatorDoorStatus(2)).thenReturn(2);
+        Mockito.when(controller.getElevatorDoorStatus(2)).thenReturn(5);
         Mockito.when(controller.getElevatorFloor(2)).thenReturn(3);
         Mockito.when(controller.getTarget(2)).thenReturn(3);
 
@@ -120,4 +114,44 @@ class ElevatorUpdaterTest {
         verify(elevator,times(0)).setCommittedDirectionValue(any());
 
     }
+    @Test
+    void DoorStateConverterTest() throws RemoteException
+    {
+        var uut=new ElevatorUpdater(controller, elevator);
+
+        Mockito.when(controller.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSED);
+        uut.update();
+        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.CLOSED);
+
+        Mockito.when(controller.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_CLOSING);
+        uut.update();
+        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.CLOSING);
+        
+        Mockito.when(controller.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_OPEN);
+        uut.update();
+        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.OPEN);
+        
+        Mockito.when(controller.getElevatorDoorStatus(0)).thenReturn(IElevator.ELEVATOR_DOORS_OPENING);
+        uut.update();
+        verify(elevator,times(1)).setDoorStatusValue(DoorStatus.OPENING);
+        }
+
+    
+        @Test
+        void DirectionTest() throws RemoteException
+        {
+            var uut=new ElevatorUpdater(controller, elevator);
+    
+            Mockito.when(controller.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UP);
+            uut.update();
+            verify(elevator,times(1)).setCommittedDirectionValue(Direction.UP);
+    
+            Mockito.when(controller.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_UNCOMMITTED);
+            uut.update();
+            verify(elevator,times(1)).setCommittedDirectionValue(Direction.UNCOMMITTED);
+            
+            Mockito.when(controller.getCommittedDirection(0)).thenReturn(IElevator.ELEVATOR_DIRECTION_DOWN);
+            uut.update();
+            verify(elevator,times(1)).setCommittedDirectionValue(Direction.DOWN);
+            }
 }
