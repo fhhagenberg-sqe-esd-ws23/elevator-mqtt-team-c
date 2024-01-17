@@ -22,8 +22,8 @@ public class MqttParserTest {
 
         Mqtt5Publish p=Mqtt5Publish.builder().topic(recivedTopic).payload(ByteBuffer.wrap(valueString.getBytes())).build();
         MqttParser.Ret x=MqttParser.parse(ListhenTopic,p,MqttParserTest::valueOf,Integer::valueOf);
-        assertEquals(5, x.topics[0]);
-        assertEquals(1, x.topics.length);
+        assertEquals(5, x.topics.get(0));
+        assertEquals(1, x.topics.size());
         assertEquals(valueString, ((MqttParserTest)x.value).s);
 
     }
@@ -35,9 +35,9 @@ public class MqttParserTest {
 
         Mqtt5Publish p=Mqtt5Publish.builder().topic(recivedTopic).payload(ByteBuffer.wrap(valueString.getBytes())).build();
         MqttParser.Ret x=MqttParser.parse(ListhenTopic,p,MqttParserTest::valueOf,Integer::valueOf);
-        assertEquals(5, x.topics[0]);
-        assertEquals(1, x.topics[1]);
-        assertEquals(2, x.topics.length);
+        assertEquals(5, x.topics.get(0));
+        assertEquals(1, x.topics.get(1));
+        assertEquals(2, x.topics.size());
         assertEquals(valueString, ((MqttParserTest)x.value).s);
     }
 
@@ -49,11 +49,11 @@ public class MqttParserTest {
 
         Mqtt5Publish p=Mqtt5Publish.builder().topic(recivedTopic).payload(ByteBuffer.wrap(valueString.getBytes())).build();
         MqttParser.Ret x=MqttParser.parse(ListhenTopic,p,MqttParserTest::valueOf,String::valueOf);
-        assertEquals("5", x.topics[0]);
-        assertEquals("b", x.topics[1]);
-        assertEquals("1", x.topics[2]);
-        assertEquals("s", x.topics[3]);
-        assertEquals(4, x.topics.length);
+        assertEquals("5", x.topics.get(0));
+        assertEquals("b", x.topics.get(1));
+        assertEquals("1", x.topics.get(2));
+        assertEquals("s", x.topics.get(3));
+        assertEquals(4, x.topics.size());
         assertEquals(valueString, ((MqttParserTest)x.value).s);
     }
 }
