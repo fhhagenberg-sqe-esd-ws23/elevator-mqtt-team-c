@@ -23,6 +23,12 @@ public class Controller {
     private final int ElevatorNumber;
     Building building;
     MqttConnector conn;
+    Integer timeout=0;
+    enum State{
+        DRIVING,
+        WAITING;
+    }
+    State state=State.WAITING;
 
     Controller(int rlnr, Building b, MqttConnector c) {
         ElevatorNumber = rlnr;
@@ -31,7 +37,14 @@ public class Controller {
     }
 
     void run() {
-        if (building.getSpeed(ElevatorNumber) == 0) {
+        if(timeout>0)timeout--;
+        if (building.getSpeed(ElevatorNumber) == 0 && timeout==0) {
+            if(state==State.DRIVING)
+            
+            {timeout=15;
+                state=State.WAITING;
+            }
+            else
             if (building.getDirection(ElevatorNumber) == Direction.UP) {
                 int nextFloor = building.getCurrentFloor(ElevatorNumber);
                 do {
@@ -40,13 +53,15 @@ public class Controller {
                         && !(building.getUpButton(nextFloor) || building.getElevaorButton(ElevatorNumber, nextFloor)));
                 if (nextFloor < building.getFloorCount()) {
                     conn.setTargetFloor(ElevatorNumber, nextFloor);
-                    if (building.getElevaorButton(ElevatorNumber, nextFloor))
-                        conn.setElevatorButton(ElevatorNumber, nextFloor, false);
-                    if (building.getUpButton(nextFloor))
-                        conn.setUpButton(nextFloor, false);
+                    state=State.DRIVING;
                 } else {
-                    conn.setDirection(ElevatorNumber, Direction.DOWN);
+                    if(building.getCurrentFloor(ElevatorNumber)==building.getFloorCount()-1)
+                    {conn.setDirection(ElevatorNumber, Direction.DOWN);}
+                    else
+                    {conn.setTargetFloor(ElevatorNumber, building.getCurrentFloor(ElevatorNumber)+1);
+                    state=State.DRIVING;}
                 }
+
             } else {
                 int nextFloor = building.getCurrentFloor(ElevatorNumber);
                 do {
@@ -55,12 +70,15 @@ public class Controller {
                         || building.getElevaorButton(ElevatorNumber, nextFloor)));
                 if (nextFloor > 0) {
                     conn.setTargetFloor(ElevatorNumber, nextFloor);
-                    if (building.getElevaorButton(ElevatorNumber, nextFloor))
-                        conn.setElevatorButton(ElevatorNumber, nextFloor, false);
-                    if (building.getDownButton(nextFloor))
-                        conn.setDownButton(nextFloor, false);
+                    state=State.DRIVING;
                 } else {
-                    conn.setDirection(ElevatorNumber, Direction.UP);
+                    if(building.getCurrentFloor(ElevatorNumber)==0)
+                    {conn.setDirection(ElevatorNumber, Direction.UP);}
+                    else
+                    {
+                    conn.setTargetFloor(ElevatorNumber, building.getCurrentFloor(ElevatorNumber)-1);
+                    state=State.DRIVING;
+                    }
                 }
             }
         }

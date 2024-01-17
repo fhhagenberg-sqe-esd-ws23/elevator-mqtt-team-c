@@ -27,7 +27,6 @@ public class FloorUpdater implements IUpdater {
 
     boolean buttonUp = controller.getFloorButtonUp(floorId);
     floor.upButton.set(buttonUp);
-    System.out.print(floorId + " "+buttonDown+" "+buttonDown);
     return isUpdated;
   }
 }

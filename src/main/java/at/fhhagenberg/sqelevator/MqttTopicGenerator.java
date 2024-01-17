@@ -46,6 +46,6 @@ public class MqttTopicGenerator {
     public static final String btnUp="btn/up";
     public static final String btnDown="btn/down";
     public static final String elevators = "elevators";
-    public static final String floors = "elevators";
+    public static final String floors = "floors";
 
 }
