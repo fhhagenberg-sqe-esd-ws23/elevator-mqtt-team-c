@@ -137,7 +137,7 @@ public class Building {
         return floorRequests.poll();
     }
     public DoorStatus getElevatorDoor(int elevatorNumber) {
-        if(doorStates.size()<elevatorNumber)
+        if(doorStates.size()<=elevatorNumber)
             return DoorStatus.CLOSED;
         return doorStates.get(elevatorNumber);
     }
