@@ -1,6 +1,7 @@
 package at.fhhagenberg.sqelevatorcontroller;
 
 import at.fhhagenberg.sqelevator.model.Direction;
+import at.fhhagenberg.sqelevator.model.DoorStatus;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,6 +33,18 @@ class BuildingTest {
         assertEquals(false, uut.getDownButton(1));
         uut.setDownButton(2, false);
         assertEquals(false, uut.getDownButton(2));
+    }
+    @Test
+    void DoorTest(){
+        Building uut=new Building();
+        assertEquals(DoorStatus.CLOSED, uut.getElevatorDoor(0));
+        uut.setElevatorDoor(0, DoorStatus.CLOSING);
+        assertEquals(DoorStatus.CLOSING, uut.getElevatorDoor(0));
+        uut.setElevatorDoor(2, DoorStatus.OPENING);
+        assertEquals(DoorStatus.OPENING, uut.getElevatorDoor(2));
+        assertEquals(DoorStatus.CLOSED, uut.getElevatorDoor(1));
+        uut.setElevatorDoor(2, DoorStatus.CLOSED);
+        assertEquals(DoorStatus.CLOSED, uut.getElevatorDoor(2));
     }
     @Test
     void DirectionTest(){

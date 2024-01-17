@@ -7,6 +7,7 @@ import java.util.List;
 
 public class MqttParser {
 
+    private MqttParser(){ }
     public static class Ret<T,F>{
         public T value;
         public F[] topics;
