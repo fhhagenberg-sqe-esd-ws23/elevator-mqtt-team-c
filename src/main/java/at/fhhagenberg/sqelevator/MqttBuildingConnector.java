@@ -74,7 +74,10 @@ public final class MqttBuildingConnector {
                     .publish(elPath(id,targetFloor),  String.valueOf(value.getFloorNumber())));
             // ================= subscribe =================
 
-            mqttService.subscribe(stopPath, (ign, ored) -> scheduler.stop());
+            mqttService.subscribe(stopPath, (ign, ored) -> {
+                scheduler.stop();
+                logger.info("Received stop signal. Bye!");
+            });
             mqttService.subscribe(elPath(elevator, direction), (topic,publish)->{
                 logger.debug("{} {}", topic, publish.getPayloadAsBytes());
 
