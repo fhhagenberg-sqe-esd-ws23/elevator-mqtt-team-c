@@ -75,10 +75,7 @@ public final class MqttBuildingConnector {
             // ================= publish =================
             floor.upButton.addListner((id, value) -> mqttService
                     .publish(MqttTopicGenerator.flPath(id, MqttTopicGenerator.BTN_UP), value));
-            floor.downButton.addListner((id, value) -> {
-                logger.debug("PUBLISHED MESSAGE");
-                mqttService.publish(MqttTopicGenerator.flPath(id, MqttTopicGenerator.BTN_DOWN), value);
-                    }
+            floor.downButton.addListner((id, value) -> mqttService.publish(MqttTopicGenerator.flPath(id, MqttTopicGenerator.BTN_DOWN), value)
             );
         }
     }
