@@ -51,7 +51,7 @@ public class Parser {
     }
     
     public int getMqttPort(){
-        if(appProps.contains(KEY_MQTT_PORT))
+        if(appProps.containsKey(KEY_MQTT_PORT))
             return Integer.parseInt(appProps.getProperty(KEY_MQTT_PORT));
         return DEFAULT_MQTT_PORT;
     }

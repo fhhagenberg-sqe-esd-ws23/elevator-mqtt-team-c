@@ -155,4 +155,5 @@ class ElevatorTest {
     elevator.setCurrentFloorValue(f2);
     assertEquals(f1, elevator.getCurrentFloorValue());
   }
+
 }
