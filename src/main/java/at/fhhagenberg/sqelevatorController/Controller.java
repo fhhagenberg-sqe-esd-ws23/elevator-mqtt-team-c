@@ -23,12 +23,14 @@ public class Controller {
     private final int ElevatorNumber;
     Building building;
     MqttConnector conn;
-    Integer timeout=0;
-    enum State{
+    Integer timeout = 0;
+
+    enum State {
         DRIVING,
         WAITING;
     }
-    State state=State.WAITING;
+
+    State state = State.WAITING;
 
     Controller(int rlnr, Building b, MqttConnector c) {
         ElevatorNumber = rlnr;
@@ -36,50 +38,48 @@ public class Controller {
         conn = c;
     }
 
-    void run() {
-        if(timeout>0)timeout--;
-        if (building.getSpeed(ElevatorNumber) == 0 && timeout==0) {
-            if(state==State.DRIVING)
-            
-            {timeout=15;
-                state=State.WAITING;
+    int findElButton(int start, Boolean up) {
+        int i = start;
+        Boolean found = false;
+        while (up ? (i < building.getFloorCount()) : (i > 0) && !found) {
+            if (up) {
+                // found=building.getFloorButtonUp
             }
-            else
-            if (building.getDirection(ElevatorNumber) == Direction.UP) {
-                int nextFloor = building.getCurrentFloor(ElevatorNumber);
-                do {
-                    nextFloor++;
-                } while (nextFloor < building.getFloorCount()
-                        && !(building.getUpButton(nextFloor) || building.getElevaorButton(ElevatorNumber, nextFloor)));
-                if (nextFloor < building.getFloorCount()) {
-                    conn.setTargetFloor(ElevatorNumber, nextFloor);
-                    state=State.DRIVING;
-                } else {
-                    if(building.getCurrentFloor(ElevatorNumber)==building.getFloorCount()-1)
-                    {conn.setDirection(ElevatorNumber, Direction.DOWN);}
-                    else
-                    {conn.setTargetFloor(ElevatorNumber, building.getCurrentFloor(ElevatorNumber)+1);
-                    state=State.DRIVING;}
+            i = up ? i + 1 : i - 1;
+        }
+        return i;
+    }
+
+    void run() {
+        if (timeout > 0&&building.getSpeed(ElevatorNumber) == 0)
+            timeout--;
+        if (building.getSpeed(ElevatorNumber) == 0 && timeout == 0 ) {
+            Integer nextFloor = building.dequeElevatorRequest(ElevatorNumber);
+
+            if (nextFloor == null)
+                {
+                    nextFloor =building.dequeFloorRequest();
                 }
 
-            } else {
-                int nextFloor = building.getCurrentFloor(ElevatorNumber);
-                do {
-                    nextFloor--;
-                } while (nextFloor > 0 && !(building.getDownButton(nextFloor)
-                        || building.getElevaorButton(ElevatorNumber, nextFloor)));
-                if (nextFloor > 0) {
-                    conn.setTargetFloor(ElevatorNumber, nextFloor);
-                    state=State.DRIVING;
-                } else {
-                    if(building.getCurrentFloor(ElevatorNumber)==0)
-                    {conn.setDirection(ElevatorNumber, Direction.UP);}
-                    else
-                    {
-                    conn.setTargetFloor(ElevatorNumber, building.getCurrentFloor(ElevatorNumber)-1);
-                    state=State.DRIVING;
-                    }
+            if(nextFloor == null)
+            {
+                conn.setDirection(ElevatorNumber,Direction.UNCOMMITTED);
+            }
+            else
+            {
+                int cmp=nextFloor-building.getCurrentFloor(ElevatorNumber);
+                if(cmp>0)
+                {
+                    conn.setDirection(ElevatorNumber,Direction.UP);
+                }else if(cmp<0)
+                {
+                    conn.setDirection(ElevatorNumber,Direction.DOWN);
+                }else{
+                    conn.setDirection(ElevatorNumber,Direction.UNCOMMITTED);   
                 }
+                logger.info("depart {} to {}",ElevatorNumber,nextFloor);
+                conn.setTargetFloor(ElevatorNumber,nextFloor);
+                timeout=10;
             }
         }
     }

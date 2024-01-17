@@ -2,6 +2,8 @@ package at.fhhagenberg.sqelevatorController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import at.fhhagenberg.sqelevator.model.Direction;
 
@@ -15,6 +17,9 @@ public class Building {
     private List<Integer> currentFloors=new ArrayList<>();
     private List<Integer> speeds=new ArrayList<>();
     private List<Direction> directions=new ArrayList<>();
+
+    private Queue<Integer> floorRequests=new ConcurrentLinkedDeque<Integer>();
+    private List<Queue<Integer>> elevatorRequests = new ArrayList<>();
 
     public void setFloorCount(int floorCount) {
         this.floorCount = floorCount;
@@ -103,5 +108,30 @@ public class Building {
             this.speeds.add(0);
         }
         this.speeds.set(index, val);
+    }
+
+    public void enqueElevatorRequest(int elevator,int floor)
+    {
+        while (this.elevatorRequests.size()<=elevator) {
+            this.elevatorRequests.add(new ConcurrentLinkedDeque<Integer>());
+        }
+        this.elevatorRequests.get(elevator).add(floor);
+    }
+
+    public Integer dequeElevatorRequest(int elevator)
+    {
+        if(elevatorRequests.size()>elevator)
+        {
+        return elevatorRequests.get(elevator).poll();
+        }
+        return null;
+    }
+
+    public void enqueFloorRequest(int floor){
+        floorRequests.add(floor);
+    }
+    public Integer dequeFloorRequest()
+    {
+        return floorRequests.poll();
     }
 }

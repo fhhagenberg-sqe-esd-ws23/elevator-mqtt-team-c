@@ -17,6 +17,7 @@ MqttService mqttService;
             int floor=Integer.parseInt(topics[topics.length-2]);
             int elevator=Integer.parseInt(topics[topics.length-4]);
             b.setElevatorButton(elevator, floor, new String(publish.getPayloadAsBytes())=="true");
+            b.enqueElevatorRequest(elevator, floor);
     });
     mqttService.subscribe(MqttTopicGenerator.elPath('+',MqttTopicGenerator.currentFloor),(topic,publish)->{
             String[] topics=publish.getTopic().toString().split("/");
@@ -40,10 +41,12 @@ MqttService mqttService;
     int floor=Integer.parseInt(topics[topics.length-3]);
     String s=new String(publish.getPayloadAsBytes());
     b.setUpButton(floor, s.compareTo("true")==0);
+    b.enqueFloorRequest(floor);
     });
     mqttService.subscribe(MqttTopicGenerator.flPath('+',MqttTopicGenerator.btnDown),(topic,publish)->{String[] topics=publish.getTopic().toString().split("/");
     int floor=Integer.parseInt(topics[topics.length-3]);
         b.setDownButton(floor, new String(publish.getPayloadAsBytes())=="true");
+        b.enqueFloorRequest(floor);
     });
     mqttService.subscribe(MqttTopicGenerator.elPath('+', MqttTopicGenerator.direction),(topic,publish)->{
         String[] topics=publish.getTopic().toString().split("/");
