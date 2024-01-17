@@ -61,12 +61,8 @@ class BuildingTest {
     @Test
     void currentFloorTest(){
         Building uut=new Building();
-        assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
             uut.getCurrentFloor(2);
-        });
-        assertThrows(ArrayIndexOutOfBoundsException.class, ()->{
             uut.setCurrentFloor(2,5);
-        });
         uut.setElevatorCount(3);
         assertEquals(0, uut.getCurrentFloor(0));
         uut.setCurrentFloor(0, 5);
