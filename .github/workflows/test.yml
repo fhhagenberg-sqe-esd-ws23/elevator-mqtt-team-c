@@ -36,14 +36,6 @@ jobs:
       with:
           name: code-coverage-report
           path: reports.zip
-    - uses: actions/upload-artifact@v3
-      with:
-          name: executable
-          path: target/mqtt-elevator-c-Connector.jar
-    - uses: actions/upload-artifact@v3
-      with:
-          name: executable2
-          path: target/mqtt-elevator-c-Controller.jar
 
     # - uses: "marvinpinto/action-automatic-releases@latest"
     #   with:
