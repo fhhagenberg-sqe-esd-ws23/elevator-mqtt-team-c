@@ -37,7 +37,11 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
           name: executable
-          path: target/*.jar
+          path: target/mqtt-elevator-c-Connector.jar
+    - uses: actions/upload-artifact@v3
+      with:
+          name: executable
+          path: target/mqtt-elevator-c-Controller.jar
 
     # - uses: "marvinpinto/action-automatic-releases@latest"
     #   with:
