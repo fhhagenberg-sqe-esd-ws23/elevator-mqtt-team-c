@@ -17,7 +17,7 @@ Group assignment SQElevator Team C
 ## Prerequisites
 - run simulator
 - run local Broker
-- 
+
 ## Run the system
 
 - run Sqelevator
